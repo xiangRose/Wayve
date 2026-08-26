@@ -1,0 +1,159 @@
+{
+  "jobId": "ai_pm",
+  "scaffoldType": "career_changer",
+  "title": "AI 会议助手留存诊断",
+  "scenario": "某 AI 会议助手注册量持续增长，但首次完成会议总结的比例和七日留存持续下降。用户反馈“总结有用，但第一次使用很麻烦”。研发团队本周只能完成一项核心优化。",
+  "estimatedMinutes": 7,
+  "evaluationCriteria": [
+    "是否区分表面现象与核心问题",
+    "是否主动寻找用户分层和行为数据",
+    "是否结合用户影响、研发成本和验证价值取舍",
+    "新证据出现后是否合理调整",
+    "是否给出可验证的下一步指标"
+  ],
+  "steps": [
+    {
+      "stepNumber": 1,
+      "stepTitle": "进入情境",
+      "stepType": "context",
+      "context": {
+        "summary": "你刚加入该 AI 会议助手产品团队。过去 4 周：注册量 +38%，首次生成会议总结比例 41%（行业参考 55%），七日留存 18%（上月 26%）。",
+        "metrics": {
+          "registrationGrowth": "+38%",
+          "firstSummaryRate": "41%",
+          "sevenDayRetention": "18%"
+        },
+        "userVoice": "总结质量被认可，但第一次使用步骤太多、导入会议很麻烦。"
+        },
+      "decision": {
+        "type": "acknowledge",
+        "prompt": "阅读背景后，用一句话说明你理解当前产品面临的核心矛盾。",
+        "inputType": "textarea",
+        "minLength": 20
+      },
+      "help": {
+        "thinkingPrompts": [
+          "注册增长和留存下降可能不是同一个问题——先分清获客与激活。",
+          "用户说“第一次使用很麻烦”可能指向 onboarding，而不一定是总结质量。"
+        ]
+      }
+    },
+    {
+      "stepNumber": 2,
+      "stepTitle": "初步判断",
+      "stepType": "initial_judgment",
+      "context": {
+        "summary": "产品负责人希望你先给出方向：在首次体验、总结质量、功能发现三者中，你认为应优先关注什么？"
+      },
+      "decision": {
+        "type": "single_choice_with_reason",
+        "prompt": "你首先关注的问题是什么？为什么？",
+        "options": [
+          { "id": "first_experience", "label": "首次完成体验（导入与首次生成路径）" },
+          { "id": "summary_quality", "label": "总结质量与准确性" },
+          { "id": "feature_discovery", "label": "功能发现与长期价值感知" }
+        ],
+        "requireReason": true,
+        "inputType": "choice_plus_textarea"
+      },
+      "help": {
+        "thinkingPrompts": [
+          "留存下降通常发生在用户尚未体验到核心价值之前——这提示你先看哪一环？"
+        ]
+      }
+    },
+    {
+      "stepNumber": 3,
+      "stepTitle": "主动取证",
+      "stepType": "evidence_gathering",
+      "context": {
+        "summary": "你只有有限时间补充信息。请选择最需要查看的一项，并说明它如何帮助你的判断。",
+        "availableEvidence": [
+          { "id": "user_feedback", "label": "近期用户反馈原文（50 条）" },
+          { "id": "funnel_data", "label": "注册→导入→首次生成→二次使用漏斗" },
+          { "id": "user_segments", "label": "个人用户 vs 企业用户分层留存" },
+          { "id": "dev_cost", "label": "三项候选改动的研发成本估算" }
+        ]
+      },
+      "decision": {
+        "type": "multi_select_with_reason",
+        "prompt": "选择 1—2 项最需要的信息，并解释原因。",
+        "maxSelections": 2,
+        "inputType": "multi_choice_plus_textarea"
+      },
+      "help": {
+        "thinkingPrompts": [
+          "好的产品经理会主动寻找能验证或推翻假设的数据，而不是只看总体数字。"
+        ]
+      }
+    },
+    {
+      "stepNumber": 4,
+      "stepTitle": "追加信息",
+      "stepType": "new_information",
+      "context": {
+        "summary": "你请求的数据返回了：",
+        "revealedFacts": [
+          "企业用户七日留存 34%，个人用户仅 11%",
+          "个人用户 62% 在「导入/连接会议」步骤退出，尚未到达首次总结",
+          "认为总结“有用”的用户中，80% 已成功完成至少一次导入"
+        ]
+      },
+      "decision": {
+        "type": "textarea",
+        "prompt": "根据用户分层与新数据，你的判断是否需要调整？核心问题现在是什么？",
+        "inputType": "textarea",
+        "minLength": 40
+      },
+      "help": {
+        "thinkingPrompts": [
+          "新信息是否改变了你步骤 2 的优先级？若改变，请明确写出变化点。"
+        ]
+      }
+    },
+    {
+      "stepNumber": 5,
+      "stepTitle": "调整决策",
+      "stepType": "constraint_tradeoff",
+      "context": {
+        "summary": "现实限制：研发团队本周只能交付以下一项核心优化。",
+        "constraints": [
+          { "id": "simplify_import", "label": "简化导入流程（减少 2 步，预计 5 人日）" },
+          { "id": "add_template", "label": "新增会议总结模板库（预计 8 人日）" },
+          { "id": "improve_summary", "label": "提高总结质量（模型与后处理，预计 12 人日）" }
+        ]
+      },
+      "decision": {
+        "type": "single_choice_with_tradeoff",
+        "prompt": "选择本周唯一优化项，并说明放弃了什么、为什么。",
+        "inputType": "choice_plus_textarea",
+        "requireTradeoffExplanation": true
+      },
+      "help": {
+        "thinkingPrompts": [
+          "取舍时同时考虑：用户影响范围、研发成本、可验证性。"
+        ]
+      }
+    },
+    {
+      "stepNumber": 6,
+      "stepTitle": "最终说明",
+      "stepType": "final_explanation",
+      "context": {
+        "summary": "请向团队同步你的最终决策。"
+      },
+      "decision": {
+        "type": "structured_summary",
+        "prompt": "说明：① 最终选择 ② 放弃项及理由 ③ 用于验证的 1—2 个指标 ④ 仍不确定的部分",
+        "inputType": "textarea",
+        "minLength": 80,
+        "fields": ["choice", "tradeoffs", "metrics", "uncertainties"]
+      },
+      "help": {
+        "thinkingPrompts": [
+          "可验证指标示例：首次导入完成率、首次总结生成率、个人用户 D7 留存。"
+        ]
+      }
+    }
+  ]
+}

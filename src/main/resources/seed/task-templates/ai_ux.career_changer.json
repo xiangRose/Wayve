@@ -1,0 +1,159 @@
+{
+  "jobId": "ai_ux",
+  "scaffoldType": "career_changer",
+  "title": "AI 工作助手首页重组",
+  "scenario": "某 AI 工作助手拥有总结、写作、搜索、图像生成和自动化等多项功能。新用户首次进入时不知道从哪里开始，大量用户在首页停留后离开。",
+  "estimatedMinutes": 7,
+  "evaluationCriteria": [
+    "是否从用户首次目标而非功能数量出发",
+    "是否建立清晰的信息层级",
+    "是否设计必要的系统状态和反馈",
+    "是否处理新手与熟练用户之间的差异",
+    "是否能解释流程取舍"
+  ],
+  "unverifiedCapabilities": ["视觉表达能力"],
+  "steps": [
+    {
+      "stepNumber": 1,
+      "stepTitle": "进入情境",
+      "stepType": "context",
+      "context": {
+        "summary": "你负责该 AI 工作助手的新用户首次体验。当前首页将所有功能平铺展示，平均首访停留 12 秒后离开，首次有效操作完成率 22%。",
+        "currentHomeLayout": [
+          "顶部：搜索框",
+          "中部：总结 / 写作 / 搜索 / 图像生成 / 自动化（五个等大入口）",
+          "底部：最近使用（新用户为空）"
+        ]
+      },
+      "decision": {
+        "type": "acknowledge",
+        "prompt": "用一句话描述你认为新用户离开首页的主要原因。",
+        "inputType": "textarea",
+        "minLength": 20
+      },
+      "help": {
+        "thinkingPrompts": [
+          "功能多不等于价值清晰——新用户更需要知道“我现在能完成什么”。"
+        ]
+      }
+    },
+    {
+      "stepNumber": 2,
+      "stepTitle": "初步判断",
+      "stepType": "initial_judgment",
+      "context": {
+        "summary": "团队需要你判断：新用户的核心障碍更可能是哪一种？"
+      },
+      "decision": {
+        "type": "single_choice_with_reason",
+        "prompt": "你认为新用户的首要障碍是什么？",
+        "options": [
+          { "id": "no_clear_task", "label": "缺少明确的首次任务入口" },
+          { "id": "too_many_features", "label": "功能过多导致选择困难" },
+          { "id": "weak_feedback", "label": "操作后反馈不足，用户不确定是否成功" },
+          { "id": "trust_ai", "label": "不信任 AI 输出，不敢开始" }
+        ],
+        "requireReason": true,
+        "inputType": "choice_plus_textarea"
+      },
+      "help": {
+        "thinkingPrompts": [
+          "从用户首次进入的目标出发，而不是从现有功能列表出发。"
+        ]
+      }
+    },
+    {
+      "stepNumber": 3,
+      "stepTitle": "主动取证",
+      "stepType": "evidence_gathering",
+      "context": {
+        "summary": "请选择设计决策最需要的一项信息。",
+        "availableEvidence": [
+          { "id": "user_types", "label": "新用户类型分布（任务型 / 探索型）" },
+          { "id": "first_visit_goal", "label": "首访目标调研（用户来做什么）" },
+          { "id": "click_heatmap", "label": "首页点击热区与退出点" },
+          { "id": "interview_quotes", "label": "5 条新用户访谈摘录" }
+        ]
+      },
+      "decision": {
+        "type": "multi_select_with_reason",
+        "prompt": "选择 1—2 项信息并说明它如何影响你的设计方向。",
+        "maxSelections": 2,
+        "inputType": "multi_choice_plus_textarea"
+      },
+      "help": {
+        "thinkingPrompts": [
+          "信息架构决策需要知道用户来做什么，以及他们在哪一步迷失。"
+        ]
+      }
+    },
+    {
+      "stepNumber": 4,
+      "stepTitle": "追加信息",
+      "stepType": "new_information",
+      "context": {
+        "summary": "调研与数据返回：",
+        "revealedFacts": [
+          "68% 新用户首访目标是“完成一个具体任务（写邮件/总结文档）”",
+          "熟练用户希望快速访问全部功能，反对隐藏入口",
+          "热区显示用户最多点击“写作”和“总结”，但 40% 在点击后返回首页"
+        ]
+      },
+      "decision": {
+        "type": "textarea",
+        "prompt": "新手与熟练用户的需求差异对你意味着什么？你会如何兼顾？",
+        "inputType": "textarea",
+        "minLength": 40
+      },
+      "help": {
+        "thinkingPrompts": [
+          "常见做法：默认任务导向首页 + 保留“全部功能”入口给熟练用户。"
+        ]
+      }
+    },
+    {
+      "stepNumber": 5,
+      "stepTitle": "调整决策",
+      "stepType": "constraint_tradeoff",
+      "context": {
+        "summary": "现实限制：本周只能调整首页信息架构和首次操作流程，不能删除任何功能。",
+        "designOptions": [
+          { "id": "task_first", "label": "任务导向首页：突出 2 个高频任务 + 全部功能二级入口" },
+          { "id": "guided_tour", "label": "引导式首次流程：3 步向导后进入完整首页" },
+          { "id": "smart_default", "label": "智能默认：根据首访目标自动展开一个功能模块" }
+        ]
+      },
+      "decision": {
+        "type": "single_choice_with_tradeoff",
+        "prompt": "选择一种首页组织方式，并说明对新手与熟练用户各有什么影响。",
+        "inputType": "choice_plus_textarea",
+        "requireTradeoffExplanation": true
+      },
+      "help": {
+        "thinkingPrompts": [
+          "考虑首次操作成功率、熟练用户效率、以及开发成本。"
+        ]
+      }
+    },
+    {
+      "stepNumber": 6,
+      "stepTitle": "最终说明",
+      "stepType": "final_explanation",
+      "context": {
+        "summary": "请用文字或卡片排序描述你的低保真方案（无需视觉稿）。"
+      },
+      "decision": {
+        "type": "structured_summary",
+        "prompt": "描述：① 首页信息层级（从上到下） ② 新用户首次操作流程（3—5 步） ③ 关键状态/反馈设计 ④ 设计取舍与验证方式",
+        "inputType": "textarea",
+        "minLength": 80,
+        "fields": ["informationArchitecture", "firstRunFlow", "statesAndFeedback", "tradeoffsAndValidation"]
+      },
+      "help": {
+        "thinkingPrompts": [
+          "本次任务不评价视觉风格；「视觉表达能力」将标记为未验证。"
+        ]
+      }
+    }
+  ]
+}

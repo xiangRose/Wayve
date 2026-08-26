@@ -1,0 +1,12 @@
+{
+  "status": "fallback",
+  "comparisonSummary": "本轮任务证据暂时无法生成文字总结，请先查看结构化证据卡。",
+  "gapAnalysis": {
+    "existingEvidence": [],
+    "transferableCapabilities": [],
+    "gapsToBuild": [],
+    "evidenceOnlyMissing": []
+  },
+  "actionTasks": [],
+  "boundaryNotice": "本报告依据你主动提供的经历和本轮任务中的可观察行为生成，用于职业探索，不是招聘结论或永久能力评价。"
+}

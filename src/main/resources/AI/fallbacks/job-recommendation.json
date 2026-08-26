@@ -1,0 +1,11 @@
+{
+  "status": "fallback",
+  "recommendations": [
+    { "jobId": "ai_pm", "name": "AI 产品经理", "reason": "体验如何在用户需求与研发约束之间做产品判断。" },
+    { "jobId": "ai_ux", "name": "AI 产品设计（UI/UX）", "reason": "体验如何将复杂 AI 能力转化为可理解的首次使用流程。" },
+    { "jobId": "ai_consultant", "name": "AI 解决方案顾问", "reason": "体验如何将客户模糊需求转化为可验证试点方案。" },
+    { "jobId": "ai_operator", "name": "AI 产品运营", "reason": "体验如何围绕激活与留存设计验证实验。" },
+    { "jobId": "ai_researcher", "name": "AI 用户研究", "reason": "体验如何将宽泛问题转化为可研究问题。" }
+  ],
+  "message": "岗位推荐生成失败，已展示五个固定岗位供自主选择。"
+}

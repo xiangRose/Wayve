@@ -1,0 +1,453 @@
+openapi: 3.0.3
+info:
+  title: AI 职业方向探索 API
+  description: 黑客松演示版后端 — 会话、岗位、微任务、报告
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000/api/v1
+    description: 本地开发
+
+tags:
+  - name: health
+  - name: sessions
+  - name: jobs
+  - name: tasks
+  - name: reports
+
+paths:
+  /health:
+    get:
+      tags: [health]
+      summary: 健康检查
+      responses:
+        "200":
+          description: 服务正常
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  time:
+                    type: string
+                    format: date-time
+
+  /analytics/events:
+    post:
+      tags: [health]
+      summary: 埋点事件上报
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        "202":
+          description: 已接受
+
+  /sessions:
+    post:
+      tags: [sessions]
+      summary: 创建匿名会话
+      responses:
+        "200":
+          description: 会话已创建
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sessionId:
+                    type: string
+                    format: uuid
+                  createdAt:
+                    type: string
+                    format: date-time
+
+  /sessions/{sessionId}/profile:
+    put:
+      tags: [sessions]
+      summary: 更新探索资料
+      parameters:
+        - $ref: "#/components/parameters/SessionIdPath"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProfileRequest"
+      responses:
+        "200":
+          description: 资料已保存
+
+  /sessions/{sessionId}/data:
+    delete:
+      tags: [sessions]
+      summary: 删除会话数据
+      parameters:
+        - $ref: "#/components/parameters/SessionIdPath"
+      responses:
+        "200":
+          description: 已删除
+
+  /resume/evidence:
+    get:
+      tags: [sessions]
+      summary: 获取履历证据提取状态
+      parameters:
+        - $ref: "#/components/parameters/SessionIdHeader"
+      responses:
+        "200":
+          description: 履历证据
+
+  /jobs:
+    get:
+      tags: [jobs]
+      summary: 获取五个岗位列表
+      responses:
+        "200":
+          description: 岗位卡片列表
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  jobs:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/JobCard"
+
+  /jobs/recommend:
+    post:
+      tags: [jobs]
+      summary: 获取候选岗位推荐
+      parameters:
+        - $ref: "#/components/parameters/SessionIdHeader"
+        - $ref: "#/components/parameters/DemoModeHeader"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                rejectedJobIds:
+                  type: array
+                  items:
+                    type: string
+      responses:
+        "200":
+          description: 推荐列表
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  recommendations:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/JobRecommendation"
+
+  /tasks:
+    post:
+      tags: [tasks]
+      summary: 创建微任务会话
+      parameters:
+        - $ref: "#/components/parameters/SessionIdHeaderRequired"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateTaskRequest"
+      responses:
+        "200":
+          description: 任务已创建，返回第 1 步内容
+
+  /tasks/{id}:
+    get:
+      tags: [tasks]
+      summary: 获取任务会话与当前步骤
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: 任务详情
+
+  /tasks/{id}/step:
+    post:
+      tags: [tasks]
+      summary: 提交当前步骤回答
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StepSubmitRequest"
+      responses:
+        "200":
+          description: 下一步内容或完成提示
+
+  /tasks/{id}/help:
+    post:
+      tags: [tasks]
+      summary: 获取思考提示
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                helpType:
+                  type: string
+                  example: thinking_prompt
+      responses:
+        "200":
+          description: 帮助内容
+
+  /tasks/{id}/feedback:
+    post:
+      tags: [tasks]
+      summary: 提交任务后兴趣反馈
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TaskFeedbackRequest"
+      responses:
+        "200":
+          description: 反馈已保存
+
+  /reports/generate:
+    post:
+      tags: [reports]
+      summary: 生成探索报告
+      parameters:
+        - $ref: "#/components/parameters/SessionIdHeader"
+        - $ref: "#/components/parameters/DemoModeHeader"
+      responses:
+        "200":
+          description: 三层结果报告
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExplorationReport"
+
+  /reports/{reportId}:
+    get:
+      tags: [reports]
+      summary: 获取报告详情
+      parameters:
+        - name: reportId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: 报告详情
+
+  /reports/{reportId}/target:
+    post:
+      tags: [reports]
+      summary: 选择目标探索方向
+      parameters:
+        - name: reportId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [targetJobId]
+              properties:
+                targetJobId:
+                  type: string
+                  example: ai_ux
+      responses:
+        "200":
+          description: 目标已更新
+
+components:
+  parameters:
+    SessionIdPath:
+      name: sessionId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    SessionIdHeader:
+      name: X-Session-Id
+      in: header
+      schema:
+        type: string
+        format: uuid
+    SessionIdHeaderRequired:
+      name: X-Session-Id
+      in: header
+      required: true
+      schema:
+        type: string
+        format: uuid
+    DemoModeHeader:
+      name: X-Demo-Mode
+      in: header
+      schema:
+        type: string
+        enum: ["true", "false"]
+
+  schemas:
+    ProfileRequest:
+      type: object
+      required: [userStage, clarityLevel, currentStatus]
+      properties:
+        userStage:
+          type: string
+          enum: [beginner, career_changer, experienced]
+        clarityLevel:
+          type: string
+          enum: [clear, know_preference, unknown]
+        currentStatus:
+          type: string
+          enum: [student, graduate, employed, unemployed, freelance, other]
+        education:
+          type: string
+        backgroundText:
+          type: string
+        teamRoleDescription:
+          type: string
+        workPreference:
+          type: string
+        resumeText:
+          type: string
+
+    JobCard:
+      type: object
+      properties:
+        jobId:
+          type: string
+        name:
+          type: string
+        definition:
+          type: string
+        coreWorkObject:
+          type: string
+        typicalWorkSnippet:
+          type: string
+        whyExperience:
+          type: string
+        estimatedMinutes:
+          type: integer
+        taskStatus:
+          type: string
+          enum: [interactive, preview_only]
+        competencyRequirements:
+          type: object
+          additionalProperties:
+            type: string
+        specificCompetencies:
+          type: array
+          items:
+            type: string
+
+    JobRecommendation:
+      type: object
+      properties:
+        jobId:
+          type: string
+        name:
+          type: string
+        reason:
+          type: string
+
+    CreateTaskRequest:
+      type: object
+      required: [jobId, scaffoldType]
+      properties:
+        jobId:
+          type: string
+          example: ai_pm
+        scaffoldType:
+          type: string
+          enum: [beginner, career_changer, advanced]
+
+    StepSubmitRequest:
+      type: object
+      properties:
+        answer:
+          type: string
+        events:
+          type: array
+          items:
+            type: object
+
+    TaskFeedbackRequest:
+      type: object
+      required: [likeLevel, longTermWillingness]
+      properties:
+        likeLevel:
+          type: string
+        longTermWillingness:
+          type: string
+        feelingSource:
+          type: string
+        freeText:
+          type: string
+
+    ExplorationReport:
+      type: object
+      properties:
+        reportId:
+          type: string
+        sessionId:
+          type: string
+        resumeRadar:
+          type: object
+        taskEvidenceByJob:
+          type: object
+        interestSignals:
+          type: array
+          items:
+            type: object
+        comparisonSummary:
+          type: string
+        gapAnalysis:
+          type: object
+        actionTasks:
+          type: array
+          items:
+            type: object
+        boundaryNotice:
+          type: string
+        selectedTargetJob:
+          type: string

@@ -1,0 +1,38 @@
+server:
+  port: 3001
+
+spring:
+  application:
+    name: JobSearch
+  datasource:
+    url: jdbc:h2:file:./data/jobsearch;DB_CLOSE_DELAY=-1;MODE=PostgreSQL;AUTO_SERVER=TRUE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+
+app:
+  demo-session-id: 00000000-0000-4000-8000-000000000001
+  cors-origins: http://localhost:5173,http://127.0.0.1:5173
+  prompts-dir: AI/prompts
+  ai:
+    enabled: false
+    api-key: ${AI_API_KEY:}
+    base-url: ${AI_BASE_URL:https://api.openai.com/v1}
+    model-pro: ${AI_MODEL_PRO:gpt-4o}
+    timeout-ms: 30000
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html

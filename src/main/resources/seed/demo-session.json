@@ -1,0 +1,184 @@
+{
+  "jobRecommendations": [
+    {
+      "jobId": "ai_pm",
+      "name": "AI 产品经理",
+      "reason": "你提到曾参与项目需求梳理与跨团队协作，这与 AI 产品经理在用户需求、AI 能力与研发约束之间做判断的工作方式存在关联。"
+    },
+    {
+      "jobId": "ai_ux",
+      "name": "AI 产品设计（UI/UX）",
+      "reason": "你提到有界面与交互设计经历，这与 AI 产品设计将复杂 AI 能力转化为可理解、可操作体验的工作方式存在关联。"
+    },
+    {
+      "jobId": "ai_researcher",
+      "name": "AI 用户研究",
+      "reason": "你提到曾整理用户反馈并参与可用性讨论，这与 AI 用户研究将用户行为转化为产品决策证据的工作方式存在关联。"
+    }
+  ],
+  "report": {
+    "resumeRadar": {
+      "modelVersion": "岗位模型 v1（暂定）",
+      "dimensions": [
+        "问题拆解",
+        "用户/客户理解",
+        "证据判断",
+        "方案构建",
+        "决策取舍",
+        "沟通表达"
+      ],
+      "userProfile": {
+        "问题拆解": { "level": "初步", "coverage": "partial" },
+        "用户/客户理解": { "level": "较充分", "coverage": "good" },
+        "证据判断": { "level": "初步", "coverage": "partial" },
+        "方案构建": { "level": "较充分", "coverage": "good" },
+        "决策取舍": { "level": "初步", "coverage": "partial" },
+        "沟通表达": { "level": "较充分", "coverage": "good" }
+      },
+      "evidenceSources": [
+        {
+          "dimension": "方案构建",
+          "context": "校园项目中负责功能原型与页面流程设计",
+          "action": "将模糊需求拆分为可演示的页面流程并协调同学分工",
+          "relation": "直接",
+          "sourceQuote": "负责功能原型与页面流程设计"
+        },
+        {
+          "dimension": "用户/客户理解",
+          "context": "项目中期收集同学使用反馈",
+          "action": "整理三类用户痛点并调整信息层级",
+          "relation": "直接",
+          "sourceQuote": "整理用户反馈并调整界面结构"
+        }
+      ],
+      "jobOverlays": {
+        "ai_pm": {
+          "问题拆解": "高",
+          "用户/客户理解": "高",
+          "证据判断": "高",
+          "方案构建": "高",
+          "决策取舍": "高",
+          "沟通表达": "中高"
+        },
+        "ai_ux": {
+          "问题拆解": "高",
+          "用户/客户理解": "高",
+          "证据判断": "中",
+          "方案构建": "高",
+          "决策取舍": "中高",
+          "沟通表达": "中高"
+        }
+      },
+      "coverageNotes": "履历证据与 AI 产品经理的公共能力需求重合较多；信息架构相关专属能力仍需任务或作品补充。"
+    },
+    "taskEvidenceByJob": {
+      "ai_pm": {
+        "jobName": "AI 产品经理",
+        "observedBehaviors": [
+          {
+            "competency": "证据判断",
+            "behavior": "在初步判断后主动选择查看用户分层数据，而非仅依赖总体留存数字",
+            "stepSource": 3,
+            "judgment": "初步支持",
+            "confidence": "中",
+            "note": "引用步骤 3 的取证选择"
+          },
+          {
+            "competency": "决策取舍",
+            "behavior": "在新信息显示个人用户流失于导入步骤后，优先选择简化导入并说明验证指标",
+            "stepSource": 5,
+            "judgment": "充分支持",
+            "confidence": "中",
+            "note": "引用步骤 5 的优先级取舍"
+          }
+        ],
+        "scaffoldUsed": "career_changer",
+        "supportLevel": "有限提示",
+        "unverified": ["AI 能力边界理解", "版本规划"],
+        "notObserved": ["视觉表达能力"]
+      },
+      "ai_ux": {
+        "jobName": "AI 产品设计（UI/UX）",
+        "observedBehaviors": [
+          {
+            "competency": "问题拆解",
+            "behavior": "将核心障碍识别为首次进入时缺少明确任务入口，而非功能数量不足",
+            "stepSource": 2,
+            "judgment": "初步支持",
+            "confidence": "低",
+            "note": "引用步骤 2 的初步判断"
+          },
+          {
+            "competency": "方案构建",
+            "behavior": "提出“任务导向首页 + 全部功能二级入口”的低保真流程",
+            "stepSource": 6,
+            "judgment": "初步支持",
+            "confidence": "低",
+            "note": "引用步骤 6 的最终说明"
+          }
+        ],
+        "scaffoldUsed": "career_changer",
+        "supportLevel": "有限提示",
+        "unverified": ["视觉表达能力", "高保真原型"],
+        "notObserved": ["视觉表达能力"]
+      }
+    },
+    "gapAnalysis": {
+      "targetJobId": "ai_ux",
+      "targetJobName": "AI 产品设计（UI/UX）",
+      "existingEvidence": [
+        "方案构建：校园项目中的页面流程与原型设计经历",
+        "用户/客户理解：整理反馈并调整信息层级的经历"
+      ],
+      "transferableCapabilities": [
+        "问题拆解：项目需求拆分经验可迁移至信息架构问题定义",
+        "沟通表达：跨角色协作经验可迁移至设计说明与评审"
+      ],
+      "gapsToBuild": [
+        "信息架构：缺少独立的首页层级重组作品",
+        "状态与反馈设计：短任务未覆盖完整交互状态设计",
+        "AI 不确定性表达：尚未观察相关设计决策"
+      ],
+      "evidenceOnlyMissing": [
+        "视觉表达能力：本次文字任务未验证，需作品补充"
+      ],
+      "tone": "不劝退：当前证据较少，但存在可迁移能力与明确补齐路径"
+    },
+    "actionTasks": [
+      {
+        "title": "重设计一个 AI 产品的新用户首次使用流程",
+        "gapTarget": "信息架构与首次操作流程证据不足",
+        "background": "选择一个你日常使用的 AI 助手或写作工具，假设新用户首次进入时功能堆叠导致流失。",
+        "steps": [
+          "记录当前产品首次进入后的 3 个主要退出点",
+          "用卡片排序法组织首页信息层级（任务入口优先）",
+          "绘制一版低保真首次操作流程（3—5 屏）",
+          "写出三条设计取舍理由与对应验证指标"
+        ],
+        "estimatedTime": "45—60 分钟",
+        "deliverable": "问题图 + 低保真流程 + 三条设计理由",
+        "validationCriteria": "是否识别核心用户障碍、是否建立清晰层级、是否说明取舍",
+        "futureEvidenceUse": "完成后可更新「信息架构」「方案构建」任务证据"
+      }
+    ],
+    "comparisonSummary": "在本轮已体验的两个岗位中，你在 AI 产品经理任务中展现出的决策与取证证据更充分；但你对 AI 产品设计的继续探索意愿更强。",
+    "boundaryNotice": "本报告依据你主动提供的经历和本轮任务中的可观察行为生成，用于职业探索，不是招聘结论或永久能力评价。随着新经历和任务加入，结果可以发生变化。"
+  },
+  "interestSignals": [
+    {
+      "jobId": "ai_pm",
+      "likeLevel": "neutral",
+      "longTermWillingness": "maybe",
+      "feelingSource": "task_process",
+      "freeText": "判断过程有挑战，但更像在做排期而不是设计体验。"
+    },
+    {
+      "jobId": "ai_ux",
+      "likeLevel": "high",
+      "longTermWillingness": "yes",
+      "feelingSource": "task_outcome",
+      "freeText": "组织首页和首次流程时更有投入感，愿意继续探索。"
+    }
+  ],
+  "selectedTargetJob": "ai_ux"
+}
