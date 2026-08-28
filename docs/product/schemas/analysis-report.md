@@ -4,11 +4,11 @@ Status: Hackathon P0 Frozen
 Source of Truth: Feishu
 Repository Snapshot Updated: 2026-08-28
 
-`AnalysisReport` is the stable first-level container for the post-trial report. It separates background evidence, task evidence, interest feedback, unknowns, and next mission.
+`AnalysisReport` is the stable first-level container for the post-trial report. Product reading order, language, Next Mission, and Growth Track behavior belong exclusively to [Analysis Report, Next Mission, and Growth Track](../analysis-and-growth.md). Evidence semantics belong to [Behavior and Evidence](../behavior-and-evidence.md).
 
 It must not contain a unified Job Fit Score.
 
-Tidal-inspired report organization can be used as presentation logic, but the existing `AnalysisReport` top-level container is sufficient for P0. Do not add a new top-level schema only for visual report sections.
+The existing `AnalysisReport` top-level container is sufficient for P0. Do not add a new top-level schema only for visual sections.
 
 ## Canonical Container
 
@@ -54,27 +54,9 @@ Tidal-inspired report organization can be used as presentation logic, but the ex
 | `nextMission` | Yes | Follow-up mission for gathering missing evidence. |
 | `boundaryNotice` | Yes | Product boundary and non-verdict notice. |
 
-## Recommended Reading Order
+## Product Presentation Handoff
 
-The P0 report should be presented in this order without changing the stable top-level container:
-
-1. Exploration Summary
-2. Role Requirement Profile
-3. Current Evidence Profile
-4. Evidence Replay
-5. Interest Feedback
-6. Unknowns & Tensions
-7. Next Mission
-
-## Report Language Mapping
-
-| Reusable Report Pattern | WAYVE Field / Section | Boundary |
-| --- | --- | --- |
-| Summary | `comparisonSummary` or Exploration Summary presentation | Must remain bounded to observed evidence. |
-| Recurring theme | `currentEvidenceProfile`, `taskEvidence`, `tensions` | Use Recurring Pattern only after 3+ independent experiments. |
-| Trend | Evidence Change presentation across cycles | P0 should not claim trend from a single trial. |
-| Reflection | `interestFeedback` | Interest is not ability evidence. |
-| Direction change | User-confirmed direction update in long-term Growth Track | AI must not announce career switching. |
+Schema field order is not presentation order. Implementations must follow the single reading order owned by [Analysis and Growth](../analysis-and-growth.md); this schema does not restate or redefine it.
 
 ## Evidence Shape
 
@@ -118,6 +100,8 @@ Interest Feedback must remain separate from Background Evidence and Task Evidenc
 
 Interest Feedback may express willingness to continue similar work. It must not enter `currentEvidenceProfile` and must not affect capability judgment.
 
+If a trial UI captures engagement or energy, normalize the explicit self-report into `interestFeedback`; do not create a capability dimension.
+
 ## Next Mission Shape
 
 ```json
@@ -132,7 +116,7 @@ Interest Feedback may express willingness to continue similar work. It must not 
 }
 ```
 
-P0 may display the Next Mission as pending future evidence after report generation. Do not mark new evidence or direction update as completed until the user has actually completed a later mission.
+The schema represents the Next Mission; pending state and later-cycle rules remain owned by Analysis and Growth.
 
 ## Evidence Card Presentation
 

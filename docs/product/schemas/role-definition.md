@@ -4,7 +4,7 @@ Status: Hackathon P0 Frozen
 Source of Truth: Feishu
 Repository Snapshot Updated: 2026-08-28
 
-`RoleDefinition` is the stable first-level container for canonical role metadata and requirement profiles.
+`RoleDefinition` is the stable first-level container for canonical role metadata and requirement profiles. Product definitions, recommendation behavior, and migration policy belong to [Jobs and Recommendations](../jobs-and-recommendations.md).
 
 Container name and canonical `jobId` values should remain stable. Fields may be extended as product learning continues.
 
@@ -36,7 +36,6 @@ Container name and canonical `jobId` values should remain stable. Fields may be 
   "status": "active"
 }
 ```
-
 ## Stable First-Level Fields
 
 | Field | Required | Meaning |
@@ -86,13 +85,3 @@ Container name and canonical `jobId` values should remain stable. Fields may be 
   ]
 }
 ```
-
-## Migration Note
-
-Legacy IDs should be migrated through explicit mapping:
-
-- `ai_pm` -> `ai_product`
-- `ai_operator` -> `ai_ops`
-- `ai_ux` -> `ai_ui_design`
-
-`ai_consultant` and `ai_researcher` require content-level review and must not be mechanically renamed.

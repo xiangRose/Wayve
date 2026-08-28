@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI 职业方向探索｜低保真原型</title>
+  <style>
+    :root { --ink:#1e1e1e; --muted:#6d6d6d; --line:#bbb; --soft:#f1f1f1; --paper:#fff; --shade:#dedede; }
+    * { box-sizing:border-box; }
+    html,body { width:100%; height:100%; min-height:100dvh; overflow:hidden; overscroll-behavior:none; }
+    body { margin:0; background:#fff; color:var(--ink); font:14px/1.5 Arial,"PingFang SC","Microsoft YaHei",sans-serif; }
+    button,input,textarea,select { font:inherit; }
+    button { cursor:pointer; color:var(--ink); }
+    .shell { width:100vw; height:100vh; height:100dvh; min-height:0; margin:0; background:var(--paper); border:0; position:relative; overflow:hidden; }
+    .intro { position:absolute; z-index:30; inset:0; display:grid; place-items:center; background:#fff; text-align:center; cursor:pointer; transition:opacity .45s ease, visibility .45s ease; }
+    .intro.hide { opacity:0; visibility:hidden; pointer-events:none; }
+    .intro-inner { width:min(680px,80%); }
+    .intro-mark { width:104px; height:104px; border:3px solid var(--ink); border-radius:50%; display:grid; place-items:center; margin:0 auto 26px; font-size:25px; font-weight:700; animation:introPulse 1.8s ease-in-out infinite; }
+    .intro-line { height:2px; width:100%; background:var(--ink); margin:30px 0 17px; transform-origin:left; animation:introLine .9s ease both; }
+    .intro-hint { display:inline-block; margin-top:26px; border:1.5px solid var(--ink); padding:9px 18px; font-size:13px; animation:introPulse 1.8s .5s ease-in-out infinite; }
+    @keyframes introPulse { 50% { transform:scale(.92); opacity:.55; } }
+    @keyframes introLine { from { transform:scaleX(0); } to { transform:scaleX(1); } }
+    .nav { height:76px; border-bottom:2px solid var(--ink); display:flex; align-items:center; justify-content:space-between; padding:0 42px; }
+    .brand { display:flex; align-items:center; gap:12px; font-size:18px; font-weight:700; }
+    .logo { width:28px; height:28px; border:2px solid; border-radius:7px; display:grid; place-items:center; font-size:11px; }
+    .links { display:flex; gap:28px; align-items:center; }
+    .links button { background:none; border:0; padding:10px 0; }
+    .links button.active { border-bottom:2px solid; font-weight:700; }
+    .screen { display:none; height:calc(100vh - 76px); height:calc(100dvh - 76px); min-height:0; overflow-y:auto; overscroll-behavior:contain; padding:58px 90px 76px; }
+    .screen.active { display:block; }
+    h1,h2,h3,p { margin-top:0; }
+    h1 { font-size:34px; line-height:1.25; margin-bottom:12px; }
+    h2 { font-size:24px; margin-bottom:8px; }
+    h3 { margin-bottom:7px; }
+    .subtitle { color:var(--muted); font-size:16px; }
+    .btn { border:2px solid var(--ink); background:var(--ink); color:#fff; padding:12px 20px; min-width:130px; font-weight:700; }
+    .btn.ghost { background:#fff; color:var(--ink); }
+    .btn.small { min-width:auto; padding:8px 13px; font-size:13px; }
+    .hero { width:100%; text-align:center; }
+    #home { padding:0; scroll-snap-type:y mandatory; scroll-behavior:smooth; }
+    #home.active { display:block; }
+    .home-panel { min-height:100%; scroll-snap-align:start; scroll-snap-stop:always; position:relative; overflow:hidden; }
+    .warmup-panel { display:grid; place-items:center; padding:40px 72px; background:#fff; }
+    .warmup-canvas { width:min(1180px,100%); height:min(680px,76vh); min-height:470px; position:relative; display:grid; place-items:center; }
+    .warmup-center { width:min(760px,72%); position:relative; z-index:2; text-align:center; }
+    .warmup-kicker { display:inline-block; border:1.5px solid var(--ink); padding:7px 12px; margin-bottom:24px; font-size:12px; letter-spacing:.08em; }
+    .warmup-center h1 { font-size:clamp(32px,3.3vw,52px); line-height:1.2; margin-bottom:18px; }
+    .warmup-center .subtitle { max-width:620px; margin:0 auto; }
+    .thought-bubble { position:absolute; z-index:1; display:inline-flex; align-items:center; min-height:48px; padding:11px 19px; border:2px solid var(--ink); border-radius:999px; background:#f2f2f2; font-weight:700; box-shadow:5px 5px 0 #d0d0d0; pointer-events:none; animation:bubbleFloat 4.6s ease-in-out infinite; }
+    .thought-bubble::before { content:'○'; margin-right:8px; font-size:12px; }
+    .thought-bubble:nth-of-type(1) { left:3%; top:10%; --drift:-5px; }
+    .thought-bubble:nth-of-type(2) { right:1%; top:14%; --drift:7px; animation-delay:-1.1s; }
+    .thought-bubble:nth-of-type(3) { left:0; top:46%; --drift:6px; animation-delay:-2.6s; }
+    .thought-bubble:nth-of-type(4) { right:0; top:48%; --drift:-6px; animation-delay:-.7s; }
+    .thought-bubble:nth-of-type(5) { left:9%; bottom:10%; --drift:5px; animation-delay:-3.2s; }
+    .thought-bubble:nth-of-type(6) { right:9%; bottom:8%; --drift:-7px; animation-delay:-1.9s; }
+    @keyframes bubbleFloat { 0%,100% { transform:translateY(0); } 50% { transform:translateY(var(--drift)); } }
+    .warmup-note { position:absolute; bottom:7px; left:50%; transform:translateX(-50%); width:100%; text-align:center; color:var(--muted); font-size:13px; }
+    .warmup-note::after { content:'↓'; display:block; color:var(--ink); font-size:22px; margin-top:7px; animation:scrollCue 1.7s ease-in-out infinite; }
+    @keyframes scrollCue { 50% { transform:translateY(6px); } }
+    .home-entry-panel { display:grid; place-items:center; padding:50px 90px 64px; background:#fafafa; border-top:2px solid var(--ink); }
+    .home-entry-panel .hero { max-width:980px; }
+    .home-entry-panel .entry-grid { margin-top:clamp(54px,9vh,105px); }
+    .entry-grid { display:grid; grid-template-columns:1fr 1fr; gap:22px; max-width:880px; margin:auto; text-align:left; }
+    .card { border:2px solid var(--ink); background:#fff; padding:24px; }
+    .entry-card { min-height:202px; display:flex; flex-direction:column; align-items:flex-start; }
+    .entry-card p { flex:1; color:var(--muted); }
+    .page-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:35px; }
+    .back { border:0; background:none; padding:4px 0; font-weight:700; }
+    .steps { display:flex; align-items:center; gap:8px; color:var(--muted); }
+    .dot { height:10px; width:10px; border:1px solid var(--ink); border-radius:50%; }
+    .dot.on { background:var(--ink); }
+    .form { max-width:740px; margin:35px auto 0; }
+    .field { margin:22px 0; }
+    label,.field-label { display:block; font-weight:700; margin-bottom:8px; }
+    input,textarea,select { width:100%; border:2px solid var(--ink); padding:12px 13px; background:#fff; outline:none; }
+    textarea { min-height:106px; resize:vertical; }
+    .chips { display:flex; gap:9px; flex-wrap:wrap; }
+    .chip { border:1.5px solid var(--ink); background:#fff; padding:8px 12px; }
+    .chip.selected { background:var(--ink); color:#fff; }
+    .form-actions { display:flex; justify-content:flex-end; margin-top:34px; }
+    .loading { min-height:650px; display:grid; place-content:center; text-align:center; }
+    .loading-icon { width:72px; height:72px; border:3px solid var(--ink); border-radius:50%; display:grid; place-items:center; margin:auto auto 24px; font-size:28px; }
+    .bar { height:14px; width:440px; max-width:75vw; border:2px solid var(--ink); margin:26px auto 9px; background:#fff; }
+    .bar > span { display:block; height:100%; background:var(--ink); width:70%; transition:width .25s; }
+    .loading-list { display:grid; gap:10px; text-align:left; width:350px; max-width:75vw; margin:28px auto 0; color:var(--muted); }
+    .loading-list .done::before { content:'✓'; color:var(--ink); font-weight:bold; display:inline-block; width:23px; }
+    #recommend { text-align:center; }
+    #recommend > h1 { margin-bottom:7px; }
+    .recommendations { min-height:clamp(380px,52vh,500px); max-width:1080px; margin:24px auto 0; display:flex; justify-content:center; align-items:center; padding:28px 48px 44px; overflow:visible; }
+    .recommend-card { --r:0deg; --y:0px; position:relative; flex:0 0 clamp(285px,26vw,350px); height:clamp(340px,45vh,420px); margin-left:clamp(-75px,-4vw,-48px); padding:25px 24px 21px; border:2px solid var(--ink); background:#eee; box-shadow:8px 9px 0 rgba(0,0,0,.16); text-align:left; display:flex; flex-direction:column; transform:translateY(var(--y)) rotate(var(--r)); transform-origin:50% 88%; transition:transform .2s ease,box-shadow .2s ease,z-index 0s; }
+    .recommend-card:first-child { margin-left:0; --r:-5deg; --y:13px; z-index:1; background:#e0e0e0; }
+    .recommend-card:nth-child(2) { --r:0deg; --y:-10px; z-index:3; background:#c9c9c9; }
+    .recommend-card:nth-child(3) { --r:5deg; --y:13px; z-index:2; background:#eeeeee; }
+    .recommend-card:hover,.recommend-card:focus-within { z-index:8; transform:translateY(calc(var(--y) - 17px)) rotate(0deg); box-shadow:11px 14px 0 rgba(0,0,0,.2); }
+    .recommend-meta { display:flex; align-items:center; justify-content:space-between; margin-bottom:18px; }
+    .recommend-number { width:38px; height:38px; border:1.5px solid; border-radius:50%; display:grid; place-items:center; font-weight:700; }
+    .recommend-label { border:1.5px solid; background:#fff; padding:5px 9px; font-size:12px; font-weight:700; }
+    .recommend-card h2 { font-size:clamp(23px,1.8vw,30px); line-height:1.15; border-bottom:2px solid; padding-bottom:14px; margin-bottom:14px; }
+    .recommend-card p { color:#4f4f4f; min-height:74px; margin-bottom:14px; }
+    .recommend-card .tags { margin-bottom:14px; }
+    .recommend-card .btn { width:100%; margin-top:auto; }
+    .role-card { border:2px solid var(--ink); padding:20px; min-height:290px; display:flex; flex-direction:column; }
+    .rank { display:flex; align-items:center; justify-content:space-between; }
+    .rank strong { font-size:34px; }
+    .match { border:1.5px solid; padding:4px 7px; font-weight:700; }
+    .role-card p { color:var(--muted); flex:1; }
+    .tags { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:18px; }
+    .tag { padding:4px 7px; border:1px solid #777; color:#555; font-size:12px; }
+    .center-link { display:block; background:none; border:0; margin:30px auto 0; border-bottom:1px solid; padding:5px; }
+    #roles { text-align:center; }
+    #roles > h1 { margin-bottom:6px; }
+    .roles { min-height:clamp(340px,50vh,460px); max-width:1180px; margin:24px auto 0; display:flex; align-items:center; justify-content:center; padding:22px 38px 38px; overflow:visible; }
+    .fan-card { --r:0deg; --y:0px; position:relative; z-index:1; flex:0 0 clamp(210px,17vw,270px); height:clamp(310px,42vh,390px); margin-left:clamp(-58px,-3vw,-35px); padding:24px 22px 20px; border:2px solid var(--ink); background:#eee; box-shadow:7px 8px 0 rgba(0,0,0,.16); text-align:left; display:flex; flex-direction:column; transform:translateY(var(--y)) rotate(var(--r)); transform-origin:50% 90%; transition:transform .2s ease,box-shadow .2s ease,z-index 0s; }
+    .fan-card:first-child { margin-left:0; --r:-7deg; --y:15px; background:#d9d9d9; }
+    .fan-card:nth-child(2) { --r:-3deg; --y:4px; background:#f5f5f5; z-index:2; }
+    .fan-card:nth-child(3) { --r:2deg; --y:-8px; background:#c9c9c9; z-index:3; }
+    .fan-card:nth-child(4) { --r:5deg; --y:5px; background:#ececec; z-index:4; }
+    .fan-card:nth-child(5) { --r:8deg; --y:18px; background:#d4d4d4; z-index:5; }
+    .fan-card:hover,.fan-card:focus-within { z-index:9; transform:translateY(calc(var(--y) - 18px)) rotate(0deg); box-shadow:10px 14px 0 rgba(0,0,0,.2); }
+    .fan-number { width:34px; height:34px; border:1.5px solid; border-radius:50%; display:grid; place-items:center; font-size:12px; font-weight:700; margin-bottom:18px; }
+    .fan-card h2 { font-size:clamp(20px,1.5vw,27px); line-height:1.15; padding-bottom:13px; margin-bottom:12px; border-bottom:2px solid; }
+    .fan-card p { color:#555; min-height:52px; margin-bottom:10px; }
+    .fan-list { list-style:none; padding:0; margin:0 0 14px; font-size:13px; line-height:1.75; }
+    .fan-list li::before { content:'＋'; margin-right:5px; font-weight:700; }
+    .fan-card .btn { width:100%; margin-top:auto; padding:10px 8px; }
+    .task-top { display:flex; justify-content:space-between; align-items:flex-start; border-bottom:2px solid var(--ink); padding-bottom:22px; margin-bottom:26px; }
+    .task-top h3 { font-size:18px; }
+    .task-progress { width:230px; text-align:right; }
+    .task-progress .bar { width:230px; height:10px; margin:7px 0 0 auto; }
+    .scenario { background:var(--soft); border:1.5px solid var(--ink); padding:14px; margin:15px 0 28px; }
+    .question { max-width:800px; margin:auto; }
+    .options { display:grid; gap:10px; margin:22px 0 30px; }
+    .option { border:2px solid var(--ink); padding:14px; background:#fff; text-align:left; }
+    .option.selected { background:var(--ink); color:white; }
+    .task-actions { display:flex; justify-content:flex-end; }
+    .ranking { display:grid; gap:9px; max-width:650px; margin:22px 0 30px; }
+    .sort-item { display:grid; grid-template-columns:36px 1fr; align-items:center; border:2px solid; min-height:58px; background:#fff; cursor:grab; transition:transform .12s ease, background .12s ease, opacity .12s ease; }
+    .sort-item:active { cursor:grabbing; }.sort-item.dragging { opacity:.35; }.sort-item.drag-over { background:var(--soft); transform:translateY(4px); }
+    .handle { text-align:center; font-size:19px; color:#666; }
+    .drag-tip { color:var(--muted); font-size:13px; margin-top:-10px; }
+    .matching-board { display:grid; grid-template-columns:1fr 1fr; gap:150px; position:relative; min-height:360px; margin:25px 0; }
+    .match-column { display:grid; align-content:start; gap:13px; z-index:1; }.match-column h3 { margin:0 0 4px; font-size:14px; }
+    .match-item { min-height:48px; border:2px solid var(--ink); background:#fff; padding:11px 14px; display:flex; align-items:center; cursor:pointer; transition:background .14s ease,color .14s ease; }
+    .match-item.selected { background:var(--ink); color:#fff; }.match-item.connected { background:var(--soft); }.match-item.target { justify-content:space-between; }.match-item.target::after { content:'○'; font-size:19px; }
+    .match-lines { position:absolute; z-index:0; inset:36px 0 0; width:100%; height:calc(100% - 36px); pointer-events:none; overflow:visible; }.match-lines line { stroke:var(--ink); stroke-width:2.5; }.match-lines circle { fill:var(--ink); }
+    .match-tip { color:var(--muted); font-size:13px; margin-top:-9px; }
+    .evidence-grid { display:grid; grid-template-columns:1.1fr .9fr; gap:25px; margin:20px 0 28px; }
+    .material { border:2px solid; padding:17px; background:var(--soft); }
+    .material li { margin:12px 0; }
+    .check-option { display:flex; gap:9px; align-items:flex-start; border:1.5px solid; padding:12px; margin-bottom:9px; }
+    .check-option input { width:auto; margin-top:3px; }
+    .report { max-width:1040px; margin:auto; }
+    .report-header { display:flex; justify-content:space-between; align-items:center; }
+    .summary { border:2px solid; display:grid; grid-template-columns:190px 1fr; gap:22px; margin:22px 0; padding:24px; }
+    .score { font-size:20px; font-weight:700; text-align:center; border-right:1px solid; padding-right:20px; display:grid; place-content:center; line-height:1.35; }
+    .score small { display:block; font-size:13px; font-weight:400; color:var(--muted); margin-top:6px; }
+    .report-grid { display:grid; grid-template-columns:1.05fr .95fr; gap:20px; margin:20px 0; }
+    .section { border:2px solid; padding:20px; }
+    .section h3 { font-size:18px; }
+    .radar-wrap { display:grid; grid-template-columns:1fr 160px; align-items:center; gap:8px; }
+    .radar { width:260px; height:245px; position:relative; margin:auto; }
+    .radar svg { width:100%; height:100%; overflow:visible; }
+    .legend { display:grid; gap:9px; font-size:12px; }
+    .key { display:flex; align-items:center; gap:7px; }.key i { width:24px; height:9px; display:inline-block; border-top:3px solid #222; }.key i.mine { border-color:#888; }
+    .insight { border-left:5px solid var(--ink); padding:10px 12px; background:var(--soft); margin:9px 0; }
+    .basis { padding-left:20px; margin:0; }.basis li { margin:9px 0; }
+    .report-actions { display:flex; gap:12px; justify-content:center; margin-top:24px; }
+    .tabs { display:flex; gap:10px; margin:25px 0 18px; }.tab { border:1.5px solid; background:#fff; padding:8px 15px; }.tab.active { background:#222;color:#fff; }
+    .track-list { display:grid; gap:11px; }
+    .track-item { display:grid; grid-template-columns:1.1fr 1.2fr .6fr auto; gap:15px; align-items:center; border:2px solid; padding:16px; }
+    .status { display:inline-block; padding:3px 7px; border:1px solid; font-size:12px; }.status.completed { background:#222;color:#fff; }
+    .trend { margin-top:24px; border:2px solid; padding:20px; }.trend-box { height:190px; position:relative; margin:12px 0 8px; border-left:2px solid;border-bottom:2px solid; background:linear-gradient(#eee 1px,transparent 1px); background-size:100% 47px; }.trend-box svg { position:absolute; inset:0; width:100%; height:100%; overflow:visible; }.ability { display:flex; flex-wrap:wrap; gap:10px; }.ability span { border:1px solid; padding:7px 10px; }
+    .drawer-shade { display:none; position:absolute; inset:0; background:rgba(0,0,0,.22); z-index:10; }.drawer-shade.show { display:block; }.drawer { position:absolute; z-index:11; top:0; right:-420px; width:390px; height:100%; background:#fff; border-left:2px solid; padding:32px; transition:right .25s; }.drawer.show { right:0; }.drawer-head { display:flex; justify-content:space-between; }.close { border:0; background:#fff; font-size:24px; }.avatar { width:68px; height:68px; border:2px solid; border-radius:50%; display:grid;place-items:center;margin:30px 0 12px; }.profile-id { color:var(--muted); font-size:12px; }.drawer-menu { list-style:none; margin:32px 0; padding:0; border-top:1px solid; }.drawer-menu li { padding:15px 4px; border-bottom:1px solid; display:flex; justify-content:space-between; }.drawer-menu li::after { content:'›'; font-size:20px; }.drawer-menu .logout { margin-top:16px; border:1px solid; padding:12px; display:block; text-align:center; }
+    @media (max-width:850px) { .shell{width:100%;margin:0;box-shadow:none;border:0}.nav{padding:0 20px}.links{gap:12px}.screen{padding:35px 24px}#home{padding:0}.warmup-panel{padding:25px 18px}.warmup-canvas{min-height:520px}.warmup-center{width:88%}.thought-bubble{font-size:12px;padding:8px 11px;min-height:38px}.thought-bubble:nth-of-type(1){left:0;top:4%}.thought-bubble:nth-of-type(2){right:0;top:13%}.thought-bubble:nth-of-type(3){left:0;top:65%}.thought-bubble:nth-of-type(4){right:0;top:72%}.thought-bubble:nth-of-type(5){left:5%;bottom:3%}.thought-bubble:nth-of-type(6){right:4%;bottom:11%}.home-entry-panel{padding:38px 24px}.home-entry-panel .entry-grid{margin-top:36px}.entry-grid,.report-grid,.evidence-grid{grid-template-columns:1fr}.recommendations{min-height:410px;justify-content:flex-start;overflow-x:auto;scroll-snap-type:x mandatory;padding:26px 16px 44px}.recommend-card,.recommend-card:first-child{flex:0 0 82vw;height:370px;margin-left:14px;transform:none;scroll-snap-align:center}.recommend-card:hover,.recommend-card:focus-within{transform:translateY(-8px)}.roles{min-height:390px;justify-content:flex-start;overflow-x:auto;scroll-snap-type:x mandatory;padding:25px 20px 42px}.fan-card,.fan-card:first-child{flex:0 0 78vw;height:350px;margin-left:14px;transform:none;scroll-snap-align:center}.fan-card:hover,.fan-card:focus-within{transform:translateY(-8px)}.task-top{display:block}.task-progress{text-align:left;margin-top:16px}.task-progress .bar{margin-left:0}.matching-board{grid-template-columns:1fr;gap:32px}.match-lines{display:none}.summary{grid-template-columns:1fr}.score{border-right:0;border-bottom:1px solid;padding:0 0 15px}.track-item{grid-template-columns:1fr}.radar-wrap{grid-template-columns:1fr} }
+    @media (prefers-reduced-motion:reduce) { .thought-bubble,.warmup-note::after,.intro-mark,.intro-hint,.intro-line { animation:none; } #home { scroll-behavior:auto; } }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <section class="intro" id="intro" aria-label="开场动画，点击进入首页">
+      <div class="intro-inner"><div class="intro-mark">AI</div><h1>探索 AI 时代的职业可能性</h1><p class="subtitle">AI Career Explorer</p><div class="intro-line"></div><p class="subtitle">通过真实的工作微任务，发现更适合你的 AI 职业方向。</p><span class="intro-hint">点击进入</span></div>
+    </section>
+    <nav class="nav"><div class="brand"><span class="logo">AI</span> AI 职业方向探索</div><div class="links"><button class="active" data-nav="home">首页</button><button data-nav="roles">职业探索</button><button data-nav="growth">成长轨迹</button><button id="profileBtn">我的</button></div></nav>
+
+    <section class="screen active" id="home">
+      <section class="home-panel warmup-panel" aria-label="职业探索暖场">
+        <div class="warmup-canvas">
+          <span class="thought-bubble">正在找工作</span><span class="thought-bubble">想进入 AI 行业</span><span class="thought-bubble">考虑转行，但还没有方向</span><span class="thought-bubble">不知道自己适合什么岗位</span><span class="thought-bubble">担心自己的技能不够</span><span class="thought-bubble">想先真实体验一下工作</span>
+          <div class="warmup-center"><span class="warmup-kicker">先停一下，想想你现在的位置</span><h1>你最近，也在重新思考自己的职业方向吗？</h1><p class="subtitle">有时我们缺少的不是更多岗位名称，而是一次真正接近工作的体验。</p></div>
+          <div class="warmup-note">这些念头都很正常，继续向下看看另一种探索方式</div>
+        </div>
+      </section>
+      <section class="home-panel home-entry-panel" aria-label="职业探索入口">
+        <div class="hero"><span class="warmup-kicker">AI CAREER EXPLORER</span><h1>开始探索 AI 时代的职业可能性</h1><p class="subtitle">通过真实的工作微任务，发现更适合你的 AI 职业方向。</p><div class="entry-grid"><article class="card entry-card"><h2>AI 推荐适合你的岗位</h2><p>基于你的背景和兴趣，智能推荐值得优先体验的岗位。</p><button class="btn" data-go="profile1">获取职位推荐</button></article><article class="card entry-card"><h2>我想自己选择岗位体验</h2><p>从热门 AI 岗位中自由选择，开始任务体验。</p><button class="btn" data-go="roles">直接体验岗位</button></article></div></div>
+      </section>
+    </section>
+
+    <section class="screen" id="profile1"><div class="page-top"><button class="back" data-go="home">← 返回</button><div class="steps">第 1 步 / 共 3 步 <i class="dot on"></i><i class="dot"></i><i class="dot"></i></div></div><div class="form"><h1>告诉我们一点你的背景</h1><p class="subtitle">这些信息将帮助我们更好地为你推荐岗位。</p><div class="field"><label>当前状态</label><select><option>请选择</option><option>在校本科生</option><option>在校硕士 / 博士生</option><option>应届毕业生</option><option>工作 1–3 年</option><option>转行中</option></select></div><div class="field"><label>专业 / 工作背景</label><textarea placeholder="简单介绍一下你的专业、工作或转行背景"></textarea></div><div class="form-actions"><button class="btn" data-go="profile2">下一步</button></div></div></section>
+    <section class="screen" id="profile2"><div class="page-top"><button class="back" data-go="profile1">← 返回</button><div class="steps">第 2 步 / 共 3 步 <i class="dot on"></i><i class="dot on"></i><i class="dot"></i></div></div><div class="form"><h1>你做过哪些事情？</h1><p class="subtitle">选择你积累过的经历，并补充一些说明。</p><div class="field"><span class="field-label">相关经历（可多选）</span><div class="chips selectable"><button class="chip">产品项目</button><button class="chip">用户研究</button><button class="chip">设计</button><button class="chip">内容运营</button><button class="chip">数据分析</button><button class="chip">技术开发</button><button class="chip">市场推广</button><button class="chip">客户沟通</button></div></div><div class="field"><label>已掌握技能 / 工具</label><input placeholder="例如：Figma、Python、Prompt、用户访谈、Notion" /></div><div class="field"><label>代表性经历（选填）</label><textarea placeholder="请简单描述这段经历中的角色、目标、你做了什么、有什么成果"></textarea></div><div class="form-actions"><button class="btn" data-go="profile3">下一步</button></div></div></section>
+    <section class="screen" id="profile3"><div class="page-top"><button class="back" data-go="profile2">← 返回</button><div class="steps">第 3 步 / 共 3 步 <i class="dot on"></i><i class="dot on"></i><i class="dot on"></i></div></div><div class="form"><h1>什么样的工作更吸引你？</h1><p class="subtitle">你的偏好将帮助我们判断推荐的初始方向。</p><div class="field"><span class="field-label">感兴趣的工作内容（可多选）</span><div class="chips selectable"><button class="chip">产品设计</button><button class="chip">用户研究</button><button class="chip">数据分析</button><button class="chip">需求分析</button><button class="chip">项目管理</button><button class="chip">客户沟通</button><button class="chip">内容策划</button><button class="chip">运营增长</button></div></div><div class="field"><span class="field-label">工作偏好（可多选）</span><div class="chips selectable"><button class="chip">独立思考</button><button class="chip">团队协作</button><button class="chip">高频沟通</button><button class="chip">深度分析</button><button class="chip">创意发散</button><button class="chip">落地执行</button></div></div><div class="field"><label>当前最想解决的职业问题是什么？</label><textarea placeholder="例如：我想进入 AI 行业，但不知道自己更适合 AI 产品经理还是 AI 产品运营"></textarea></div><div class="form-actions"><button class="btn" data-go="analyze1">生成我的推荐</button></div></div></section>
+    <section class="screen" id="analyze1"><div class="loading"><div class="loading-icon">✦</div><h1>AI 正在分析你的信息</h1><p class="subtitle">正在匹配最适合你的岗位方向</p><div class="bar"><span style="width:70%"></span></div><b>70%</b><div class="loading-list"><div class="done">理解你的背景与经历</div><div class="done">分析你的兴趣与偏好</div><div>○ 匹配适合的岗位方向</div></div><button class="btn" style="margin:32px auto 0" data-go="recommend">查看分析结果</button></div></section>
+    <section class="screen" id="recommend"><h1>根据你的背景，推荐你优先体验以下岗位</h1><p class="subtitle">三条值得优先验证的 AI 职业路径，也可以继续查看其他岗位。</p><div class="recommendations"><article class="recommend-card"><div class="recommend-meta"><span class="recommend-number">01</span><span class="recommend-label">优先推荐</span></div><h2>AI 产品经理</h2><p>你有项目实践倾向，同时偏好从模糊问题中寻找解决方案。</p><div class="tags"><span class="tag">产品思维</span><span class="tag">用户意识</span><span class="tag">跨团队协作</span></div><button class="btn" data-go="choice">体验岗位 →</button></article><article class="recommend-card"><div class="recommend-meta"><span class="recommend-number">02</span><span class="recommend-label">值得体验</span></div><h2>AI 产品运营</h2><p>你对内容策划和增长目标更敏感，适合通过运营推动产品使用与留存。</p><div class="tags"><span class="tag">内容策划</span><span class="tag">用户触达</span><span class="tag">增长意识</span></div><button class="btn" data-go="choice">体验岗位 →</button></article><article class="recommend-card"><div class="recommend-meta"><span class="recommend-number">03</span><span class="recommend-label">探索方向</span></div><h2>AI 用户研究</h2><p>你表现出较强的用户观察兴趣，适合从研究视角理解问题。</p><div class="tags"><span class="tag">用户访谈</span><span class="tag">洞察分析</span><span class="tag">研究能力</span></div><button class="btn" data-go="choice">体验岗位 →</button></article></div><button class="center-link" data-go="roles">查看全部岗位 →</button></section>
+    <section class="screen" id="roles"><h1>选择你想体验的岗位</h1><p class="subtitle">五种 AI 职业路径，选择一张卡片开始真实工作微任务。</p><div class="roles"><article class="fan-card"><span class="fan-number">01</span><h2>AI 产品经理</h2><p>发现问题、定义方案，并推动 AI 产品落地。</p><ul class="fan-list"><li>需求分析</li><li>优先级判断</li><li>跨团队协作</li></ul><button class="btn" data-go="choice">开始体验 →</button></article><article class="fan-card"><span class="fan-number">02</span><h2>AI 解决方案顾问</h2><p>理解客户业务，并匹配合适的 AI 解决方案。</p><ul class="fan-list"><li>客户沟通</li><li>业务分析</li><li>方案设计</li></ul><button class="btn" data-go="choice">开始体验 →</button></article><article class="fan-card"><span class="fan-number">03</span><h2>AI 产品运营</h2><p>围绕增长、活跃和转化，推动产品使用。</p><ul class="fan-list"><li>增长策略</li><li>内容运营</li><li>数据分析</li></ul><button class="btn" data-go="choice">开始体验 →</button></article><article class="fan-card"><span class="fan-number">04</span><h2>AI 用户研究</h2><p>理解用户需求与行为，为产品决策提供证据。</p><ul class="fan-list"><li>用户访谈</li><li>行为洞察</li><li>研究分析</li></ul><button class="btn" data-go="choice">开始体验 →</button></article><article class="fan-card"><span class="fan-number">05</span><h2>AI 产品设计</h2><p>设计 AI 产品的关键交互体验与界面逻辑。</p><ul class="fan-list"><li>交互设计</li><li>信息架构</li><li>用户体验</li></ul><button class="btn" data-go="choice">开始体验 →</button></article></div></section>
+
+    <section class="screen" id="choice"><div class="task-top"><div><h3>AI 产品经理 · 微任务体验</h3><p class="subtitle">任务 1 / 5 · 选择题</p></div><div class="task-progress">25%<div class="bar"><span style="width:25%"></span></div></div></div><div class="question"><div class="scenario"><b>情境说明</b><br>你正在负责一款 AI 办公产品，近期团队收到了多条用户反馈，请根据这些信息做出判断。</div><h2>基于以上信息，你认为当前最值得优先解决的问题是什么？</h2><div class="options single-select"><button class="option">A. 新用户注册流程复杂</button><button class="option">B. AI 回答不准确</button><button class="option">C. 文件导入功能不稳定</button><button class="option">D. 页面加载速度较慢</button></div><div class="task-actions"><button class="btn" data-go="ranking">下一题</button></div></div></section>
+    <section class="screen" id="ranking"><div class="task-top"><div><h3>AI 产品经理 · 微任务体验</h3><p class="subtitle">任务 2 / 5 · 排序题</p></div><div class="task-progress">50%<div class="bar"><span style="width:50%"></span></div></div></div><div class="question"><h2>请按照你认为的优先级重新排序</h2><p class="subtitle">请将卡片拖动到合适的位置，最优先处理的问题放在最上方。</p><div class="ranking" id="rankingList"><div class="sort-item" draggable="true"><span class="handle">⠿</span><span>用户无法完成注册</span></div><div class="sort-item" draggable="true"><span class="handle">⠿</span><span>AI 回答不准确</span></div><div class="sort-item" draggable="true"><span class="handle">⠿</span><span>文件导入失败率高</span></div><div class="sort-item" draggable="true"><span class="handle">⠿</span><span>页面加载时间过长</span></div></div><p class="drag-tip">⠿ 按住卡片并上下拖动以调整优先级</p><div class="task-actions"><button class="btn" data-go="category">确认顺序</button></div></div></section>
+    <section class="screen" id="category"><div class="task-top"><div><h3>AI 产品经理 · 微任务体验</h3><p class="subtitle">任务 3 / 5 · 连线匹配题</p></div><div class="task-progress">75%<div class="bar"><span style="width:75%"></span></div></div></div><div class="question"><h2>请将以下用户反馈与对应的问题类别连线</h2><p class="subtitle">先点击左侧一条反馈，再点击右侧最匹配的类别。</p><div class="matching-board" id="matchingBoard"><svg class="match-lines" id="matchLines" aria-hidden="true"></svg><div class="match-column"><h3>用户反馈</h3><button class="match-item source" data-source="导入文件"><span>不知道如何导入文件</span></button><button class="match-item source" data-source="速度"><span>感觉输出结果偏慢</span></button><button class="match-item source" data-source="准确性"><span>AI 回答有时不准确</span></button><button class="match-item source" data-source="限制"><span>上传文件大小有限制</span></button><button class="match-item source" data-source="建议"><span>希望增加自动总结</span></button><button class="match-item source" data-source="记录"><span>打不开聊天记录</span></button></div><div class="match-column"><h3>问题类别</h3><button class="match-item target" data-target="功能问题">功能问题</button><button class="match-item target" data-target="体验问题">体验问题</button><button class="match-item target" data-target="新需求 / 建议">新需求 / 建议</button></div></div><p class="match-tip">已连线的反馈可再次点击，重新选择匹配类别。</p><div class="task-actions"><button class="btn" data-go="evidence">提交匹配</button></div></div></section>
+    <section class="screen" id="evidence"><div class="task-top"><div><h3>AI 产品经理 · 微任务体验</h3><p class="subtitle">任务 4 / 5 · 信息分析题</p></div><div class="task-progress">100%<div class="bar"><span style="width:100%"></span></div></div></div><div class="question"><h2>请阅读以下用户访谈记录，选择你认为最值得关注的 3 条信息。</h2><div class="evidence-grid"><article class="material"><b>访谈记录（节选）</b><ul><li>用户 A：我第一次打开产品时，不知道文件应该从哪里导入……</li><li>用户 B：AI 回答有时很慢，而且我已经上传了文档，它还是继续问我问题……</li><li>用户 C：我最想要的是能够记住历史聊天记录……</li><li>用户 D：整体体验不错，但我比较在意稳定性……</li></ul></article><div><label class="check-option"><input type="checkbox" /> 用户不知道如何导入文件</label><label class="check-option"><input type="checkbox" /> AI 回答有时不准确</label><label class="check-option"><input type="checkbox" /> 用户希望历史记录可被保存</label><label class="check-option"><input type="checkbox" /> 页面加载速度较慢</label><label class="check-option"><input type="checkbox" /> 历史记录不容易找到</label></div></div><div class="task-actions"><button class="btn" data-go="open">提交选择</button></div></div></section>
+    <section class="screen" id="open"><div class="task-top"><div><h3>AI 产品经理 · 微任务体验</h3><p class="subtitle">最后一步 · 补充你的思考</p></div><div class="task-progress">100%<div class="bar"><span style="width:100%"></span></div></div></div><div class="question"><h2>如果你是产品经理，接下来你会采取什么行动？</h2><p class="subtitle">请用 1–3 句话说明你的想法。可以从验证问题、制定方案、优先级调整等角度思考。</p><textarea placeholder="输入你的回答……" style="height:190px;margin:20px 0 28px"></textarea><div class="task-actions"><button class="btn" data-go="analyze2">提交回答</button></div></div></section>
+    <section class="screen" id="analyze2"><div class="loading"><div class="loading-icon">✦</div><h1>AI 正在分析你的任务表现</h1><p class="subtitle">正在基于你的回答，评估岗位匹配与能力表现。</p><div class="bar"><span style="width:80%"></span></div><b>80%</b><div class="loading-list"><div class="done">理解你的题目内容</div><div class="done">评估你的判断方式</div><div>○ 生成个性化反馈报告</div></div><button class="btn" style="margin:32px auto 0" data-go="report">查看体验报告</button></div></section>
+    <section class="screen" id="report"><div class="report"><div class="report-header"><div><button class="back" data-go="growth">← 返回</button><h1>AI 产品经理 · 职业体验报告</h1></div><button class="btn ghost">导出报告</button></div><article class="summary"><div class="score">适配潜力较高<small>综合判断</small></div><div><h2>你在用户理解和问题拆解方面表现较好</h2><p class="subtitle">较适合从产品视角进入 AI 行业。你的表现说明你具备一定的岗位适配潜力，但在优先级判断上仍可进一步加强。</p></div></article><div class="report-grid"><section class="section"><h3>岗位能力对照</h3><div class="radar-wrap"><div class="radar"><svg viewBox="0 0 260 245" aria-label="叠加双雷达图"><g fill="none" stroke="#aaa" stroke-width="1"><polygon points="130,18 235,93 195,215 65,215 25,93"/><polygon points="130,51 202,103 177,186 83,186 58,103"/><polygon points="130,84 170,113 159,157 101,157 90,113"/><line x1="130" y1="18" x2="130" y2="215"/><line x1="25" y1="93" x2="195" y2="215"/><line x1="235" y1="93" x2="65" y2="215"/></g><polygon points="130,30 220,97 180,204 70,204 37,98" fill="rgba(30,30,30,.12)" stroke="#1e1e1e" stroke-width="3"/><polygon points="130,56 190,112 164,177 86,184 70,112" fill="rgba(130,130,130,.18)" stroke="#777" stroke-width="3"/><g font-size="11" fill="#222"><text x="104" y="12">问题拆解</text><text x="215" y="91">用户理解</text><text x="180" y="231">证据判断</text><text x="15" y="231">优先级决策</text><text x="-2" y="91">沟通表达</text></g></svg></div><div class="legend"><span><i></i>岗位要求</span><span><i class="mine"></i>我的情况</span><p>我的情况由个人信息 + 任务表现综合生成</p></div></div></section><section class="section"><h3>你的优势</h3><div class="insight"><b>用户理解较强</b><br>你能从任务中准确识别出用户真正遇到的问题。</div><div class="insight"><b>沟通表达较清晰</b><br>你的回答结构较明确，能够解释判断依据。</div><h3 style="margin-top:22px">值得加强</h3><div class="insight"><b>优先级决策</b><br>在资源有限时的取舍逻辑仍可加强。</div><div class="insight"><b>证据判断</b><br>建议练习基于信息证据做决策。</div></section></div><div class="report-grid"><section class="section"><h3>AI 判断依据</h3><ul class="basis"><li>你在排序题中优先选择了解决高频核心问题。</li><li>你能从访谈记录中提取关键用户痛点。</li><li>你的开放回答体现出一定的产品思路，但缺少更明确的优先级标准。</li></ul></section><section class="section"><h3>下一步建议</h3><p><b>继续探索：</b>继续体验 AI 用户研究岗位，比较你在不同岗位中的表现差异。</p><p><b>能力提升：</b>尝试进一步训练“优先级判断”和“证据驱动决策”。</p></section></div><div class="report-actions"><button class="btn ghost" data-go="roles">体验其他岗位</button><button class="btn" data-go="growth">查看成长轨迹</button></div></div></section>
+    <section class="screen" id="growth"><h1>我的职业探索轨迹</h1><p class="subtitle">记录你的每一次岗位体验与能力成长。</p><div class="tabs"><button class="tab active">全部岗位</button><button class="tab">已完成</button><button class="tab">未体验</button></div><div class="track-list"><article class="track-item"><div><b>AI 产品经理</b><br><span class="status completed">已完成</span></div><div>完成时间：2026/08/27<br>综合判断：适配潜力较高</div><div>表现良好</div><button class="btn small" data-go="report">查看报告</button></article><article class="track-item"><div><b>AI 产品运营</b><br><span class="status completed">已完成</span></div><div>完成时间：2026/08/28<br>综合判断：值得继续探索</div><div>持续探索</div><button class="btn small" data-go="report">查看报告</button></article><article class="track-item"><div><b>AI 解决方案顾问</b><br><span class="status">未体验</span></div><div>尚未开始</div><div>等待体验</div><button class="btn small" data-go="choice">开始体验</button></article></div><section class="trend"><h2>能力变化趋势</h2><div class="trend-box"><svg viewBox="0 0 800 190" preserveAspectRatio="none"><polyline points="20,155 210,125 400,138 590,78 780,52" fill="none" stroke="#222" stroke-width="4"/><g fill="#222"><circle cx="20" cy="155" r="5"/><circle cx="210" cy="125" r="5"/><circle cx="400" cy="138" r="5"/><circle cx="590" cy="78" r="5"/><circle cx="780" cy="52" r="5"/></g></svg></div><div class="ability"><span>问题拆解：明显提升</span><span>用户理解：持续提升</span><span>证据判断：稳步提升</span><span>优先级决策：明显提升</span><span>沟通表达：持续提升</span></div></section><div class="report-actions"><button class="btn ghost" data-go="choice">重新挑战已完成岗位</button><button class="btn" data-go="roles">继续体验未完成岗位</button></div></section>
+
+    <div class="drawer-shade" id="drawerShade"></div><aside class="drawer" id="drawer"><div class="drawer-head"><b>我的</b><button class="close" id="drawerClose">×</button></div><div class="avatar">头像</div><h2 style="margin-bottom:2px">探索者 Haotian</h2><p class="profile-id">用户 ID：AI-20260827</p><ul class="drawer-menu"><li>我的岗位</li><li>我的报告</li><li>我的收藏</li><li>设置</li><li>帮助与反馈</li><li class="logout">退出登录</li></ul></aside>
+  </main>
+  <script>
+    const screens = document.querySelectorAll('.screen');
+    const go = id => { screens.forEach(s=>s.classList.toggle('active',s.id===id)); document.querySelectorAll('[data-nav]').forEach(n=>n.classList.toggle('active',n.dataset.nav===id || (id==='recommend'&&n.dataset.nav==='roles'))); const active=document.getElementById(id); if(active) active.scrollTop=0; window.scrollTo(0,0); };
+    document.addEventListener('click', e => { const target=e.target.closest('[data-go]'); if(target) go(target.dataset.go); });
+    document.querySelectorAll('[data-nav]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.nav)));
+    document.querySelectorAll('.selectable .chip').forEach(c=>c.addEventListener('click',()=>c.classList.toggle('selected')));
+    document.querySelectorAll('.single-select .option').forEach(o=>o.addEventListener('click',()=>{o.parentElement.querySelectorAll('.option').forEach(x=>x.classList.remove('selected'));o.classList.add('selected');}));
+    const rankingList = document.getElementById('rankingList'); let draggedItem = null;
+    rankingList.querySelectorAll('.sort-item').forEach(item => {
+      item.addEventListener('dragstart', () => { draggedItem=item; requestAnimationFrame(()=>item.classList.add('dragging')); });
+      item.addEventListener('dragend', () => { item.classList.remove('dragging'); rankingList.querySelectorAll('.sort-item').forEach(x=>x.classList.remove('drag-over')); draggedItem=null; });
+      item.addEventListener('dragover', e => { e.preventDefault(); if(item!==draggedItem) item.classList.add('drag-over'); });
+      item.addEventListener('dragleave', () => item.classList.remove('drag-over'));
+      item.addEventListener('drop', e => { e.preventDefault(); if(!draggedItem || item===draggedItem) return; const before=e.clientY < item.getBoundingClientRect().top + item.offsetHeight / 2; rankingList.insertBefore(draggedItem, before ? item : item.nextSibling); item.classList.remove('drag-over'); });
+    });
+    const matchingBoard = document.getElementById('matchingBoard'), matchLines = document.getElementById('matchLines');
+    let selectedSource = null; const connections = new Map();
+    const drawConnections = () => {
+      const boardRect = matchingBoard.getBoundingClientRect(); matchLines.replaceChildren();
+      connections.forEach((target, source) => {
+        const a=source.getBoundingClientRect(), b=target.getBoundingClientRect();
+        const x1=a.right-boardRect.left, y1=a.top+a.height/2-boardRect.top-36, x2=b.left-boardRect.left, y2=b.top+b.height/2-boardRect.top-36;
+        const ns='http://www.w3.org/2000/svg', line=document.createElementNS(ns,'line'), c1=document.createElementNS(ns,'circle'), c2=document.createElementNS(ns,'circle');
+        line.setAttribute('x1',x1);line.setAttribute('y1',y1);line.setAttribute('x2',x2);line.setAttribute('y2',y2); c1.setAttribute('cx',x1);c1.setAttribute('cy',y1);c1.setAttribute('r',4); c2.setAttribute('cx',x2);c2.setAttribute('cy',y2);c2.setAttribute('r',4); matchLines.append(line,c1,c2);
+      });
+    };
+    document.querySelectorAll('.match-item.source').forEach(source => source.addEventListener('click', () => { document.querySelectorAll('.match-item.source').forEach(x=>x.classList.remove('selected')); selectedSource=source; source.classList.add('selected'); }));
+    document.querySelectorAll('.match-item.target').forEach(target => target.addEventListener('click', () => { if(!selectedSource) return; connections.set(selectedSource,target); selectedSource.classList.remove('selected'); selectedSource.classList.add('connected'); selectedSource=null; drawConnections(); }));
+    window.addEventListener('resize',drawConnections);
+    const drawer=document.getElementById('drawer'), shade=document.getElementById('drawerShade'), closeDrawer=()=>{drawer.classList.remove('show');shade.classList.remove('show')}; document.getElementById('profileBtn').onclick=()=>{drawer.classList.add('show');shade.classList.add('show')}; document.getElementById('drawerClose').onclick=closeDrawer; shade.onclick=closeDrawer;
+    document.getElementById('intro').addEventListener('click', e => e.currentTarget.classList.add('hide'));
+    window.scrollTo(0,0); document.querySelector('.screen.active').scrollTop=0;
+  </script>
+</body>
+</html>
