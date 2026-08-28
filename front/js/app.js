@@ -5,9 +5,30 @@
   'use strict';
 
   const API_BASE =
-    window.location.port === '3001' ? window.location.origin + '/api/v1' : 'http://localhost:3001/api/v1';
+    window.location.port === '3000' ? window.location.origin + '/api/v1' : 'http://localhost:3000/api/v1';
 
   const REC_LABELS = ['优先推荐', '值得体验', '探索方向'];
+
+  const REPORT_CARD_THEMES = [
+    { theme: 'pink', tag: '你的优势', icon: 'hearts.svg' },
+    { theme: 'yellow', tag: '你的优势', icon: 'stairs.svg' },
+    { theme: 'blue', tag: '值得加强', icon: 'seedling.svg' },
+    { theme: 'green', tag: '值得加强', icon: 'diamonds.svg' },
+  ];
+
+  const REPORT_EMPTY = {
+    fitLevel: '待补充',
+    headline: '完成微任务后将生成岗位体验结论。',
+    summary: '暂无报告摘要，请先完成该岗位的微任务体验。',
+    basis: ['暂无判断依据，完成体验后由后端生成。'],
+    boundary: '本报告依据你主动提供的经历和本轮任务中的可观察行为生成，用于职业探索，不是招聘结论或永久能力评价。',
+    cards: [
+      { title: '暂无优势项', desc: '完成体验后展示。' },
+      { title: '暂无优势项', desc: '完成体验后展示。' },
+      { title: '暂无待加强项', desc: '完成体验后展示。' },
+      { title: '暂无待加强项', desc: '完成体验后展示。' },
+    ],
+  };
 
   const state = {
     sessionId: null,
@@ -17,6 +38,7 @@
     currentJobId: 'ai_product',
     taskSessionId: null,
     completedJobs: [],
+    lastReport: null,
   };
 
   const screens = document.querySelectorAll('.screen');
@@ -88,7 +110,7 @@
       { jobId: 'ai_ops', name: 'AI运营', desc: '围绕增长与留存设计运营实验。', highlights: ['数据分析', '用户洞察', '运营策略'], taskStatus: 'interactive' },
       { jobId: 'ai_data_eval', name: 'AI数据与评测', desc: '建立评测体系与数据标准。', highlights: ['评测设计', '数据分析', '标准制定'], taskStatus: 'interactive' },
       { jobId: 'ai_app_dev', name: 'AI应用开发', desc: '将大模型能力集成进产品。', highlights: ['编程能力', '系统设计', '性能优化'], taskStatus: 'interactive' },
-      { jobId: 'ai_ui_design', name: 'AIUI设计', desc: '把复杂 AI 能力做成可理解的界面体验。', highlights: ['交互设计', '信息架构', '用户研究'], taskStatus: 'interactive' },
+      { jobId: 'ai_ui_design', name: 'UI设计', desc: '把复杂 AI 能力做成可理解的界面体验。', highlights: ['交互设计', '信息架构', '用户研究'], taskStatus: 'interactive' },
     ];
   }
 
@@ -157,18 +179,127 @@
     if (!job) return;
     const label = job.name + ' · 微任务体验';
     document.querySelectorAll('.task-job-title').forEach((el) => { el.textContent = label; });
-    const rt = document.getElementById('reportJobTitle');
-    if (rt) rt.textContent = job.name + ' · 职业体验报告';
+  }
+
+  function splitInsight(text) {
+    const idx = text.indexOf('：');
+    if (idx === -1) return { title: text.slice(0, 12), desc: text };
+    return { title: text.slice(0, idx), desc: text.slice(idx + 1) };
+  }
+
+  function getJobReport(report, jobId) {
+    const jobEvidence = report?.taskEvidenceByJob?.[jobId] || {};
+    const globalGap = report?.gapAnalysis || {};
+    const isTargetJob = globalGap.targetJobId === jobId;
+    return {
+      jobName: jobEvidence.jobName,
+      headline: jobEvidence.headline,
+      comparisonSummary: jobEvidence.comparisonSummary || (isTargetJob ? report?.comparisonSummary : null),
+      fitLevel: jobEvidence.fitLevel,
+      behaviors: jobEvidence.observedBehaviors || [],
+      transferableCapabilities: jobEvidence.transferableCapabilities
+        || (isTargetJob ? globalGap.transferableCapabilities : null)
+        || [],
+      gapsToBuild: jobEvidence.gapsToBuild
+        || (isTargetJob ? globalGap.gapsToBuild : null)
+        || [],
+      boundary: report?.boundaryNotice,
+    };
+  }
+
+  function deriveFitLevel(behaviors, explicit) {
+    if (explicit) return explicit;
+    const strong = behaviors.filter((b) => b.judgment === '充分支持').length;
+    if (strong >= 2) return '高';
+    if (strong >= 1 || behaviors.length >= 2) return '中';
+    return behaviors.length ? '中' : '待补充';
+  }
+
+  function deriveHeadline(jobReport) {
+    if (jobReport.headline) return jobReport.headline;
+    const behaviors = jobReport.behaviors;
+    if (!behaviors.length) return REPORT_EMPTY.headline;
+    const comps = [...new Set(behaviors.map((b) => b.competency).filter(Boolean))].slice(0, 2);
+    return comps.length ? '你在' + comps.join('和') + '方面表现较好。' : REPORT_EMPTY.headline;
+  }
+
+  function buildInsightCards(jobReport) {
+    const strengths = [];
+    const gaps = [];
+    const behaviors = jobReport.behaviors || [];
+
+    behaviors.forEach((b) => {
+      const item = { title: b.competency || '能力表现', desc: b.behavior || b.note || '' };
+      if (b.judgment === '充分支持') strengths.push(item);
+      else gaps.push(item);
+    });
+
+    (jobReport.transferableCapabilities || []).forEach((t) => strengths.push(splitInsight(t)));
+    (jobReport.gapsToBuild || []).forEach((t) => gaps.push(splitInsight(t)));
+
+    const cards = [];
+    for (let i = 0; i < 2; i += 1) {
+      cards.push(strengths[i] || REPORT_EMPTY.cards[i]);
+    }
+    for (let i = 0; i < 2; i += 1) {
+      cards.push(gaps[i] || REPORT_EMPTY.cards[i + 2]);
+    }
+    return cards;
+  }
+
+  function renderReport(report) {
+    const jobId = state.currentJobId;
+    const job = getJob(jobId);
+    const jobReport = report ? getJobReport(report, jobId) : null;
+    const jobName = job?.name || jobReport?.jobName || '未知岗位';
+    const behaviors = jobReport?.behaviors || [];
+    const basis = behaviors.length
+      ? behaviors.map((b) => b.behavior).filter(Boolean)
+      : REPORT_EMPTY.basis;
+    const cards = jobReport ? buildInsightCards(jobReport) : REPORT_EMPTY.cards;
+
+    const setText = (id, text) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = text || '';
+    };
+
+    setText('reportJobName', jobName);
+    setText('reportFitLevel', jobReport ? deriveFitLevel(behaviors, jobReport.fitLevel) : REPORT_EMPTY.fitLevel);
+    setText('reportHeadline', jobReport ? deriveHeadline(jobReport) : REPORT_EMPTY.headline);
+    setText('reportSummary', jobReport?.comparisonSummary || REPORT_EMPTY.summary);
+    setText('reportBoundary', jobReport?.boundary || REPORT_EMPTY.boundary);
+
+    const heroPlaceholder = document.getElementById('reportHeroPlaceholder');
+    if (heroPlaceholder) heroPlaceholder.textContent = jobName + ' · 报告插图占位';
+
+    const basisEl = document.getElementById('reportBasis');
+    if (basisEl) {
+      basisEl.innerHTML = basis.map((item) => '<li>' + esc(item) + '</li>').join('');
+    }
+
+    const cardsEl = document.getElementById('reportCards');
+    if (!cardsEl) return;
+    cardsEl.innerHTML = cards
+      .map((card, i) => {
+        const theme = REPORT_CARD_THEMES[i];
+        const tag = i < 2 ? '你的优势' : '值得加强';
+        return (
+          '<article class="report-v2-card report-v2-card--' + theme.theme + '">' +
+          '<span class="report-v2-card-tag"><img src="assets/report/' + theme.icon + '" width="22" height="22" alt="" />' +
+          esc(tag) + '</span>' +
+          '<h3>' + esc(card.title) + '</h3>' +
+          '<p>' + esc(card.desc) + '</p>' +
+          '<div class="report-v2-card-illus report-v2-card-illus--placeholder" aria-hidden="true">配图占位</div>' +
+          '</article>'
+        );
+      })
+      .join('');
   }
 
   function patchReport(report) {
     if (!report) return;
-    const summary = document.getElementById('reportSummary');
-    if (summary && report.comparisonSummary) summary.textContent = report.comparisonSummary;
-    const next = document.getElementById('reportNextStep');
-    if (next && report.boundaryNotice) {
-      next.innerHTML = '<b>边界说明：</b>' + esc(report.boundaryNotice);
-    }
+    state.lastReport = report;
+    renderReport(report);
   }
 
   async function initApi() {
@@ -286,7 +417,10 @@
         patchReport(report);
       } catch (err) {
         console.warn('报告接口失败', err);
+        renderReport(state.lastReport);
       }
+    } else {
+      renderReport(state.lastReport);
     }
     go('report');
   }

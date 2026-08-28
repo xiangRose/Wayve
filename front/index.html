@@ -42,7 +42,60 @@
     <section class="screen" id="evidence"><div class="task-top"><div><h3 class="task-job-title">AI产品 · 微任务体验</h3><p class="subtitle">任务 4 / 5 · 信息分析题</p></div><div class="task-progress">100%<div class="bar"><span style="width:100%"></span></div></div></div><div class="question"><h2>请阅读以下用户访谈记录，选择你认为最值得关注的 3 条信息。</h2><div class="evidence-grid"><article class="material"><b>访谈记录（节选）</b><ul><li>用户 A：我第一次打开产品时，不知道文件应该从哪里导入……</li><li>用户 B：AI 回答有时很慢，而且我已经上传了文档，它还是继续问我问题……</li><li>用户 C：我最想要的是能够记住历史聊天记录……</li><li>用户 D：整体体验不错，但我比较在意稳定性……</li></ul></article><div><label class="check-option"><input type="checkbox" /> 用户不知道如何导入文件</label><label class="check-option"><input type="checkbox" /> AI 回答有时不准确</label><label class="check-option"><input type="checkbox" /> 用户希望历史记录可被保存</label><label class="check-option"><input type="checkbox" /> 页面加载速度较慢</label><label class="check-option"><input type="checkbox" /> 历史记录不容易找到</label></div></div><div class="task-actions"><button class="btn" data-go="open" type="button">提交选择</button></div></div></section>
     <section class="screen" id="open"><div class="task-top"><div><h3 class="task-job-title">AI产品 · 微任务体验</h3><p class="subtitle">最后一步 · 补充你的思考</p></div><div class="task-progress">100%<div class="bar"><span style="width:100%"></span></div></div></div><div class="question"><h2>如果你是产品经理，接下来你会采取什么行动？</h2><p class="subtitle">请用 1–3 句话说明你的想法。可以从验证问题、制定方案、优先级调整等角度思考。</p><textarea id="openAnswer" placeholder="输入你的回答……" style="height:190px;margin:20px 0 28px"></textarea><div class="task-actions"><button class="btn" id="submitTaskBtn" type="button">提交回答</button></div></div></section>
     <section class="screen" id="analyze2"><div class="loading"><div class="loading-icon">✦</div><h1>AI 正在分析你的任务表现</h1><p class="subtitle">正在基于你的回答，评估岗位匹配与能力表现。</p><div class="bar"><span style="width:80%"></span></div><b>80%</b><div class="loading-list"><div class="done">理解你的题目内容</div><div class="done">评估你的判断方式</div><div>○ 生成个性化反馈报告</div></div><button class="btn" id="viewReportBtn" style="margin:32px auto 0" type="button">查看体验报告</button></div></section>
-    <section class="screen" id="report"><div class="report"><div class="report-header"><div><button class="back" data-go="growth" type="button">← 返回</button><h1 id="reportJobTitle">AI产品 · 职业体验报告</h1></div><button class="btn ghost" type="button">导出报告</button></div><article class="summary"><div class="score">本轮证据较充分<small>综合判断</small></div><div><h2>你在用户理解和问题拆解方面表现较好</h2><p class="subtitle" id="reportSummary">较适合从产品视角进入 AI 行业。你的表现说明你具备一定的岗位适配潜力，但在优先级判断上仍可进一步加强。</p></div></article><div class="report-grid"><section class="section"><h3>岗位能力对照</h3><div class="radar-wrap"><div class="radar"><svg viewBox="0 0 260 245" aria-label="叠加双雷达图"><g fill="none" stroke="#aaa" stroke-width="1"><polygon points="130,18 235,93 195,215 65,215 25,93"/><polygon points="130,51 202,103 177,186 83,186 58,103"/><polygon points="130,84 170,113 159,157 101,157 90,113"/><line x1="130" y1="18" x2="130" y2="215"/><line x1="25" y1="93" x2="195" y2="215"/><line x1="235" y1="93" x2="65" y2="215"/></g><polygon points="130,30 220,97 180,204 70,204 37,98" fill="rgba(30,30,30,.12)" stroke="#1e1e1e" stroke-width="3"/><polygon points="130,56 190,112 164,177 86,184 70,112" fill="rgba(130,130,130,.18)" stroke="#777" stroke-width="3"/><g font-size="11" fill="#222"><text x="104" y="12">问题拆解</text><text x="215" y="91">用户理解</text><text x="180" y="231">证据判断</text><text x="15" y="231">优先级决策</text><text x="-2" y="91">沟通表达</text></g></svg></div><div class="legend"><span><i></i>岗位要求</span><span><i class="mine"></i>我的情况</span><p>我的情况由个人信息 + 任务表现综合生成</p></div></div></section><section class="section"><h3>你的优势</h3><div class="insight"><b>用户理解较强</b><br>你能从任务中准确识别出用户真正遇到的问题。</div><div class="insight"><b>沟通表达较清晰</b><br>你的回答结构较明确，能够解释判断依据。</div><h3 style="margin-top:22px">值得加强</h3><div class="insight"><b>优先级决策</b><br>在资源有限时的取舍逻辑仍可加强。</div><div class="insight"><b>证据判断</b><br>建议练习基于信息证据做决策。</div></section></div><div class="report-grid"><section class="section"><h3>AI 判断依据</h3><ul class="basis" id="reportBasis"><li>你在排序题中优先选择了解决高频核心问题。</li><li>你能从访谈记录中提取关键用户痛点。</li><li>你的开放回答体现出一定的产品思路，但缺少更明确的优先级标准。</li></ul></section><section class="section"><h3>下一步建议</h3><p id="reportNextStep"><b>继续探索：</b>继续体验其他 AI 岗位，比较你在不同岗位中的表现差异。</p></section></div><div class="report-actions"><button class="btn ghost" data-go="roles" type="button">体验其他岗位</button><button class="btn" data-go="growth" type="button">查看成长轨迹</button></div></div></section>
+    <section class="screen" id="report" aria-label="职业体验报告">
+      <div class="report-v2">
+        <header class="report-v2-hero">
+          <div class="report-v2-top">
+            <button class="report-v2-back" data-go="growth" type="button" aria-label="返回成长轨迹">
+              <img src="assets/report/back.svg" width="35" height="45" alt="" />
+            </button>
+            <div class="report-v2-badge">
+              <img src="assets/report/bookmark.svg" width="24" height="24" alt="" />
+              <span>你的职业体验报告</span>
+            </div>
+          </div>
+          <div class="report-v2-hero-grid">
+            <div class="report-v2-intro">
+              <p class="report-v2-kicker">你的体验职业是：</p>
+              <h1 class="report-v2-job" id="reportJobName"></h1>
+              <div class="report-v2-fit">
+                <span class="report-v2-fit-label">适配潜力：</span>
+                <span class="report-v2-fit-value" id="reportFitLevel"></span>
+              </div>
+              <p class="report-v2-headline" id="reportHeadline"></p>
+              <p class="report-v2-summary" id="reportSummary"></p>
+            </div>
+            <div class="report-v2-illus" aria-hidden="true">
+              <div class="report-v2-illus-placeholder" id="reportHeroPlaceholder">报告插图占位</div>
+            </div>
+          </div>
+        </header>
+
+        <section class="report-v2-panel" aria-label="岗位能力对照">
+          <img class="report-v2-panel-icon" src="assets/report/frame.svg" width="92" height="92" alt="" />
+          <h2 class="report-v2-panel-title">你的岗位能力对照：</h2>
+          <div class="report-v2-panel-body">
+            <h3>AI 判断依据</h3>
+            <ul class="report-v2-basis" id="reportBasis"></ul>
+            <p class="report-v2-boundary" id="reportBoundary"></p>
+          </div>
+        </section>
+
+        <section class="report-v2-suggestions" aria-label="学习建议">
+          <h2 class="report-v2-suggestions-title">
+            <img src="assets/report/bulb.png" width="38" height="38" alt="" />
+            给你的「学习建议」
+            <img class="report-v2-bulb-flip" src="assets/report/bulb.png" width="38" height="38" alt="" />
+          </h2>
+          <div class="report-v2-cards" id="reportCards"></div>
+        </section>
+
+        <div class="report-actions">
+          <button class="btn ghost" data-go="roles" type="button">体验其他岗位</button>
+          <button class="btn" data-go="growth" type="button">查看成长轨迹</button>
+        </div>
+      </div>
+    </section>
     <section class="screen" id="growth"><h1>我的职业探索轨迹</h1><p class="subtitle">记录你的每一次岗位体验与能力成长。</p><div class="tabs"><button class="tab active" type="button">全部岗位</button><button class="tab" type="button">已完成</button><button class="tab" type="button">未体验</button></div><div class="track-list" id="growthList"></div><section class="trend"><h2>能力变化趋势</h2><div class="trend-box"><svg viewBox="0 0 800 190" preserveAspectRatio="none"><polyline points="20,155 210,125 400,138 590,78 780,52" fill="none" stroke="#222" stroke-width="4"/><g fill="#222"><circle cx="20" cy="155" r="5"/><circle cx="210" cy="125" r="5"/><circle cx="400" cy="138" r="5"/><circle cx="590" cy="78" r="5"/><circle cx="780" cy="52" r="5"/></g></svg></div><div class="ability"><span>问题拆解：明显提升</span><span>用户理解：持续提升</span><span>证据判断：稳步提升</span><span>优先级决策：明显提升</span><span>沟通表达：持续提升</span></div></section><div class="report-actions"><button class="btn ghost" data-go="choice" type="button">重新挑战已完成岗位</button><button class="btn" data-go="roles" type="button">继续体验未完成岗位</button></div></section>
 
     <div class="drawer-shade" id="drawerShade"></div><aside class="drawer" id="drawer"><div class="drawer-head"><b>我的</b><button class="close" id="drawerClose" type="button">×</button></div><div class="avatar">头像</div><h2 style="margin-bottom:2px">探索者</h2><p class="profile-id" id="drawerSessionId">会话加载中…</p><ul class="drawer-menu"><li data-go="roles">我的岗位</li><li data-go="growth">我的报告</li><li>我的收藏</li><li>设置</li><li>帮助与反馈</li><li class="logout">退出登录</li></ul></aside>
