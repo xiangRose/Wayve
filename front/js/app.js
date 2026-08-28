@@ -374,6 +374,27 @@
     state.currentJobId = jobId;
     updateTaskTitles(jobId);
 
+    if (jobId !== 'ai_product') {
+      const name = document.getElementById('previewJobName');
+      const desc = document.getElementById('previewJobDesc');
+      if (name) name.textContent = job.name + ' · 预览';
+      if (desc) desc.textContent = job.desc;
+      go('previewNotice');
+      return;
+    }
+    if (window.MvuUI) {
+      const name = document.getElementById('previewJobName');
+      const desc = document.getElementById('previewJobDesc');
+      const copy = document.getElementById('previewJobCopy');
+      const launch = document.getElementById('launchMvuBtn');
+      if (name) name.textContent = 'AI Product · 体验预览';
+      if (desc) desc.textContent = '用 3–5 分钟，在真实的激活与留存问题中做一次产品优先级判断。';
+      if (copy) copy.textContent = '你将先做一个临时决策，再选择两类证据，观察新的事实如何改变取舍，最后保留或修订并提交验证计划。';
+      if (launch) { launch.hidden = false; launch.onclick = () => window.MvuUI.start(state.sessionId); }
+      go('previewNotice');
+      return;
+    }
+
     if (!state.useMock && state.sessionId) {
       try {
         const task = await api('/tasks', {
