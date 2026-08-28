@@ -20,8 +20,8 @@ Recommendation helps a user choose where to start. Evaluation uses only replayab
 
 P0 demonstrates one trustworthy Current Exploration Cycle:
 
-1. A user starts an exploration session.
-2. The product offers up to three navigation recommendations.
+1. A user enters Career Exploration without needing a profile.
+2. The product presents the five canonical roles equally; up to three navigation recommendations may be shown as optional starting points.
 3. The user may choose any canonical role, including a non-recommended role.
 4. The user completes a 3–5 minute career trial.
 5. Behavior Events become replayable, bounded Evidence.
@@ -37,14 +37,14 @@ P0 serves students, early-career users, career changers, and people with adjacen
 
 - Five canonical job definitions.
 - Navigation-only role recommendations using internal `navigationScore`.
-- One complete Hero Role trial for `ai_product`.
+- One complete minimum viable vertical slice for `ai_product`; the historical “Hero” label is an implementation convenience, not a role ranking.
 - A reusable career-trial container.
 - Structured Behavior Event capture and replayable Evidence.
 - Analysis Report with the canonical reading order defined in [Analysis and Growth](analysis-and-growth.md).
 - One evidence-gap-based Next Mission.
 - Current Exploration Cycle in Growth Track.
 - Seeded demo fallbacks that preserve all product boundaries.
-- A documented and standalone-prototyped candidate scene trial for `ai_ui_design`; production integration is follow-up work.
+- Frozen, implementation-ready contracts for the other four roles; production integration is follow-up work.
 
 ## Out of Scope
 

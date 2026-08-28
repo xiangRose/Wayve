@@ -14,7 +14,7 @@ Each product responsibility has exactly one canonical owner.
 | --- | --- |
 | [Product Overview](product-overview.md) | Product definition, P0 goal and scope, information architecture, global boundaries. |
 | [Jobs and Recommendations](jobs-and-recommendations.md) | Canonical job definitions, role navigation, recommendation inputs and boundaries. |
-| [Career Trials](career-trials.md) | Shared trial contract, Hero Role trial, interaction grammars, and trial-specific delegation. |
+| [Career Trials](career-trials.md) | Shared trial contract, the `ai_product` P0 vertical slice, interaction grammars, and trial-specific delegation. |
 | [Behavior and Evidence](behavior-and-evidence.md) | Behavior Events, evidence interpretation, replay, uncertainty, and evaluation isolation. |
 | [Analysis and Growth](analysis-and-growth.md) | Analysis Report reading logic, Interest Feedback, Next Mission, Growth Track, and Direction Update. |
 | [Schemas](schemas/README.md) | Stable engineering-facing containers and field contracts. |

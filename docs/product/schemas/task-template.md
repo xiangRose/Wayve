@@ -150,4 +150,18 @@ This enum mirrors the Career Trial owner's internal stages; it does not define a
 
 The current backend uses JSON task content under `TaskTemplate`, so the first-level storage model can remain stable.
 
+## P0 `ai_product` Promotion Manifest
+
+The first implementation must preserve these reviewed participant event IDs and semantic mappings:
+
+| Event ID | `sourceStep` | Requirement mapping |
+| --- | --- | --- |
+| `priority_committed`, `option_deferred`, `short_reason_submitted` | `first_judgment` | `constrained_prioritization`, `decision_communication` |
+| `evidence_categories_selected`, `evidence_opened`, `evidence_inspection_ordered`, `evidence_compared` | `evidence_gathering` | `evidence_judgment` |
+| `consequence_revealed` | `twist` | consequence context; not standalone participant Evidence |
+| `reconsideration_recorded`, `priority_revised` | `reconsideration` | `hypothesis_revision` |
+| `validation_metric_selected`, `tradeoff_uncertainty_submitted`, `final_decision_submitted` | `final_decision` | `testable_next_step`, `constrained_prioritization` |
+
+Each emitted event carries exactly one `sourceStep`. `simulated_user_step` is a separate consequence trace and cannot enter Evidence Mapping directly. `experienceMode` is `structured_decision` and uses the shared structured-decision grammar.
+
 `experienceMode`, `presentation`, and the generalized event fields document the product contract only. The current backend alignment remains a follow-up item; this documentation update does not claim those fields are implemented.

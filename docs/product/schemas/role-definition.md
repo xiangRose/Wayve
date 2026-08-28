@@ -85,3 +85,17 @@ Container name and canonical `jobId` values should remain stable. Fields may be 
   ]
 }
 ```
+
+## P0 `ai_product` Requirement IDs
+
+The minimum MVU promotion uses the following stable requirement IDs; they are contextual requirements, not participant scores:
+
+| requirementId | Meaning |
+| --- | --- |
+| `evidence_judgment` | Selects and compares relevant supplied signals before a bounded decision. |
+| `constrained_prioritization` | Commits one product slice and explicitly defers alternatives under one delivery slot. |
+| `decision_communication` | Gives a concise reason tied to the selected slice. |
+| `hypothesis_revision` | Retains or updates the judgment after the canonical consequence. |
+| `testable_next_step` | Names a bounded validation metric/test and uncertainty. |
+
+These IDs are the minimum `ai_product` contract for implementation. Other role requirement catalogs remain frozen-spec promotion work.

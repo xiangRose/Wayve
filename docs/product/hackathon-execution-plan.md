@@ -8,7 +8,8 @@ This document exclusively owns repository alignment gaps, migration order, P0 ac
 
 ## Frozen Execution Decisions
 
-- `ai_product` remains the Hackathon P0 Hero Role.
+- `ai_product` is the single Hackathon P0 minimum viable vertical slice; “Hero” is historical implementation shorthand only.
+- Five roles are equal browsing choices and direct profile-free entry is supported; recommendation remains optional navigation.
 - Canonical job IDs are `ai_product`, `ai_ops`, `ai_data_eval`, `ai_app_dev`, and `ai_ui_design`.
 - Recommendation is navigation-only.
 - Evidence is replayable and bounded.
@@ -23,7 +24,7 @@ This document exclusively owns repository alignment gaps, migration order, P0 ac
 | Requirement | Repository snapshot | Gap / action | Priority |
 | --- | --- | --- | --- |
 | Five canonical jobs | Seed jobs still contain `ai_pm`, `ai_ux`, `ai_consultant`, `ai_operator`, and `ai_researcher`. | Migrate safe IDs; review consultant/researcher content before reuse. | P0 |
-| `ai_product` Hero Role | Closest template is `ai_pm.career_changer.json`, estimated at 7 minutes. | Content-migrate ID and tighten to 3–5 minutes. | P0 |
+| `ai_product` P0 vertical slice | Closest template is `ai_pm.career_changer.json`, estimated at 7 minutes. | Content-migrate ID and tighten to 3–5 minutes. | P0 |
 | Reusable TaskTemplate | Backend stores JSON by job and scaffold. | Preserve container; align schema and add structured event fields. | P0 |
 | Replayable Evidence | Step submissions accept answer and events; demo report uses `stepSource`. | Map to canonical `sourceStep`, source Event IDs, replay, supports, and limits. | P0 |
 | Separated report sources | Existing report separates resume, task summary, and interest signals but uses radar-first naming. | Align UI/API language with Current Evidence Profile and canonical reading order. | P0 |
@@ -59,10 +60,11 @@ This list records gaps only. No listed file is modified by the product-doc restr
 
 - Active Product Docs have one owner per responsibility.
 - Five canonical IDs are used for active roles.
-- Hero Role is `ai_product`.
+- The `ai_product` vertical slice is complete end to end: entry, preview, scenario, action, consequence, revision, deliverable, Interest, Behavior, bounded Evidence, Replay, seven-part report compatibility, and Next Mission.
+- Other four roles have frozen specs, P0 depth allocation, and implementation backlogs, but no fake partial production experiences.
 - Recommendations use `navigationScore` and never evaluate ability.
 - User may choose non-recommended roles.
-- Hero trial is 3–5 minutes and maps to six internal `sourceStep` values.
+- The `ai_product` trial is 3–5 minutes and maps to six internal `sourceStep` values.
 - Behavior Events and Evidence support replay.
 - Background Evidence, Task Evidence, and Interest Feedback remain separate.
 - Analysis Report follows the one canonical reading order.

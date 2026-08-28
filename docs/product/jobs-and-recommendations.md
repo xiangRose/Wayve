@@ -16,7 +16,7 @@ This document exclusively owns canonical jobs and navigation recommendation beha
 | `ai_app_dev` | AI Application Development | Connects product intent, model behavior, and implementation constraints into AI application flows. |
 | `ai_ui_design` | AI UI Design | Turns AI capabilities and uncertainty into understandable interfaces, feedback states, and user control. |
 
-The P0 Hero Role is `ai_product`. This is an execution convenience because existing `ai_pm` content is closest to the complete loop; it is not a product ranking of roles.
+All five roles are presented as equal exploration choices. `ai_product` is the current P0 vertical slice because its existing content is closest to a complete loop; this is an execution convenience, not a product ranking.
 
 ## Legacy ID Migration
 
@@ -35,6 +35,10 @@ Legacy IDs document migration only and must not appear as active user choices.
 Role recommendation answers only: **Which role trials may be useful starting points?**
 
 It does not answer whether the user is capable, suitable, employable, or likely to succeed. The complete canonical role list remains available even when recommendations exist.
+
+## Profile-free Entry
+
+Users may browse the five canonical roles and enter a Trial directly without completing a profile. A sparse profile may receive neutral navigation suggestions, but it must never block direct exploration or fabricate personalized reasons.
 
 ## Allowed Inputs
 

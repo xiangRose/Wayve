@@ -4,7 +4,7 @@ Status: Hackathon P0 Frozen
 Source of Truth: Feishu
 Repository Snapshot Updated: 2026-08-28
 
-This document exclusively owns shared Career Trial behavior and the P0 Hero Role experience. Evidence interpretation belongs to [Behavior and Evidence](behavior-and-evidence.md); report presentation belongs to [Analysis and Growth](analysis-and-growth.md).
+This document exclusively owns shared Career Trial behavior and the P0 `ai_product` vertical slice. Evidence interpretation belongs to [Behavior and Evidence](behavior-and-evidence.md); report presentation belongs to [Analysis and Growth](analysis-and-growth.md).
 
 ## Shared Trial Contract
 
@@ -21,7 +21,7 @@ The stages are evidence anchors, not mandatory pages. A visible experience may u
 | Structured decision | Prioritization, evaluation, and implementation judgments. | Visible steps normally map one-to-one to semantic stages. |
 | Persistent work scene | Investigation, composition, simulation, and revision of one work object. | Scene acts may contain several semantic stages; emitted events retain one `sourceStep` each. |
 
-The P0 Hero Role uses structured decision. The candidate [AI UI Design Career Trial](trials/ai-ui-design.md) uses a persistent scene. A role-specific trial cannot redefine shared stage, evidence, report, or growth rules.
+The P0 `ai_product` slice uses structured decision. The candidate [AI UI Design Career Trial](trials/ai-ui-design.md) uses a persistent scene. A role-specific trial cannot redefine shared stage, evidence, report, or growth rules.
 
 ## Experience Requirements
 
@@ -37,6 +37,10 @@ Preferred interactions include choice, sorting, matching, information selection,
 
 Avoid knowledge tests, personality tests, self-rated ability, generic strength prompts, percentage career scores, and cosmetic game framing around unchanged question pages.
 
+## Structured Choice Authoring Standard
+
+When a frozen role mechanic naturally uses a structured choice, content authors may reuse the teammate standard: one coherent work timeline; prompts of no more than three lines; four plausible competing options; approximately 12 seconds for the first judgment; one primary requirement per item; mixed action, validation, trade-off, and boundary decisions; randomized option positions; and QA checks for cueing, realism, and obvious one-right-three-wrong construction. This standard supports content authoring and QA only; it does not replace a role's interaction grammar or turn every Trial into multiple-choice questions.
+
 ## Stage Meanings
 
 | sourceStep | Required meaning |
@@ -50,7 +54,7 @@ Avoid knowledge tests, personality tests, self-rated ability, generic strength p
 
 If a trial cannot observe a stage, it must state why. Related requirements become `not_observed`; the trial must not silently infer them.
 
-## P0 Hero Role: ai_product
+## P0 Minimum Viable Role: ai_product
 
 The user joins an AI meeting-assistant team. Registrations rise, first successful generation is low, and seven-day retention declines. Users who finish setup value the summary, but first use is difficult. With limited engineering capacity, the user must choose the most valuable near-term improvement.
 
@@ -64,6 +68,20 @@ The user joins an AI meeting-assistant team. Registrations rise, first successfu
 | `final_decision` | Choose simplify import, add templates, or improve quality; state trade-off, validation metric, and uncertainty. |
 
 This trial may observe prioritization, evidence seeking, hypothesis revision, trade-offs, metric selection, and communication inside the scenario. It cannot prove long-term product leadership, general domain expertise, or career suitability.
+
+## Five-role Frozen Contract Summary
+
+The five roles share the trial, Behavior, Evidence, Replay, Interest, and report boundaries while retaining distinct work objects:
+
+| jobId | Role purpose | Must-have mechanic | P0 status |
+| --- | --- | --- | --- |
+| `ai_product` | Product direction under user, business, and delivery constraints. | Evidence-informed priority, visible consequence, retain/revise, final deliverable. | One complete vertical slice. |
+| `ai_ops` | Activation, retention, feedback, and experiment loops. | Diagnose a lifecycle gap, choose an intervention, inspect modeled consequence, revise. | Frozen contract; implementation follow-up. |
+| `ai_data_eval` | Defensible quality standards and launch decisions. | Inspect cases, configure quality/review boundary, retest contradiction, revise rollout judgment. | Frozen contract; implementation follow-up. |
+| `ai_app_dev` | AI application behavior under quality, latency, cost, and stability constraints. | Configure a fixed request suite, inspect regression/fallback consequence, revise runtime choice. | Frozen contract; implementation follow-up. |
+| `ai_ui_design` | Understandable AI states, uncertainty, waiting, and recovery. | Edit a state/transition flow, simulate a supplied path, inspect consequence, revise. | Frozen contract; canonical authority conflict pending. |
+
+Each role's detailed mechanics remain in its frozen Role Trial Spec. Requirement IDs and event mappings must be promoted to `RoleDefinition` and `TaskTemplate` before implementation; runtime inference is prohibited.
 
 ## Other Role Trial Ownership
 
