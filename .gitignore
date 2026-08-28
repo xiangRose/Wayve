@@ -1,6 +1,7 @@
 HELP.md
 data/
 target/
+/local_data/
 .env
 *.log
 .mvn/wrapper/maven-wrapper.jar
