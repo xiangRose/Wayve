@@ -21,7 +21,7 @@ The stages are evidence anchors, not mandatory pages. A visible experience may u
 | Structured decision | Prioritization, evaluation, and implementation judgments. | Visible steps normally map one-to-one to semantic stages. |
 | Persistent work scene | Investigation, composition, simulation, and revision of one work object. | Scene acts may contain several semantic stages; emitted events retain one `sourceStep` each. |
 
-The P0 `ai_product` slice uses structured decision. The candidate [AI UI Design Career Trial](trials/ai-ui-design.md) uses a persistent scene. A role-specific trial cannot redefine shared stage, evidence, report, or growth rules.
+The P0 `ai_product` slice uses structured decision. The canonical [AI UI Design Career Trial](trials/ai-ui-design.md) uses a persistent scene. A role-specific trial cannot redefine shared stage, evidence, report, or growth rules.
 
 ## Experience Requirements
 
@@ -79,18 +79,18 @@ The five roles share the trial, Behavior, Evidence, Replay, Interest, and report
 | `ai_ops` | Activation, retention, feedback, and experiment loops. | Diagnose a lifecycle gap, choose an intervention, inspect modeled consequence, revise. | Frozen contract; implementation follow-up. |
 | `ai_data_eval` | Defensible quality standards and launch decisions. | Inspect cases, configure quality/review boundary, retest contradiction, revise rollout judgment. | Frozen contract; implementation follow-up. |
 | `ai_app_dev` | AI application behavior under quality, latency, cost, and stability constraints. | Configure a fixed request suite, inspect regression/fallback consequence, revise runtime choice. | Frozen contract; implementation follow-up. |
-| `ai_ui_design` | Understandable AI states, uncertainty, waiting, and recovery. | Edit a state/transition flow, simulate a supplied path, inspect consequence, revise. | Frozen contract; canonical authority conflict pending. |
+| `ai_ui_design` | Understandable AI states, uncertainty, waiting, and recovery. | Edit a state/transition flow, simulate a supplied path, inspect consequence, revise. | Frozen contract; implementation follow-up. |
 
 Each role's detailed mechanics remain in its frozen Role Trial Spec. Requirement IDs and event mappings must be promoted to `RoleDefinition` and `TaskTemplate` before implementation; runtime inference is prohibited.
 
 ## Other Role Trial Ownership
 
-| jobId | Candidate work focus | Status |
+| jobId | Role work focus | Status |
 | --- | --- | --- |
 | `ai_ops` | Diagnose activation or retention and choose a bounded experiment. | Follow-up content. |
 | `ai_data_eval` | Inspect outputs and criteria, encounter contradiction, revise a rubric. | Follow-up content. |
 | `ai_app_dev` | Connect AI capability to a workflow under implementation constraints. | Follow-up content. |
-| `ai_ui_design` | Investigate, assemble, test, and revise an AI interaction flow. | Candidate spec and standalone prototype; not P0 production integration. |
+| `ai_ui_design` | Configure, test, and revise document-to-checklist states, uncertainty, recovery, and continuity. | Frozen canonical Trial; implementation follow-up, not current P0 production integration. |
 
 ## Behavior Capture Handoff
 
