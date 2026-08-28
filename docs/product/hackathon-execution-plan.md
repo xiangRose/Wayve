@@ -16,7 +16,7 @@ This document exclusively owns repository alignment gaps, migration order, P0 ac
 - Analysis Report has no unified Job Fit Score.
 - Growth Track ends at Pending in P0.
 - Direction Update is user-confirmed and requires real new evidence.
-- The `ai_ui_design` scene trial is a documented candidate, not P0 production integration.
+- The `ai_ui_design` scene trial is frozen and canonical; production integration remains follow-up work outside the current P0.
 - This product-doc change authorizes no backend, API, seed, frontend, or production-data work.
 
 ## Repository Alignment Audit
@@ -31,7 +31,7 @@ This document exclusively owns repository alignment gaps, migration order, P0 ac
 | Navigation recommendation | Prompt boundary exists; fallback IDs and OpenAPI examples remain legacy. | Migrate IDs and add internal `navigationScore` in a later implementation change. | P0 |
 | Demo consistency | Demo session uses legacy IDs and `resumeRadar`. | Migrate without fabricating history or trends. | P0 |
 | Remaining role trials | Complete templates do not exist for `ai_ops`, `ai_data_eval`, and `ai_app_dev`. | Add after Hero loop stabilizes. | Follow-up |
-| `ai_ui_design` scene trial | Standalone prototype and canonical candidate spec exist; production support is unverified. | Align and integrate only in a separately approved change after Hero loop. | Follow-up |
+| `ai_ui_design` scene trial | Frozen canonical Document-to-Checklist Trial exists; production support is unverified. | Integrate only in a separately approved implementation change after the `ai_product` loop. | Follow-up |
 | Frontend role config | No production frontend is present in this repository snapshot. | Coordinate with the owning repository. | External |
 
 ## Legacy Locations to Migrate Later
