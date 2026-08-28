@@ -1,3 +1,6 @@
+/**
+ * app.js — 数据层 + 后端 API（请勿修改，交互逻辑请写在 ui.js）
+ */
 (function () {
   'use strict';
 
@@ -298,11 +301,8 @@
     go('report');
   }
 
-  function bindUi() {
+  function bindApiEvents() {
     document.addEventListener('click', (e) => {
-      const nav = e.target.closest('[data-go]');
-      if (nav && !nav.closest('#drawer')) go(nav.dataset.go);
-
       const startBtn = e.target.closest('[data-action="start-job"]');
       if (startBtn) startJob(startBtn.dataset.jobId);
 
@@ -311,121 +311,6 @@
         state.currentJobId = reportBtn.dataset.jobId;
         loadReport();
       }
-
-      const drawerGo = e.target.closest('#drawer [data-go]');
-      if (drawerGo) {
-        document.getElementById('drawer').classList.remove('show');
-        document.getElementById('drawerShade').classList.remove('show');
-        go(drawerGo.dataset.go);
-      }
-    });
-
-    document.querySelectorAll('[data-nav]').forEach((b) => {
-      b.addEventListener('click', () => go(b.dataset.nav));
-    });
-
-    document.querySelectorAll('.selectable .chip').forEach((c) => {
-      c.addEventListener('click', () => c.classList.toggle('selected'));
-    });
-
-    document.querySelectorAll('.single-select .option').forEach((o) => {
-      o.addEventListener('click', () => {
-        o.parentElement.querySelectorAll('.option').forEach((x) => x.classList.remove('selected'));
-        o.classList.add('selected');
-      });
-    });
-
-    const rankingList = document.getElementById('rankingList');
-    let draggedItem = null;
-    rankingList.querySelectorAll('.sort-item').forEach((item) => {
-      item.addEventListener('dragstart', () => {
-        draggedItem = item;
-        requestAnimationFrame(() => item.classList.add('dragging'));
-      });
-      item.addEventListener('dragend', () => {
-        item.classList.remove('dragging');
-        rankingList.querySelectorAll('.sort-item').forEach((x) => x.classList.remove('drag-over'));
-        draggedItem = null;
-      });
-      item.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        if (item !== draggedItem) item.classList.add('drag-over');
-      });
-      item.addEventListener('dragleave', () => item.classList.remove('drag-over'));
-      item.addEventListener('drop', (e) => {
-        e.preventDefault();
-        if (!draggedItem || item === draggedItem) return;
-        const before = e.clientY < item.getBoundingClientRect().top + item.offsetHeight / 2;
-        rankingList.insertBefore(draggedItem, before ? item : item.nextSibling);
-        item.classList.remove('drag-over');
-      });
-    });
-
-    const matchingBoard = document.getElementById('matchingBoard');
-    const matchLines = document.getElementById('matchLines');
-    let selectedSource = null;
-    const connections = new Map();
-    const drawConnections = () => {
-      const boardRect = matchingBoard.getBoundingClientRect();
-      matchLines.replaceChildren();
-      connections.forEach((target, source) => {
-        const a = source.getBoundingClientRect();
-        const b = target.getBoundingClientRect();
-        const x1 = a.right - boardRect.left;
-        const y1 = a.top + a.height / 2 - boardRect.top - 36;
-        const x2 = b.left - boardRect.left;
-        const y2 = b.top + b.height / 2 - boardRect.top - 36;
-        const ns = 'http://www.w3.org/2000/svg';
-        const line = document.createElementNS(ns, 'line');
-        const c1 = document.createElementNS(ns, 'circle');
-        const c2 = document.createElementNS(ns, 'circle');
-        line.setAttribute('x1', x1);
-        line.setAttribute('y1', y1);
-        line.setAttribute('x2', x2);
-        line.setAttribute('y2', y2);
-        c1.setAttribute('cx', x1);
-        c1.setAttribute('cy', y1);
-        c1.setAttribute('r', 4);
-        c2.setAttribute('cx', x2);
-        c2.setAttribute('cy', y2);
-        c2.setAttribute('r', 4);
-        matchLines.append(line, c1, c2);
-      });
-    };
-    document.querySelectorAll('.match-item.source').forEach((source) => {
-      source.addEventListener('click', () => {
-        document.querySelectorAll('.match-item.source').forEach((x) => x.classList.remove('selected'));
-        selectedSource = source;
-        source.classList.add('selected');
-      });
-    });
-    document.querySelectorAll('.match-item.target').forEach((target) => {
-      target.addEventListener('click', () => {
-        if (!selectedSource) return;
-        connections.set(selectedSource, target);
-        selectedSource.classList.remove('selected');
-        selectedSource.classList.add('connected');
-        selectedSource = null;
-        drawConnections();
-      });
-    });
-    window.addEventListener('resize', drawConnections);
-
-    const drawer = document.getElementById('drawer');
-    const shade = document.getElementById('drawerShade');
-    const closeDrawer = () => {
-      drawer.classList.remove('show');
-      shade.classList.remove('show');
-    };
-    document.getElementById('profileBtn').onclick = () => {
-      drawer.classList.add('show');
-      shade.classList.add('show');
-    };
-    document.getElementById('drawerClose').onclick = closeDrawer;
-    shade.onclick = closeDrawer;
-
-    document.getElementById('intro').addEventListener('click', (e) => {
-      e.currentTarget.classList.add('hide');
     });
 
     document.getElementById('submitProfileBtn').addEventListener('click', async () => {
@@ -450,12 +335,21 @@
     document.getElementById('viewReportBtn').addEventListener('click', loadReport);
   }
 
+  window.CareerApp = {
+    go,
+    startJob,
+    loadReport,
+    getJobs: () => state.jobs.slice(),
+    getCurrentJobId: () => state.currentJobId,
+    isOffline: () => state.useMock,
+  };
+
   document.addEventListener('DOMContentLoaded', async () => {
     state.jobs = fallbackJobs();
     renderRoles();
     renderRecommendations();
     renderGrowth();
-    bindUi();
+    bindApiEvents();
     await initApi();
     go('home');
     window.scrollTo(0, 0);
