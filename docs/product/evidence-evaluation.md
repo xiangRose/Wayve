@@ -181,6 +181,31 @@ Each replay item should include:
 
 Replay can be summarized in UI, but the underlying data should remain inspectable for debugging and trust.
 
+## Evidence Card
+
+Evidence Card is the P0 presentation pattern for making evidence understandable. It adapts the useful "signal card" idea into WAYVE evidence semantics.
+
+Evidence Card does not introduce a new score, evidence type, or ranking system. Do not add Signal Score.
+
+Each Evidence Card should answer:
+
+- What did I do?
+- Where was it observed?
+- What may this support?
+- What does it not prove?
+- Can I replay the original action?
+
+Evidence Card must bind to existing Evidence fields:
+
+- `sourceStep`
+- `sourceEventIds`
+- `observedAction`
+- `supports`
+- `limits`
+- `replay`
+
+An Evidence Card can be shown in Analysis Report, Current Evidence Profile detail views, and Growth Track cycle details. It must preserve source separation: Resume / Background Evidence, Task Evidence, and Interest Feedback remain distinct.
+
 ## Interest Feedback
 
 Interest Feedback captures how the user felt about the role trial and whether they want to continue exploring it.
@@ -193,6 +218,15 @@ It may include:
 - `freeText`
 
 Interest is important for exploration, but it is not ability evidence. It may influence Next Mission priority only as user preference, not as proof of role capability.
+
+Interest / Willingness captures whether the user wants to continue doing similar work. It is not a "high energy moment" import from Tidal and must not become ability evidence.
+
+Interest / Willingness must not:
+
+- Enter Current Evidence Profile.
+- Affect capability judgment.
+- Be merged with task evidence.
+- Be used as proof that a role is suitable.
 
 ## Unknowns
 
@@ -213,6 +247,45 @@ It should include:
 - Estimated time
 - Deliverable
 - How completion can update the Current Evidence Profile
+
+In the long-term product model, completed missions may produce New Evidence. New Evidence can lead to mission revision or user-confirmed Direction Update. P0 only needs the current Next Mission plus a pending / future state when the mission has not been completed.
+
+## Growth Track Evidence Rules
+
+Growth Track is the time-based record of career exploration experiments:
+
+Trial -> Report -> Mission -> New Evidence -> Direction Update
+
+P0 only represents the Current Exploration Cycle:
+
+Trial Completed -> Evidence Captured -> Analysis Report -> Next Mission
+
+If no later mission has been completed, do not fabricate New Evidence, repeated signals, trends, or direction changes.
+
+## Direction Update Rules
+
+Direction Update is allowed only as a user-confirmed long-term event.
+
+AI may support the user by showing evidence, unknowns, interest feedback, and Next Mission options. AI must not announce that the user should switch career direction.
+
+Direction Update must not be inferred from:
+
+- Recommendation rank.
+- `navigationScore`.
+- Interest / Willingness alone.
+- Not observed requirements.
+
+## Recurring / Trend Language
+
+Use evidence language according to the amount of independent evidence:
+
+| Evidence Base | Allowed Language |
+| --- | --- |
+| 1 Trial | Observed Signal / Observed Pattern |
+| 2 independent Trials | Repeated Signal |
+| 3+ independent experiments | Recurring Pattern / Trend |
+
+Do not use long-term trend language when the product has observed only one trial.
 
 ## Recommendation Isolation
 

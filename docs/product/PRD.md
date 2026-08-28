@@ -28,6 +28,8 @@ P0 must demonstrate one complete, trustworthy exploration loop:
 6. The report separates background evidence, task evidence, and interest feedback.
 7. The report proposes one next mission without producing a unified job fit score.
 
+This loop may be presented as the user's Current Exploration Cycle. P0 does not need to show a completed long-term history unless the user has actually completed later missions and produced new evidence.
+
 ## Target Audience
 
 P0 targets users who want to explore AI-related career directions but do not yet have enough direct work evidence to choose confidently. This includes students, early-career users, career changers, and users with adjacent project experience.
@@ -46,6 +48,8 @@ The product is not a hiring tool, screening tool, psychometric test, or permanen
 - Current Evidence Profile, if radar-style UI is retained.
 - Next Mission generation based on observed evidence gaps and user target.
 - Demo mode using seeded data and fallbacks when AI generation is unavailable.
+- Growth Track display for the Current Exploration Cycle only: Trial Completed -> Evidence Captured -> Analysis Report -> Next Mission.
+- Evidence Card / Evidence Replay presentation for helping users understand evidence claims and limits.
 
 ## Out of Scope
 
@@ -56,6 +60,13 @@ The product is not a hiring tool, screening tool, psychometric test, or permanen
 - New first-level product modules outside the frozen chain.
 - Mechanical renaming of `ai_consultant` or `ai_researcher` into a new canonical role.
 - Large-scale code migration in this documentation PR.
+- HealthKit, heart rate, sleep, steps, or other body health data for career judgment.
+- Tide Score, Signal Score, energy score, or any score that decides career direction.
+- Client-side AI provider keys.
+- Journal, Energy, Health, Tidal, Signals, or other new first-level IA entries.
+- Full diary system, full nudge system, recurring reminders, push notifications, long-term account system, or cloud sync.
+- P0 monthly or quarterly report concepts.
+- A growth curve implying that ability continuously increases over time.
 
 ## Canonical Roles
 
@@ -103,6 +114,46 @@ The `ai_pm` task content may be migrated at the content level into `ai_product` 
 10. User selects or confirms a target direction.
 11. Product proposes a Next Mission to gather missing evidence.
 
+Long-term WAYVE can extend this into:
+
+Trial -> Analysis Report -> Next Mission -> New Evidence -> Direction Update
+
+Direction Update must be user-confirmed. AI may display evidence, unknowns, recommended Next Missions, and comparisons across experienced roles. AI must not announce that the user should switch career direction.
+
+## Information Architecture
+
+Tidal reuse must not create new first-level navigation. WAYVE keeps the existing first-level IA:
+
+- Home
+- Career Exploration
+- Growth Track
+- My
+
+After this update:
+
+- Home highlights current exploration, latest report, and next mission.
+- Career Exploration owns Role -> Preview -> Trial.
+- Growth Track owns the current cycle and may later become exploration history.
+- My owns profile, background evidence, privacy, and settings.
+
+Do not add Journal, Energy, Health, Tidal, or Signals as first-level entries.
+
+## Growth Track
+
+Growth Track is the time-based record of career exploration experiments. It is not an ability-growth score history.
+
+The long-term Growth Track records:
+
+Trial -> Report -> Mission -> New Evidence -> Direction Update
+
+P0 only needs to support the Current Exploration Cycle:
+
+Trial Completed -> Evidence Captured -> Analysis Report -> Next Mission
+
+If the next mission has not been completed, the product may show a pending or future state. It must not fabricate historical cycles, completed missions, new evidence, or direction changes.
+
+Growth Track is a long-term YES, P0 lightweight only. It remains within the existing first-level IA and must not become a new module outside the frozen product chain.
+
 ## Career Trial
 
 P0 trial design must feel like work, not a test. It should be completed in 3-5 minutes and use low-friction interactions:
@@ -144,6 +195,18 @@ The system must strictly distinguish:
 
 Recommendation data must not flow into the Evidence Radar or Current Evidence Profile.
 
+Evidence should be shown through understandable Evidence Cards when possible. An Evidence Card is a presentation pattern, not a new evidence type or score.
+
+Each Evidence Card should help the user answer:
+
+- What did I do?
+- Where was it observed?
+- What may this support?
+- What does it not prove?
+- Can I replay the original action?
+
+Evidence Cards bind to the existing Evidence fields: `sourceStep`, `sourceEventIds`, `observedAction`, `supports`, `limits`, and `replay`. Do not introduce Signal Score.
+
 ## Analysis Report
 
 The report is an exploration summary, not a verdict. It must include:
@@ -158,6 +221,26 @@ The report is an exploration summary, not a verdict. It must include:
 - Tensions
 - Next Mission
 - Boundary notice
+
+The recommended P0 reading order is:
+
+1. Exploration Summary
+2. Role Requirement Profile
+3. Current Evidence Profile
+4. Evidence Replay
+5. Interest Feedback
+6. Unknowns & Tensions
+7. Next Mission
+
+The report may borrow Tidal's clear reflective organization, but the semantics must be translated into WAYVE language:
+
+| Tidal Pattern | WAYVE Report Language |
+| --- | --- |
+| summary | Exploration Summary |
+| recurring theme | Observed Pattern, or Recurring Pattern only after enough independent evidence |
+| trend | Evidence Change / Trend only after enough independent experiments |
+| reflection | Interest Feedback / User Reflection |
+| direction change | User-confirmed Direction Update |
 
 If a radar is retained, it must be labeled and interpreted as Current Evidence Profile. It must not be presented as a permanent ability profile.
 
@@ -174,6 +257,36 @@ Each Next Mission should include:
 - Estimated time
 - Deliverable
 - Future evidence use
+
+Future completion of a Next Mission can create New Evidence and may lead the user to confirm a Direction Update. P0 does not need a complete Direction History.
+
+## Product Language Rules
+
+Language must match the evidence base:
+
+- 1 Trial: use Observed Signal or Observed Pattern.
+- 2 independent Trials: use Repeated Signal.
+- 3+ independent experiments: only then use Recurring Pattern or Trend.
+
+Do not use long-term trend language after a single trial. Do not imply that ability is continuously increasing over time.
+
+## Direction Update
+
+Direction Update is allowed in the long-term product model only when it is user-confirmed.
+
+AI can:
+
+- Display evidence.
+- Display unknowns.
+- Recommend Next Mission.
+- Help compare already experienced directions.
+
+AI cannot:
+
+- Announce that the user should switch career direction.
+- Treat recommendation rank as evidence.
+- Treat interest as ability.
+- Treat not observed as inability.
 
 ## Recommendation Boundary
 
@@ -231,6 +344,46 @@ Demo mode exists to keep the hackathon flow resilient. It may use seeded recomme
 - Demo evidence must still describe source and limits.
 - Demo reports must separate background evidence, task evidence, and interest.
 - Demo copy must avoid deterministic career claims.
+- Demo mode may use a complete story arc to make the experience understandable: Trial -> Analysis Report -> Next Mission -> pending future evidence.
+- Demo mode must not fabricate completed multi-cycle history unless those cycles are explicitly marked as demo-only story content.
+
+## Product x Code Boundary
+
+Product reuse does not imply code reuse.
+
+The Tidal assessment identified reusable product logic:
+
+- Time-based growth narrative.
+- Signal Card-style understandable information units, translated into Evidence Cards.
+- Reflective report language.
+- Direction Change / Plan Evolution long-term logic, translated into user-confirmed Direction Update.
+- Demo Mode story clarity.
+
+The following Tidal elements must not be imported into WAYVE as product truth or implementation direction:
+
+- SwiftUI code
+- SwiftData
+- HealthKit
+- Heart rate, sleep, steps, or other body health data
+- Tide Score
+- Energy values deciding career direction
+- Client-side Anthropic key
+- Tidal privacy copy
+- Tidal five-tab IA
+- SwiftUI-only page structure
+- Full diary system
+- P0 monthly / quarterly report system
+- Full nudge system
+- Long-term account / cloud sync capability
+
+Current technology stacks differ:
+
+| Product | Stack |
+| --- | --- |
+| Tidal | SwiftUI, SwiftData, HealthKit, client-side Anthropic |
+| WAYVE | Java 17, Spring Boot, JPA, H2, server-side AI architecture |
+
+Therefore this update changes product documentation only. It does not authorize copying Tidal Swift code, changing the WAYVE stack, introducing HealthKit, introducing client-side AI keys, or changing backend implementation, seed data, API, or frontend behavior in this PR.
 
 ## Acceptance Criteria
 
@@ -258,6 +411,10 @@ Demo mode exists to keep the hackathon flow resilient. It may use seeded recomme
 | No unified Job Fit Score. | Frozen | Use separated evidence profiles and unknowns. |
 | Radar, if retained, means Current Evidence Profile. | Frozen | It is not a permanent ability portrait. |
 | User may choose non-recommended roles. | Frozen | Recommendations cannot block exploration. |
+| Tidal reuse is product-pattern reuse only. | Frozen | Reuse time-based narrative, Evidence Card presentation, report language, Direction Update vision, and demo story clarity; do not reuse Tidal code, health data, Tide Score, or five-tab IA. |
+| Growth Track means time-based record of career exploration experiments. | Frozen | It is not an ability-growth score history. P0 supports Current Exploration Cycle only. |
+| Direction Update must be user-confirmed. | Frozen | AI can support reflection and recommend Next Mission, but cannot announce a career switch. |
+| Trend language requires enough independent evidence. | Frozen | 1 Trial = Observed Signal / Observed Pattern; 2 independent Trials = Repeated Signal; 3+ independent experiments = Recurring Pattern / Trend. |
 
 ## Repo Alignment Audit
 
@@ -314,3 +471,8 @@ Do not mechanically rename `ai_consultant` or `ai_researcher`. Extract scenario 
 | Update demo session and fallback data. | Needed for demo consistency. | Yes |
 | Add templates for `ai_ops`, `ai_data_eval`, `ai_app_dev`, `ai_ui_design`. | Needed for complete five-role experience. | After Hero loop |
 | Coordinate frontend role config. | Frontend not present in this repo snapshot. | External |
+| Multi-cycle Growth Track. | Record Trial, Report, Next Mission, New Evidence, and user-confirmed Direction Update across cycles. | Post-Hackathon |
+| Career Evidence Review. | Aggregate repeated evidence, new evidence, unresolved unknowns, changed willingness, tried roles, and user-confirmed direction changes after multiple experiments. | Post-Hackathon |
+| Career Evidence Map. | Adapt map-style exploration into Role -> Requirement -> Evidence -> Unknown -> Mission, with replayable evidence nodes. | Post-Hackathon |
+| Plan Evolution. | Track how missions are revised by new evidence over time. | Post-Hackathon |
+| Mission-focused Nudge. | Remind only around unfinished Next Mission, not generic life logging. | Post-Hackathon |
