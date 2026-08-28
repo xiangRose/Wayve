@@ -1,11 +1,11 @@
 # AI 产品设计场景游戏 Product / UX Review
 
-Status: Supporting Review / Non-normative  
-Canonical trial: [AI UI Design Career Trial](../../trials/ai-ui-design.md)  
+Status: Supporting Review / Non-normative
+Canonical trial: [AI UI Design Career Trial](../../trials/ai-ui-design.md)
 This review records prototype observations at the time of testing. Its 5–8 minute target and report terminology are historical review context, not current product rules.
 
-Review date: 2026-08-28  
-Scope: `prototype/experience-design-gameplay-prototype.html` only  
+Review date: 2026-08-28
+Scope: `prototype/experience-design-gameplay-prototype.html` only
 Method: Microsoft Edge / Playwright real browser interaction, desktop 1440×1000 and mobile 390×844. Six required paths were replayed before code changes.
 
 ## 1. Review question
