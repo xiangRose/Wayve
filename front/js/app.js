@@ -78,16 +78,16 @@
       name: j.name,
       desc: j.definition || '',
       highlights: (j.specificCompetencies || []).slice(0, 3),
-      taskStatus: j.taskStatus || 'preview_only',
+      taskStatus: j.taskStatus || 'interactive',
     }));
   }
 
   function fallbackJobs() {
     return [
       { jobId: 'ai_product', name: 'AI产品', desc: '定义 AI 产品问题与优先级。', highlights: ['产品规划', '用户研究', '数据分析'], taskStatus: 'interactive' },
-      { jobId: 'ai_ops', name: 'AI运营', desc: '围绕增长与留存设计运营实验。', highlights: ['数据分析', '用户洞察', '运营策略'], taskStatus: 'preview_only' },
-      { jobId: 'ai_data_eval', name: 'AI数据与评测', desc: '建立评测体系与数据标准。', highlights: ['评测设计', '数据分析', '标准制定'], taskStatus: 'preview_only' },
-      { jobId: 'ai_app_dev', name: 'AI应用开发', desc: '将大模型能力集成进产品。', highlights: ['编程能力', '系统设计', '性能优化'], taskStatus: 'preview_only' },
+      { jobId: 'ai_ops', name: 'AI运营', desc: '围绕增长与留存设计运营实验。', highlights: ['数据分析', '用户洞察', '运营策略'], taskStatus: 'interactive' },
+      { jobId: 'ai_data_eval', name: 'AI数据与评测', desc: '建立评测体系与数据标准。', highlights: ['评测设计', '数据分析', '标准制定'], taskStatus: 'interactive' },
+      { jobId: 'ai_app_dev', name: 'AI应用开发', desc: '将大模型能力集成进产品。', highlights: ['编程能力', '系统设计', '性能优化'], taskStatus: 'interactive' },
       { jobId: 'ai_ui_design', name: 'AIUI设计', desc: '把复杂 AI 能力做成可理解的界面体验。', highlights: ['交互设计', '信息架构', '用户研究'], taskStatus: 'interactive' },
     ];
   }
@@ -96,18 +96,15 @@
     const list = document.getElementById('rolesList');
     if (!list) return;
     list.innerHTML = state.jobs
-      .map((job, i) => {
-        const preview = job.taskStatus === 'preview_only';
-        return (
+      .map((job, i) => (
           '<article class="fan-card">' +
           '<span class="fan-number">' + String(i + 1).padStart(2, '0') + '</span>' +
           '<h2>' + esc(job.name) + '</h2>' +
           '<p>' + esc(job.desc) + '</p>' +
           '<ul class="fan-list">' + job.highlights.map((t) => '<li>' + esc(t) + '</li>').join('') + '</ul>' +
           '<button class="btn" type="button" data-action="start-job" data-job-id="' + esc(job.jobId) + '">' +
-          (preview ? '查看岗位 →' : '开始体验 →') + '</button></article>'
-        );
-      })
+          '开始体验 →</button></article>'
+        ))
       .join('');
   }
 
@@ -245,13 +242,6 @@
     if (!job) return;
     state.currentJobId = jobId;
     updateTaskTitles(jobId);
-
-    if (job.taskStatus === 'preview_only') {
-      document.getElementById('previewJobName').textContent = job.name;
-      document.getElementById('previewJobDesc').textContent = job.desc;
-      go('previewNotice');
-      return;
-    }
 
     if (!state.useMock && state.sessionId) {
       try {
