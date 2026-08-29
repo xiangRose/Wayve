@@ -826,7 +826,7 @@
       :is(#choice,#ranking,#category,#evidence,#open) .question-nav {
         position:relative;
         margin-top:1.84cqw;
-        margin-left:auto;
+        margin-left:calc(70.764vw - 50vw + 50%);
         width:14.84cqw;
         height:6.17cqw;
         gap:2.49cqw;

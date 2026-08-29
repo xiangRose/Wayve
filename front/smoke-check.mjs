@@ -16,7 +16,8 @@ assert(css.includes('width:57px') && css.includes('height:57px') && css.includes
 assert(css.includes('border-radius:50%') && css.includes('#a3e092'), 'Figma pagination circle styling drift');
 assert(css.includes('.question-arrow:not(:disabled)[data-qnav="next"]') && css.includes('background:#8ac27b'), 'active Next state missing');
 assert(css.includes('filter:brightness(0) invert(1)'), 'active Next white arrow state missing');
-assert(css.includes('container-type:inline-size') && css.includes('margin-top:1.84cqw') && css.includes('margin-left:auto'), 'pagination is not mapped to shared responsive composition');
+assert(css.includes('container-type:inline-size') && css.includes('margin-top:1.84cqw') && css.includes('margin-left:calc(70.764vw - 50vw + 50%)'), 'pagination X is not mapped to exploration frame');
+assert(!css.includes('.question-nav { margin-left:auto'), 'pagination X must not anchor to answer column');
 assert(css.includes('width:14.84cqw') && css.includes('gap:2.49cqw'), 'pagination group scaling drift');
 assert(!css.includes('77vh') && !css.includes('70.764%'), 'pagination remains viewport anchored');
 assert(css.includes('width:6.17cqw') && css.includes('height:6.17cqw'), 'button dimensions are not scaled with composition');
