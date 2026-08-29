@@ -1,0 +1,20 @@
+import { readFile } from 'node:fs/promises';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const root = dirname(fileURLToPath(import.meta.url));
+const html = await readFile(join(root, 'index.html'), 'utf8');
+const app = await readFile(join(root, 'js', 'app.js'), 'utf8');
+const assert = (condition, message) => { if (!condition) throw new Error(message); };
+const roles = ['ai_product', 'ai_ui_design', 'ai_ops', 'ai_data_eval', 'ai_app_dev'];
+roles.forEach((role) => assert(app.includes(`'${role}'`), `missing role: ${role}`));
+['home', 'roles', 'recommend', 'choice', 'report', 'growth'].forEach((id) => assert(html.includes(`id="${id}"`), `missing screen: ${id}`));
+assert(html.includes('查看其他岗位'), 'missing recommendation-to-roles control');
+assert(html.includes('recommendationBack') && html.includes('返回我的推荐'), 'missing conditional return control');
+assert(app.includes('hasRecommendations') && app.includes('rolesEntrySource'), 'missing recommendation navigation state');
+assert(app.includes('state.rolesEntrySource = \'recommendation\''), 'missing recommendation entry context');
+assert(app.includes('state.rolesEntrySource = \'direct\''), 'missing direct entry context');
+['适配潜力', '匹配度', 'Career Fit', 'Unified Job Fit', 'preview_only', '跳过动画', 'introSkipBtn'].forEach((text) => assert(!html.includes(text) && !app.includes(text), `forbidden active copy or stale hook: ${text}`));
+assert(!app.includes('协作推进') && app.includes('跨团队推动') && app.includes('cross_team_push'), 'canonical sixth dimension drift');
+assert((app.match(/fetch\(/g) || []).length <= 1, 'API fetch ownership is scattered');
+console.log('FRONTEND SMOKE PASS: recommendation navigation, five roles, bounded copy, skip removal, API ownership');

@@ -5,6 +5,14 @@
     window.location.port === '3001' ? window.location.origin + '/api/v1' : 'http://localhost:3001/api/v1';
 
   const REC_LABELS = ['优先推荐', '值得体验', '探索方向'];
+  const HARD_SKILL_DIMENSIONS = [
+    { id: 'user_insight', label: '用户洞察' },
+    { id: 'problem_definition', label: '问题定义' },
+    { id: 'product_judgment', label: '产品判断' },
+    { id: 'ai_feasibility_understanding', label: 'AI 可行性理解' },
+    { id: 'prioritization_tradeoffs', label: '优先级与取舍' },
+    { id: 'cross_team_push', label: '跨团队推动' },
+  ];
 
   const state = {
     sessionId: null,
@@ -14,6 +22,8 @@
     currentJobId: 'ai_product',
     taskSessionId: null,
     completedJobs: [],
+    hasRecommendations: false,
+    rolesEntrySource: 'direct',
   };
 
   const screens = document.querySelectorAll('.screen');
@@ -22,7 +32,7 @@
   const analysisConfig = {
     profile: {
       barId: 'analyze1Bar', pctId: 'analyze1Pct', stepId: 'analyze1Step3', buttonId: 'viewRecommendBtn',
-      pendingLabel: '正在生成结果…', doneLabel: '查看分析结果', doneStep: '匹配适合的岗位方向',
+      pendingLabel: '正在生成结果…', doneLabel: '查看分析结果', doneStep: '整理优先体验方向',
     },
     task: {
       barId: 'analyze2Bar', pctId: 'analyze2Pct', stepId: 'analyze2Step3', buttonId: 'viewReportBtn',
@@ -117,8 +127,14 @@
     if (active) active.scrollTop = 0;
     window.scrollTo(0, 0);
     if (id === 'growth') renderGrowth();
+    if (id === 'roles') updateRecommendationBackControl();
     if (id === 'analyze1') startAnalysisProgress('profile');
     if (id === 'analyze2') startAnalysisProgress('task');
+  }
+
+  function updateRecommendationBackControl() {
+    const back = document.getElementById('recommendationBack');
+    if (back) back.hidden = !(state.hasRecommendations && state.rolesEntrySource === 'recommendation');
   }
 
   function mapCurrentStatus(label) {
@@ -142,16 +158,16 @@
       name: j.name,
       desc: j.definition || '',
       highlights: (j.specificCompetencies || []).slice(0, 3),
-      taskStatus: j.taskStatus || 'preview_only',
+    taskStatus: 'interactive',
     }));
   }
 
   function fallbackJobs() {
     return [
       { jobId: 'ai_product', name: 'AI产品', desc: '定义 AI 产品问题与优先级。', highlights: ['产品规划', '用户研究', '数据分析'], taskStatus: 'interactive' },
-      { jobId: 'ai_ops', name: 'AI运营', desc: '围绕增长与留存设计运营实验。', highlights: ['数据分析', '用户洞察', '运营策略'], taskStatus: 'preview_only' },
+      { jobId: 'ai_ops', name: 'AI运营', desc: '围绕增长与留存设计运营实验。', highlights: ['数据分析', '用户洞察', '运营策略'], taskStatus: 'interactive' },
       { jobId: 'ai_data_eval', name: 'AI数据与评测', desc: '建立评测体系与数据标准。', highlights: ['评测设计', '数据分析', '标准制定'], taskStatus: 'interactive' },
-      { jobId: 'ai_app_dev', name: 'AI应用开发', desc: '将大模型能力集成进产品。', highlights: ['编程能力', '系统设计', '性能优化'], taskStatus: 'preview_only' },
+      { jobId: 'ai_app_dev', name: 'AI应用开发', desc: '将大模型能力集成进产品。', highlights: ['编程能力', '系统设计', '性能优化'], taskStatus: 'interactive' },
       { jobId: 'ai_ui_design', name: 'AIUI设计', desc: '把复杂 AI 能力做成可理解的界面体验。', highlights: ['交互设计', '信息架构', '用户研究'], taskStatus: 'interactive' },
     ];
   }
@@ -180,7 +196,7 @@
     const recs = state.recommendations.length ? state.recommendations : state.jobs.slice(0, 3).map((j, i) => ({
       jobId: j.jobId,
       label: REC_LABELS[i] || '推荐',
-      reason: '该岗位适合体验' + j.desc,
+      reason: '该岗位值得优先体验：' + j.desc,
       tags: j.highlights,
     }));
     list.innerHTML = recs
@@ -293,8 +309,8 @@
               <div class="figma-report-return"><button class="figma-back" data-go="growth" type="button" aria-label="返回">‹</button><span>▮ 你的职业体验报告</span></div>
               <p class="figma-eyebrow">你的体验职业是：</p>
               <h1 id="figmaJobName">AI产品经理</h1>
-              <span class="figma-potential">适配潜力：<b>高</b></span>
-              <p id="figmaReportSummary">你在用户理解和问题拆解方面表现较好。较适合从产品视角进入 AI 行业，但在优先级判断上仍可进一步加强。</p>
+              <span class="figma-potential">本轮观察摘要</span>
+              <p id="figmaReportSummary">本次体验中，你在用户理解和问题拆解相关判断上表现较突出；优先级与取舍仍值得通过更多情境继续验证。</p>
             </div>
             <img class="figma-hero-art" src="assets/report/hero-workspace.png" alt="AI 产品经理工作场景插画" />
           </section>
@@ -376,6 +392,7 @@
           tags: job ? job.highlights : [],
         };
       });
+      state.hasRecommendations = state.recommendations.length > 0;
       renderRecommendations();
     } catch (err) {
       console.warn('推荐接口失败', err);
@@ -442,7 +459,15 @@
   function bindUi() {
     document.addEventListener('click', (e) => {
       const nav = e.target.closest('[data-go]');
-      if (nav && !nav.closest('#drawer')) go(nav.dataset.go);
+      if (nav && !nav.closest('#drawer')) {
+        if (nav.dataset.go === 'roles') state.rolesEntrySource = 'direct';
+        go(nav.dataset.go);
+      }
+
+      const viewAllRoles = e.target.closest('[data-action="view-all-roles"]');
+      if (viewAllRoles) { state.rolesEntrySource = 'recommendation'; go('roles'); }
+      const backToRecommend = e.target.closest('[data-action="back-to-recommend"]');
+      if (backToRecommend && state.hasRecommendations) { state.rolesEntrySource = 'recommendation'; renderRecommendations(); go('recommend'); }
 
       const startBtn = e.target.closest('[data-action="start-job"]');
       if (startBtn) startJob(startBtn.dataset.jobId);
@@ -581,10 +606,6 @@
       e.stopPropagation();
       dismissIntro(true);
     });
-    document.getElementById('introSkipBtn').addEventListener('click', (e) => {
-      e.stopPropagation();
-      dismissIntro(false);
-    });
     intro.addEventListener('click', (e) => {
       if (!e.target.closest('button')) dismissIntro(true);
     });
@@ -612,6 +633,8 @@
 
     document.getElementById('viewRecommendBtn').addEventListener('click', () => {
       renderRecommendations();
+      state.hasRecommendations = true;
+      state.rolesEntrySource = 'recommendation';
       go('recommend');
     });
 
