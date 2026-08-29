@@ -168,6 +168,47 @@
     @media (max-width:850px) { .shell{width:100%;margin:0;box-shadow:none;border:0}.nav{padding:0 20px}.links{gap:12px}.screen{padding:35px 24px}#home{padding:0}.warmup-panel{padding:25px 18px}.warmup-canvas{min-height:520px}.warmup-center{width:88%}.thought-bubble{font-size:12px;padding:8px 11px;min-height:38px}.thought-bubble:nth-of-type(1){left:0;top:4%}.thought-bubble:nth-of-type(2){right:0;top:13%}.thought-bubble:nth-of-type(3){left:0;top:65%}.thought-bubble:nth-of-type(4){right:0;top:72%}.thought-bubble:nth-of-type(5){left:5%;bottom:3%}.thought-bubble:nth-of-type(6){right:4%;bottom:11%}.home-entry-panel{padding:38px 24px}.home-entry-panel .entry-grid{margin-top:36px}.entry-grid,.report-grid,.evidence-grid{grid-template-columns:1fr}.recommendations{min-height:410px;justify-content:flex-start;overflow-x:auto;scroll-snap-type:x mandatory;padding:26px 16px 44px}.recommend-card,.recommend-card:first-child{flex:0 0 82vw;height:370px;margin-left:14px;transform:none;scroll-snap-align:center}.recommend-card:hover,.recommend-card:focus-within{transform:translateY(-8px)}.roles{min-height:390px;justify-content:flex-start;overflow-x:auto;scroll-snap-type:x mandatory;padding:25px 20px 42px}.fan-card,.fan-card:first-child{flex:0 0 78vw;height:350px;margin-left:14px;transform:none;scroll-snap-align:center}.fan-card:hover,.fan-card:focus-within{transform:translateY(-8px)}.task-top{display:block}.task-progress{text-align:left;margin-top:16px}.task-progress .bar{margin-left:0}.matching-board{grid-template-columns:1fr;gap:32px}.match-lines{display:none}.summary{grid-template-columns:1fr}.score{border-right:0;border-bottom:1px solid;padding:0 0 15px}.track-item{grid-template-columns:1fr}.radar-wrap{grid-template-columns:1fr} }
     @media (prefers-reduced-motion:reduce) { .thought-bubble,.warmup-note::after,.intro-mark,.intro-hint,.intro-line { animation:none; } #home { scroll-behavior:auto; } }
 
+    /* Selectively ported Wayve opening animation. Scoped to the intro layer. */
+    .intro-wayve { overflow:hidden; cursor:default; color:#20232a; background:#fff; isolation:isolate; }
+    .intro-wayve::before { content:""; position:absolute; inset:0; z-index:-2; background:radial-gradient(circle at 1px 1px,rgba(32,35,42,.075) 1px,transparent 1.1px) 0 0/22px 22px; opacity:.48; }
+    .intro-wayve::after { content:""; position:absolute; z-index:-1; top:50%; left:50%; width:min(780px,82vw); height:min(510px,62vh); border:3px solid #20232a; border-radius:30px 38px 28px 34px; background:#fbf6eb; transform:translate(-50%,-50%); }
+    .intro-wayve-inner { width:min(720px,76vw); position:relative; z-index:2; text-align:center; transform:translateY(-1vh); }
+    .intro-wayve-badge { display:grid; place-items:center; width:min(228px,46vw); height:auto; margin:0 auto 18px; border:0; border-radius:0; background:transparent; opacity:0; transform:rotate(-3deg); animation:wayveBadgeDrop .72s cubic-bezier(.2,.8,.22,1.2) .12s forwards; }
+    .intro-wayve-badge img { display:block; width:100%; height:auto; }
+    .intro-wayve h1 { margin:0; color:#20232a; font-size:clamp(31px,3.8vw,52px); font-weight:800; line-height:1.18; letter-spacing:-.035em; opacity:0; animation:wayveFadeUp .68s ease .55s forwards; }
+    .intro-wayve-en { margin:10px 0 0; color:#70747c; font-size:17px; letter-spacing:.08em; opacity:0; animation:wayveFadeUp .62s ease .78s forwards; }
+    .intro-wayve-path { width:min(560px,70vw); height:52px; margin:9px auto 0; opacity:0; animation:wayveAppear .2s linear 1.05s forwards; }
+    .intro-wayve-path svg { width:100%; height:100%; overflow:visible; }
+    .intro-wayve-main-path,.intro-wayve-tail-path { fill:none; stroke-linecap:round; }
+    .intro-wayve-main-path { stroke:#6a8aa0; stroke-width:2.5; stroke-dasharray:7 9; stroke-dashoffset:1000; animation:wayveDraw 1.05s cubic-bezier(.4,0,.15,1) 1.06s forwards; }
+    .intro-wayve-tail-path { stroke:#ff8659; stroke-width:2.5; stroke-dasharray:240; stroke-dashoffset:240; animation:wayveDrawSmall .8s ease 1.95s forwards; }
+    .intro-wayve-sub { margin:7px 0 0; color:#70747c; font-size:17px; opacity:0; animation:wayveFadeUp .62s ease 2.05s forwards; }
+    .intro-wayve-actions { margin-top:28px; opacity:0; animation:wayvePop .52s cubic-bezier(.2,.85,.28,1.15) 2.45s forwards; }
+    .intro-wayve-actions button { border:2px solid #20232a; border-radius:999px; background:#ff8659; color:#fff; padding:13px 26px; font-size:17px; font-weight:800; }
+    .intro-wayve-actions p { margin:12px 0 0; color:#70747c; font-size:13px; }
+    .intro-wayve-plane,.intro-wayve-sparkles,.intro-wayve-bulb { position:absolute; z-index:1; opacity:0; pointer-events:none; }
+    .intro-wayve-plane img,.intro-wayve-sparkles img,.intro-wayve-bulb img { display:block; width:100%; height:auto; }
+    .intro-wayve-plane { top:18%; left:7%; width:128px; animation:wayveFlyIn 1.2s cubic-bezier(.2,.8,.2,1) 1.45s forwards,wayveFloat 3.4s ease-in-out 2.7s infinite; }
+    .intro-wayve-sparkles { top:14%; right:8%; width:116px; transform:rotate(8deg); animation:wayveFadeUp .5s ease 1.8s forwards,wayveFloatTwo 4.2s ease-in-out 2.2s infinite; }
+    .intro-wayve-bulb { top:39%; right:8%; width:78px; transform:rotate(45deg); animation:wayveFadeUp .56s ease 1.95s forwards,wayveFloat 3.7s ease-in-out 2.55s infinite; }
+    .intro-wayve-route { position:absolute; z-index:4; inset:0; pointer-events:none; opacity:0; }
+    .intro-wayve-route svg { width:100%; height:100%; }
+    .intro-wayve-route path { fill:none; stroke:#ff8659; stroke-width:4; stroke-linecap:round; stroke-dasharray:2400; stroke-dashoffset:2400; }
+    .intro-wayve.leaving .intro-wayve-route { opacity:1; }
+    .intro-wayve.leaving .intro-wayve-route path { animation:wayveBigRoute .95s cubic-bezier(.4,0,.2,1) forwards; }
+    @keyframes wayveBadgeDrop { 0% { opacity:0; transform:translateY(-30px) rotate(-3deg) scale(.86); } 70% { opacity:1; transform:translateY(5px) rotate(-3deg) scale(1.04); } 100% { opacity:1; transform:rotate(-3deg); } }
+    @keyframes wayveFadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:none; } }
+    @keyframes wayveAppear { to { opacity:1; } }
+    @keyframes wayveDraw { to { stroke-dashoffset:0; } }
+    @keyframes wayveDrawSmall { to { stroke-dashoffset:0; } }
+    @keyframes wayvePop { 0% { opacity:0; transform:translateY(12px) scale(.94); } 100% { opacity:1; transform:none; } }
+    @keyframes wayveFlyIn { 0% { opacity:0; transform:translate(-40px,30px) rotate(-18deg); } 100% { opacity:1; transform:none; } }
+    @keyframes wayveFloat { 50% { transform:translateY(-8px) rotate(2deg); } }
+    @keyframes wayveFloatTwo { 50% { transform:translateY(7px); } }
+    @keyframes wayveBigRoute { to { stroke-dashoffset:0; } }
+    @media (max-width:780px) { .intro-wayve::after { width:90vw; height:535px; }.intro-wayve-inner { width:86vw; }.intro-wayve-path { width:74vw; }.intro-wayve h1 { font-size:38px; }.intro-wayve-plane { top:13%; left:1%; width:92px; }.intro-wayve-sparkles { top:15%; right:2%; width:82px; }.intro-wayve-bulb { top:37%; right:3%; width:58px; } }
+    @media (prefers-reduced-motion:reduce) { .intro-wayve * { animation:none !important; opacity:1; }.intro-wayve-main-path,.intro-wayve-tail-path { stroke-dashoffset:0; } }
+
     /* Doodle paper theme — inspired by the supplied hand-drawn references */
     :root { --ink:#454149; --muted:#746f77; --line:#58535b; --soft:#f5eee4; --paper:#fffaf0; --shade:#e8dfd3; --coral:#ff6240; --yellow:#ffd15a; --mint:#67d6c8; --pink:#f58bb7; --violet:#bd91ef; --blue:#5ebfd7; }
     body { background:#171717; color:var(--ink); font-family:"Kaiti SC","STKaiti","KaiTi","Comic Sans MS",cursive; }
@@ -875,3 +916,17 @@
     }
     @media (max-width:700px) { .question-nav { gap:16px; padding-right:0; } .question-arrow { width:52px; height:52px; flex-basis:52px; } }
     .question-validation { min-height:20px; margin:14px 0 0; color:#a5674e; font-size:13px; }
+
+    /* Final cascade overrides for the selectively ported intro artwork. */
+    .intro-wayve { overflow:hidden; cursor:default; color:#20232a; background:#fff; isolation:isolate; }
+    .intro-wayve-inner { width:min(720px,76vw); position:relative; z-index:2; text-align:center; transform:translateY(-1vh); }
+    .intro-wayve-badge { display:grid; place-items:center; width:min(228px,46vw); height:auto; margin:0 auto 18px; border:0; border-radius:0; background:transparent; }
+    .intro-wayve-badge img { display:block; width:100%; height:auto; }
+    .intro-wayve-plane,.intro-wayve-sparkles,.intro-wayve-bulb { position:absolute; z-index:1; opacity:0; pointer-events:none; }
+    .intro-wayve-plane img,.intro-wayve-sparkles img,.intro-wayve-bulb img { display:block; width:100%; height:auto; }
+    .intro-wayve-plane { top:18%; left:7%; width:128px; }
+    .intro-wayve-sparkles { top:14%; right:8%; width:116px; transform:rotate(8deg); }
+    .intro-wayve-bulb { top:39%; right:8%; width:78px; transform:rotate(45deg); }
+    .intro-wayve::before { background:radial-gradient(circle at 1px 1px,rgba(32,35,42,.075) 1px,transparent 1.1px) 0 0/22px 22px; opacity:.48; }
+    .intro-wayve::after { width:min(780px,82vw); height:min(510px,62vh); border:3px solid #20232a; border-radius:30px 38px 28px 34px; background:#fbf6eb; }
+    @media (max-width:780px) { .intro-wayve::after { width:90vw; height:535px; }.intro-wayve-inner { width:86vw; }.intro-wayve-path { width:74vw; }.intro-wayve-plane { top:13%; left:1%; width:92px; }.intro-wayve-sparkles { top:15%; right:2%; width:82px; }.intro-wayve-bulb { top:37%; right:3%; width:58px; } }
