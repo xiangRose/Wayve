@@ -1,107 +1,42 @@
-# Career Trial Design
+# Role Work Sample 与 Collaboration
 
-Status: Hackathon P0 Frozen
-Source of Truth: Feishu
-Repository Snapshot Updated: 2026-08-29
+状态：CURRENT PRODUCT SOT — APPROVED FOR FEISHU SOT
 
-This document exclusively owns shared Career Trial behavior and the five-role P0 Trial contract. Evidence interpretation belongs to [Behavior and Evidence](behavior-and-evidence.md); report presentation belongs to [Analysis and Growth](analysis-and-growth.md); concrete fixtures belong to the Task Content Library.
+## MVP Scope Cut Override
 
-## Shared Trial Contract
+当前 Hard Skill 仅使用 Scenario-based Hard Skill Assessment；Role Work Sample 机制为 Future / Post-MVP。Collaboration MVP shared world 为 Nova V3 / AI Product Launch Review。
 
-Career trials are 3–5 minute slices of realistic work, not exams or disguised questionnaires. Every trial uses these internal semantic stages:
+## Role Work Sample 契约
 
-`scenario -> first_judgment -> evidence_gathering -> twist -> reconsideration -> final_decision`
+原 Career Trial 现在统一称为 Role Work Sample：一个有边界的真实岗位工作片段。共享内部语义主轴为：
 
-The stages are evidence anchors, not mandatory pages. A visible experience may use four or fewer user-facing steps when it maps each action to exactly one internal `sourceStep`.
+`scenario → first_judgment → evidence_gathering → twist → reconsideration → final_decision`
 
-## Presentation Grammars
+这不是六个页面的要求。一个节点可观察多个 requirement，一个 requirement 可由多个节点支持；本次未合理观察到的 requirement 记录为 `not_observed`。
 
-| Grammar | Use | Contract |
-| --- | --- | --- |
-| Structured decision | Prioritization, evaluation, and implementation judgments. | Visible steps normally map one-to-one to semantic stages. |
-| Persistent work scene | Investigation, composition, simulation, and revision of one work object. | Scene acts may contain several semantic stages; emitted events retain one `sourceStep` each. |
+## 五岗交互语法
 
-The five roles are distinct Career Trials, not five MCQ variants: `ai_product` uses priority + evidence inspection + consequence + revision; `ai_ops` uses lifecycle/cohort diagnosis + intervention configuration + modeled consequence + revision; `ai_data_eval` uses case inspection + quality gate/routing + bounded evaluation audit + retest + rollout revision; `ai_app_dev` uses runtime/source configuration + a fixed A/B/C request suite + regression/fallback consequence + revision; `ai_ui_design` uses state/transition editing + uncertainty/recovery + a deterministic simulated-user path + revision. A role-specific trial cannot redefine shared stage, evidence, report, or growth rules.
+| 岗位 | Work Sample 语法 |
+|---|---|
+| AI Product | 证据检查、优先级、后果、修订 |
+| AI UI Design | 状态 / 转移编辑、模拟用户、恢复、修订 |
+| AI Operations | 漏斗 / cohort 诊断、干预、结果、修订 |
+| AI Data Evaluation | badcase、rubric / gate、audit、retest |
+| AI Application Development | trace、配置、固定测试集、regression、修订 |
 
-## Experience Requirements
+五份 Frozen Trial Specs 是岗位机制来源，升级为 Role Work Sample，不另建题库。覆盖 requirement 不是题目数量。一个 Work Sample 通常稳定观察约 4–6 个相关 requirement，完整 catalog 仍然保留。
 
-- One work situation and goal remain understandable throughout.
-- Interactions are lightweight and observable.
-- Choices have visible consequences when the scenario supports them.
-- Users can inspect relevant information without specialized prior knowledge.
-- A failed attempt reveals information and allows reconsideration; it is not automatically negative evidence.
-- Dragging always has a click or keyboard fallback.
-- Short reasons may explain a choice but long free text is not the primary mechanic.
+## Collaboration
 
-Preferred interactions include choice, sorting, matching, information selection, point-and-click investigation, constrained composition, simulation, and revision.
+Standard Experience 默认包含 Collaboration，并提供 `Skip for now`。跳过后 Collaboration 为 `not_observed`，不产生 performance penalty，Working Portrait 不得生成未经观察的跨角色 claim；report 必须说明本次未观察跨角色协作行为。Demo Mode 可使用 shortened Collaboration path。
 
-Avoid knowledge tests, personality tests, self-rated ability, generic strength prompts, percentage career scores, and cosmetic game framing around unchanged question pages.
+## Launch War Room
 
-## Structured Choice Authoring Standard
+第一版使用 Reconverging Deterministic State Graph，而不是组合式剧情树。四个 Decision Beats：
 
-When a frozen role mechanic naturally uses a structured choice, content authors may reuse the teammate standard: one coherent work timeline; prompts of no more than three lines; four plausible competing options; approximately 12 seconds for the first judgment; one primary requirement per item; mixed action, validation, trade-off, and boundary decisions; randomized option positions; and QA checks for cueing, realism, and obvious one-right-three-wrong construction. This standard supports content authoring and QA only; it does not replace a role's interaction grammar or turn every Trial into multiple-choice questions.
+1. Information Exchange；
+2. Initial Proposal；
+3. Twist / Conflict Response；
+4. Final Commitment。
 
-## Stage Meanings
-
-| sourceStep | Required meaning |
-| --- | --- |
-| `scenario` | Establish role, work object, goal, and constraints. |
-| `first_judgment` | Capture an initial direction before all consequences are known. |
-| `evidence_gathering` | Let the user seek or select relevant inputs. |
-| `twist` | Reveal a meaningful consequence, contradiction, or edge case. |
-| `reconsideration` | Provide a real opportunity to update the work. |
-| `final_decision` | Preserve final work state, trade-off, and uncertainty. |
-
-If a trial cannot observe a stage, it must state why. Related requirements become `not_observed`; the trial must not silently infer them.
-
-## Showcase Trial: ai_product
-
-The user joins an AI meeting-assistant team. Registrations rise, first successful generation is low, and seven-day retention declines. Users who finish setup value the summary, but first use is difficult. With limited engineering capacity, the user must choose the most valuable near-term improvement.
-
-| Stage | Experience |
-| --- | --- |
-| `scenario` | Understand the activation and retention problem. |
-| `first_judgment` | Initially prioritize first-use completion, summary quality, or feature discovery and give a short reason. |
-| `evidence_gathering` | Choose limited funnel, segment-retention, user-feedback, or effort information. |
-| `twist` | Learn that enterprise retention is stronger, personal users drop at import, and users completing import value summaries. |
-| `reconsideration` | Update or retain the priority with a bounded explanation. |
-| `final_decision` | Choose simplify import, add templates, or improve quality; state trade-off, validation metric, and uncertainty. |
-
-This trial may observe prioritization, evidence seeking, hypothesis revision, trade-offs, metric selection, and communication inside the scenario. It cannot prove long-term product leadership, general domain expertise, or career suitability.
-
-## Five-role Frozen Contract Summary
-
-The five roles share the trial, Behavior, Evidence, Replay, Interest, and report boundaries while retaining distinct work objects:
-
-| jobId | Role purpose | Must-have mechanic | P0 status |
-| --- | --- | --- | --- |
-| `ai_product` | Product direction under user, business, and delivery constraints. | Evidence-informed priority, visible consequence, retain/revise, final deliverable. | Playable complete Mini Career Trial; Showcase. |
-| `ai_ops` | Activation, retention, feedback, and experiment loops. | Diagnose a lifecycle gap, choose an intervention, inspect modeled consequence, revise. | Playable complete Mini Career Trial; depth may differ. |
-| `ai_data_eval` | Defensible quality standards and launch decisions. | Inspect cases, configure quality/review boundary, retest contradiction, revise rollout judgment. | Playable complete Mini Career Trial; depth may differ. |
-| `ai_app_dev` | AI application behavior under quality, latency, cost, and stability constraints. | Configure a fixed request suite, inspect regression/fallback consequence, revise runtime choice. | Playable complete Mini Career Trial; depth may differ. |
-| `ai_ui_design` | Understandable AI states, uncertainty, waiting, and recovery. | Edit a state/transition flow, simulate a supplied path, inspect consequence, revise. | Playable complete Mini Career Trial; canonical spec FROZEN / PASS. |
-
-Each role's detailed mechanics remain in its frozen Role Trial Spec. Requirement IDs and event mappings must be promoted to `RoleDefinition` and `TaskTemplate` before implementation; runtime inference is prohibited.
-
-## Task Content Library
-
-The Task Content Library owns concrete scenario fixtures, evidence cards, messages, cases, choices, configuration values, deterministic consequence fixtures, and replay snapshot content. Structured choice is only one supported primitive. Content must follow the shared Product contract and the Frozen Role Trial Specs; it cannot override role mechanics or semantic boundaries. Teammate tiers (`2/3/4/5`) are internal authoring calibration only.
-
-## Role Trial Ownership
-
-| jobId | Role work focus | Status |
-| --- | --- | --- |
-| `ai_ops` | Diagnose activation or retention and choose a bounded experiment. | P0 playable complete Trial; content depth may differ. |
-| `ai_data_eval` | Inspect outputs and criteria, encounter contradiction, revise a rubric. | P0 playable complete Trial; content depth may differ. |
-| `ai_app_dev` | Connect AI capability to a workflow under implementation constraints. | P0 playable complete Trial; content depth may differ. |
-| `ai_ui_design` | Configure, test, and revise document-to-checklist states, uncertainty, recovery, and continuity. | P0 playable complete Trial; canonical spec FROZEN / PASS. |
-
-## Behavior Capture Handoff
-
-Trial implementations emit the common Behavior Event envelope defined by [Behavior and Evidence](behavior-and-evidence.md) and [TaskTemplate Schema](schemas/task-template.md). Trial files may define action-specific `payload`, but cannot define new evidence types or report reading orders.
-
-## Copy Boundary
-
-Allowed: “This behavior may support…”, “This was observed at…”, and “This task did not observe…”.
-
-Forbidden: “You are good/bad at…”, “This role is your best fit”, “You are naturally suited”, or any stable personality or ability conclusion.
+每个 Beat 有三个有真实收益和代价的 strategy families，支持有限结构化 free response、normalization、deterministic consequence，并在后果后汇合至下一 shared state。禁止 3 × 3 × 3 × 3 独立剧情树。五个岗位必须各自拥有 exclusive information、unique actionable agency、他人需要的信息和 meaningful final trade-off。

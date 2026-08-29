@@ -1,13 +1,11 @@
 # Product Schemas
 
-Status: Hackathon P0 Active Snapshot
-Source of Truth: Feishu
-Repository Snapshot Updated: 2026-08-28
+状态：CURRENT PRODUCT SOT — APPROVED FOR FEISHU SOT
 
-This directory exclusively owns stable engineering-facing container and field contracts:
+本目录负责稳定的工程侧容器与字段契约：
 
 - [RoleDefinition](role-definition.md)
 - [TaskTemplate](task-template.md)
 - [AnalysisReport](analysis-report.md)
 
-Schemas describe data shape. They do not redefine product scope, recommendation logic, trial semantics, evidence language, report reading order, or Growth Track behavior. Those rules belong to the Active Product Docs linked from the root [README](../README.md).
+Schemas 描述数据形状，不重新定义产品范围、Scenario Quiz / Future Work Sample 语义、Evidence 语言、Report 阅读顺序或 Growth Track 行为。

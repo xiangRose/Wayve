@@ -1,112 +1,52 @@
-# Analysis Report, Next Mission, and Growth Track
+# 整合报告、Reflection、Next Mission 与 Growth Track
 
-Status: Hackathon P0 Frozen
-Source of Truth: Feishu
-Repository Snapshot Updated: 2026-08-28
+状态：CURRENT PRODUCT SOT — APPROVED FOR FEISHU SOT
 
-This document exclusively owns post-trial product presentation, Interest Feedback, Next Mission, Growth Track, and Direction Update. Evidence semantics come from [Behavior and Evidence](behavior-and-evidence.md).
+## MVP Scope Cut Override
 
-## Analysis Report Purpose
+Report Part 1 = Professional Skill Snapshot（Scenario Quiz）；Part 2 = Working Portrait（Collaboration Behavior Evidence）；Reflection 保持 user-authored、source-separated。不得生成 Unified Job Fit、Career Fit、Personality Type 或 Soft Skill Score。
 
-The Analysis Report is an exploration summary, not a verdict. It keeps Resume / Background Evidence, Task Evidence, and Interest Feedback distinguishable and exposes unknowns and limits.
+## Report Presentation Principles
 
-It must not include a unified Job Fit Score, permanent ability profile, deterministic suitability statement, or recommendation-derived capability claim.
+报告必须同时满足：
 
-## Canonical Product Reading Order
+1. Narrative Spine：叙事是主骨架；
+2. Visual Readability：帮助快速理解；
+3. Evidence Explainability：重要判断可回放；
+4. Minimal Labeling：不把用户变成标签。
 
-Every P0 report uses exactly this user-facing order:
+这些是信息表达原则，不冻结 radar、bar、card、accordion、drawer、timeline 等具体组件。
 
-1. Exploration Summary
-2. Role Requirement Profile
-3. Current Evidence Profile
-4. Evidence Replay
-5. Interest Feedback
-6. Unknowns & Tensions
-7. Next Mission
+## Primary Narrative Layer
 
-Engineering schema fields may be organized differently, but UI and product documentation must not introduce another reading order.
+1. Exploration Summary / Role Context；
+2. What the work required and what happened；
+3. Hard Skill Readiness Snapshot；
+4. Working Portrait；
+5. Response to Change；
+6. Reflection / Background / Unknowns & Tensions；
+7. Next Mission。
 
-## Section Responsibilities
+这些内容不要求各自占独立页面。
 
-### Exploration Summary
+## Evidence Drill-down Layer
 
-Summarizes only the current exploration and observed evidence. It names boundaries and does not collapse evidence into one score or verdict.
+Evidence Replay 是 cross-cutting explainability mechanism，不是必须线性阅读的章节。重要 claim 可以从 Hard Skill、Working Portrait、Response to Change、Tension 或 Next Mission rationale 进入 Replay。具体按钮、card、drawer 和页面布局不属于 Product Contract。
 
-### Role Requirement Profile
+## Working Portrait
 
-Explains what the selected role commonly requires. It is role context, not a portrait of the user.
+Working Portrait 是基于 internal observation lenses 生成的 external bounded narrative，描述发生了什么、用户如何处理、带来了什么作用、出现了什么 tension、什么仍未知。不得生成 personality type、stable trait、soft-skill score、trait badge 或 Resilience Score。
 
-### Current Evidence Profile
+## Response to Change
 
-Shows available Background and Task Evidence against requirements, with source separation, unknowns, and confidence. A radar, if retained, represents current evidence coverage only.
+`initial position → new information → response → new constraint → adaptation → final position` 是 Working Portrait / Evidence Narrative 的动态结构，不是一级模块或分数。
 
-### Evidence Replay
+## Reflection
 
-Lets users inspect actions and source context behind task-evidence claims. Claims without replayable events cannot appear as task evidence.
+Reflection 是 optional、user-authored、persistent、source-separated。它可以进入 report、帮助 Next Mission prioritization、与 System Observation 形成 tension，但不能修改 Hard Skill、覆盖 Task / Collaboration Evidence 或成为 ability score。冲突时保留双视角。
 
-### Interest Feedback
+## Next Mission / Growth Track
 
-Shows the user's stated engagement, energy, enjoyment, or willingness separately. It is never mixed into Evidence or Current Evidence Profile.
+`Evidence Gap / Unknown → Next Experiment → Growth Track`
 
-### Unknowns & Tensions
-
-Names what the experience did not observe and where available evidence conflicts. Unknown is not weakness; tension is not a verdict.
-
-### Next Mission
-
-Proposes one bounded follow-up experiment tied to an unknown or evidence gap.
-
-## Next Mission Contract
-
-Each Next Mission includes:
-
-- target canonical role;
-- evidence gap or unknown;
-- mission prompt;
-- suggested steps;
-- estimated time;
-- deliverable;
-- how a reviewed completion could update Current Evidence Profile.
-
-Generation may consider explicit user interest when prioritizing options, but Interest Feedback is not proof of ability. A proposed mission remains pending until the user actually completes a later experiment.
-
-## Growth Track
-
-Growth Track is a time-based record of real career exploration experiments, not an ability-growth score.
-
-Hackathon P0 shows one Current Exploration Cycle:
-
-`Trial Completed -> Evidence Captured -> Analysis Report -> Next Mission -> Pending`
-
-`Pending` is the terminal P0 state. Do not display New Evidence, completed follow-up, long-term history, repeated pattern, trend, or Direction Update unless a real new experiment occurred.
-
-Only after a real later experiment:
-
-`Pending -> New Evidence -> user-confirmed Direction Update`
-
-New Evidence may update the Current Evidence Profile and mission choice. It does not automatically change direction.
-
-## Direction Update
-
-Direction Update is a long-term event explicitly confirmed by the user.
-
-AI may display evidence, unknowns, tensions, Interest Feedback, comparisons across actually experienced roles, and mission options. AI cannot announce a career switch or infer Direction Update from recommendation rank, `navigationScore`, Interest Feedback alone, or `not_observed`.
-
-## Demo Boundary
-
-Demo mode may seed recommendations, task state, evidence examples, and a pending Next Mission to keep the P0 story resilient. Every seeded item must be visibly demo data and preserve source and limits.
-
-Demo mode cannot fabricate completed later missions, New Evidence, historical cycles, recurring patterns, trends, or Direction Update.
-
-## Product Language
-
-- One trial: Observed Signal or Observed Pattern.
-- Two independent trials: Repeated Signal.
-- Three or more independent experiments: Recurring Pattern or Trend.
-- Interest language describes self-report only.
-- Not observed language explains coverage, never inability.
-- Direction language is reflective and user-confirmed, never deterministic.
-
-## Schema Handoff
-
-[AnalysisReport Schema](schemas/analysis-report.md) owns engineering field shape only. It must support this exact reading order and cannot redefine product language.
+Current MVP 可以把新 Next Mission 记录为 `pending`，直到后续真实实验完成并 review。这是 MVP 状态支持，不是 Growth Track 永久停留状态。
