@@ -269,6 +269,99 @@
       }
       .roles-explore-bubble-text { font-size:10px; }
     }
+    @media (max-width:800px) {
+      #roles {
+        overflow-x:hidden;
+        overflow-y:auto;
+      }
+      .roles-explore {
+        height:auto;
+        min-height:100%;
+      }
+      .roles-explore-scene {
+        display:grid;
+        grid-template-columns:repeat(3,minmax(0,1fr));
+        align-content:start;
+        gap:22px 18px;
+        height:auto;
+        min-height:100%;
+        padding:58px 24px 390px;
+        aspect-ratio:auto;
+        overflow:hidden;
+      }
+      .roles-explore-node {
+        position:relative;
+        left:auto !important;
+        top:auto !important;
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        justify-self:stretch;
+        width:100%;
+        min-width:0;
+        max-width:none;
+        min-height:132px;
+      }
+      .roles-explore-avatar {
+        width:clamp(78px,13vw,96px);
+      }
+      .roles-explore-bubble,
+      .roles-explore-bubble--ui,
+      .roles-explore-bubble--pm,
+      .roles-explore-bubble--dev,
+      .roles-explore-bubble--data,
+      .roles-explore-bubble--ops {
+        position:relative;
+        inset:auto;
+        width:min(100%,190px);
+        margin:0 auto -2px;
+      }
+      .roles-explore-bubble-text {
+        font-size:12px;
+        line-height:1.35;
+        white-space:normal;
+        overflow-wrap:anywhere;
+      }
+      .roles-explore-floor-wrap {
+        height:350px;
+      }
+      .roles-explore-desk-stage {
+        inset:auto 0 0;
+        height:360px;
+      }
+    }
+    @media (max-width:520px) {
+      .roles-explore-scene {
+        grid-template-columns:repeat(2,minmax(0,1fr));
+        gap:16px 14px;
+        padding:52px 18px 340px;
+      }
+      .roles-explore-node {
+        min-height:124px;
+      }
+      .roles-explore-node:last-child {
+        grid-column:1 / -1;
+        justify-self:center;
+        width:calc((100% - 14px) / 2);
+      }
+      .roles-explore-avatar {
+        width:78px;
+      }
+      .roles-explore-bubble,
+      .roles-explore-bubble--ui,
+      .roles-explore-bubble--pm,
+      .roles-explore-bubble--dev,
+      .roles-explore-bubble--data,
+      .roles-explore-bubble--ops {
+        width:min(100%,160px);
+      }
+      .roles-explore-floor-wrap {
+        height:310px;
+      }
+      .roles-explore-desk-stage {
+        height:320px;
+      }
+    }
     @media (prefers-reduced-motion:reduce) {
       .roles-explore-avatar { transition:none; }
       .roles-explore-node:hover .roles-explore-avatar,
@@ -606,7 +699,7 @@
     #report.active { height:calc(100vh - 96px); height:calc(100dvh - 96px); }
     .shell:has(#report.active) > .nav { display:flex; }
     .figma-report-nav { display:none; }
-    @media (max-width:700px) { .nav { height:70px; padding:0 18px; gap:24px; }.nav .brand img { width:66px; height:40px; }.nav .links { gap:23px; }.nav .links button { font-size:16px; }.nav .links button.active::after { bottom:-3px; width:25px; height:4px; }.profile-trigger { margin-left:auto; }.profile-trigger span { display:none; }.profile-trigger img { width:36px; height:36px; }.screen,#report.active { height:calc(100vh - 70px); height:calc(100dvh - 70px); } }
+    @media (max-width:700px) { .nav { height:70px; padding:0 14px; gap:14px; }.nav .brand img { width:62px; height:40px; }.nav .links { gap:clamp(12px,4vw,20px); flex:0 1 auto; min-width:0; }.nav .links button { padding:9px 0; font-size:clamp(14px,4vw,16px); line-height:1; white-space:nowrap; word-break:keep-all; }.nav .links button.active::after { bottom:-5px; width:25px; height:4px; }.profile-trigger { flex:0 0 auto; margin-left:auto; }.profile-trigger span { display:none; }.profile-trigger img { width:34px; height:34px; }.screen,#report.active { height:calc(100vh - 70px); height:calc(100dvh - 70px); } }
 
     /* Wayve opening animation — intentionally scoped to the intro layer only. */
     .intro-wayve { overflow:hidden; cursor:default; color:#20232a; background:#fff; isolation:isolate; }
