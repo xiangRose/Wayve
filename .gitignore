@@ -7,6 +7,10 @@ target/
 .mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+research/**/.venv/
+research/**/__pycache__/
+_archive_JobSearch/
+.cursor/
 
 ### STS ###
 .apt_generated
