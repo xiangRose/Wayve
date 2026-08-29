@@ -1235,17 +1235,49 @@
     );
   }
 
-  function renderScenePanelActions(step) {
+  function updateSceneSideNav(step) {
+    const prevBtn = document.getElementById('sceneSimPrevBtn');
+    const nextBtn = document.getElementById('sceneSimNextBtn');
+    if (!prevBtn || !nextBtn) return;
+
+    if (!step.scripted) {
+      prevBtn.hidden = true;
+      nextBtn.hidden = false;
+      nextBtn.disabled = false;
+      nextBtn.textContent = '继续';
+      nextBtn.setAttribute('data-action', 'scene-continue');
+      nextBtn.setAttribute('aria-label', '继续');
+      return;
+    }
+
+    const scene = getCurrentSceneScript();
+    if (!scene) {
+      prevBtn.hidden = true;
+      nextBtn.hidden = true;
+      return;
+    }
+
     const phase = state.scenePanelPhase;
     const lastPhase = SCENE_PANEL_PHASES.length - 1;
-    const back =
-      phase > 0
-        ? '<button class="scene-sim-ghost" type="button" data-action="scene-phase-prev">上一步</button>'
-        : '';
-    const nextLabel = phase === lastPhase ? '确认并继续 →' : '下一步 →';
-    const nextAction = phase === lastPhase ? 'scene-submit' : 'scene-phase-next';
-    return '<div class="scene-sim-actions">' + back +
-      '<button class="btn" type="button" data-action="' + nextAction + '">' + nextLabel + '</button></div>';
+    prevBtn.hidden = phase <= 0;
+    nextBtn.hidden = false;
+    if (!prevBtn.hidden) {
+      prevBtn.disabled = false;
+    }
+    prevBtn.textContent = '上一步';
+    prevBtn.setAttribute('data-action', 'scene-phase-prev');
+    prevBtn.setAttribute('aria-label', '上一步');
+
+    if (phase === lastPhase) {
+      nextBtn.textContent = '确认并继续';
+      nextBtn.setAttribute('data-action', 'scene-submit');
+      nextBtn.setAttribute('aria-label', '确认并继续');
+    } else {
+      nextBtn.textContent = '下一步';
+      nextBtn.setAttribute('data-action', 'scene-phase-next');
+      nextBtn.setAttribute('aria-label', '下一步');
+    }
+    nextBtn.disabled = false;
   }
 
   function renderSceneSim() {
@@ -1265,8 +1297,8 @@
         '<div class="scene-sim-panel-inner scene-sim-placeholder">' +
         '<p class="scene-sim-step">情景 ' + (state.sceneStep + 1) + ' / ' + SCENE_STEPS.length + '</p>' +
         '<h3>' + esc(step.placeholderTitle) + '</h3>' +
-        '<p>' + esc(step.placeholderDesc) + '</p>' +
-        '<div class="scene-sim-actions"><button class="btn" type="button" data-action="scene-continue">继续 →</button></div></div>';
+        '<p>' + esc(step.placeholderDesc) + '</p></div>';
+      updateSceneSideNav(step);
       return;
     }
 
@@ -1274,6 +1306,7 @@
     if (!scene) {
       panel.innerHTML =
         '<div class="scene-sim-panel-inner scene-sim-placeholder"><p>情景剧本加载中…</p></div>';
+      updateSceneSideNav(step);
       loadSceneScripts().then(() => renderSceneSim());
       return;
     }
@@ -1281,8 +1314,8 @@
     panel.innerHTML =
       '<div class="scene-sim-panel-inner scene-sim-panel-inner--phased">' +
       '<p class="scene-sim-step">情景 ' + (state.sceneStep + 1) + ' / ' + SCENE_STEPS.length + '</p>' +
-      '<div class="scene-sim-phase-body">' + renderScenePanelPhase(scene, step) + '</div>' +
-      renderScenePanelActions(step) + '</div>';
+      '<div class="scene-sim-phase-body">' + renderScenePanelPhase(scene, step) + '</div></div>';
+    updateSceneSideNav(step);
   }
 
   function syncSceneDraftFromDom() {

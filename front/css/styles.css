@@ -1080,6 +1080,7 @@
       overflow:hidden;
     }
     .scene-sim {
+      --sts:1.18;
       position:relative;
       width:100%;
       height:100%;
@@ -1092,39 +1093,80 @@
       z-index:3;
       top:clamp(18px,3vh,32px);
       left:clamp(24px,6vw,107px);
-      padding:6px 22px;
+      padding:calc(6px * var(--sts)) calc(22px * var(--sts));
       border-radius:70px;
       color:#fff;
-      font-size:clamp(16px,1.6vw,24px);
+      font-size:calc(clamp(16px,1.6vw,24px) * var(--sts));
       font-weight:600;
       line-height:1.35;
     }
     .scene-sim-badge--green { background:#c1d8b0; }
     .scene-sim-badge--orange { background:#fecd86; }
     .scene-sim-badge--purple { background:#bdb0d8; }
-    .scene-sim-art {
+    .scene-sim-stage {
       position:absolute;
-      inset:clamp(70px,10vh,113px) clamp(16px,4vw,80px) clamp(150px,18vh,200px);
+      z-index:2;
+      inset:clamp(48px,7vh,92px) clamp(12px,2.5vw,48px) clamp(200px,26vh,280px);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:clamp(10px,1.8vw,28px);
+    }
+    .scene-sim-side-btn {
+      flex-shrink:0;
+      z-index:5;
+      min-width:calc(168px * var(--sts));
+      height:calc(44px * var(--sts));
+      padding:0 calc(20px * var(--sts));
+      border-radius:999px;
+      border:2px solid #aac393;
+      background:#aac393;
+      color:#fff;
+      font-size:calc(14px * var(--sts));
+      font-weight:700;
+      white-space:nowrap;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .scene-sim-side-btn:hover:not(:disabled) {
+      background:#9ab884;
+      border-color:#9ab884;
+    }
+    .scene-sim-side-btn:disabled {
+      opacity:.32;
+      cursor:not-allowed;
+    }
+    .scene-sim-side-btn[hidden] {
+      display:none;
+    }
+    .scene-sim-art {
+      flex:1;
+      min-width:0;
+      height:100%;
       display:flex;
       align-items:center;
       justify-content:center;
       pointer-events:none;
     }
     .scene-sim-art img {
+      width:min(100%,1100px);
       max-width:100%;
       max-height:100%;
       object-fit:contain;
       object-position:center bottom;
+      transform:scale(1.1);
+      transform-origin:center bottom;
     }
     .scene-sim-panel {
       position:absolute;
       z-index:4;
       left:50%;
       bottom:clamp(16px,3vh,36px);
-      width:min(1298px,calc(100% - 48px));
-      min-height:130px;
-      max-height:min(42vh,320px);
-      padding:20px clamp(20px,3vw,36px) 18px;
+      width:min(1420px,calc(100% - 40px));
+      min-height:calc(130px * var(--sts));
+      max-height:min(46vh,380px);
+      padding:calc(20px * var(--sts)) calc(36px * var(--sts)) calc(18px * var(--sts));
       border-radius:158px;
       background:rgba(255,255,255,.72);
       box-shadow:0 4px 4px rgba(188,188,188,.25), inset 0 4px 4px rgba(206,206,206,.25);
@@ -1132,7 +1174,7 @@
       transform:translateX(-50%);
     }
     .scene-sim-panel-inner {
-      max-width:920px;
+      max-width:calc(920px * var(--sts));
       margin:0 auto;
     }
     .scene-sim-head {
@@ -1144,42 +1186,42 @@
       font-weight:700;
     }
     .scene-sim-time {
-      padding:4px 10px;
+      padding:calc(4px * var(--sts)) calc(10px * var(--sts));
       border-radius:8px;
       background:#f3f2f7;
-      font-size:13px;
+      font-size:calc(13px * var(--sts));
       color:#7a7873;
     }
     .scene-sim-title {
-      font-size:clamp(16px,1.4vw,20px);
+      font-size:calc(clamp(16px,1.4vw,20px) * var(--sts));
     }
     .scene-sim-context {
-      margin:0 0 12px;
+      margin:0 0 calc(12px * var(--sts));
       color:#5a5752;
-      font-size:14px;
+      font-size:calc(14px * var(--sts));
       line-height:1.55;
     }
     .scene-sim-messages {
       display:grid;
-      gap:8px;
-      margin:0 0 14px;
+      gap:calc(8px * var(--sts));
+      margin:0 0 calc(14px * var(--sts));
     }
     .scene-sim-message {
-      padding:10px 14px;
+      padding:calc(10px * var(--sts)) calc(14px * var(--sts));
       border-radius:14px;
       background:#f6fff6;
       border:1px solid #e5f2e8;
-      font-size:14px;
+      font-size:calc(14px * var(--sts));
       line-height:1.45;
       color:#2e2d2b;
       display:flex;
       align-items:baseline;
-      gap:8px;
+      gap:calc(8px * var(--sts));
       flex-wrap:wrap;
     }
     .scene-sim-message-speaker {
       flex-shrink:0;
-      font-size:12px;
+      font-size:calc(12px * var(--sts));
       font-weight:700;
       color:#779d56;
     }
@@ -1188,23 +1230,23 @@
       min-width:0;
     }
     .scene-sim-question {
-      margin:0 0 12px;
-      font-size:15px;
+      margin:0 0 calc(12px * var(--sts));
+      font-size:calc(15px * var(--sts));
       font-weight:700;
       color:#2e2d2b;
     }
     .scene-sim-options {
       display:grid;
-      gap:8px;
-      margin-bottom:12px;
+      gap:calc(8px * var(--sts));
+      margin-bottom:calc(12px * var(--sts));
     }
     .scene-sim-option {
       border:1.5px solid #e5f2e8;
       border-radius:12px;
       background:#fff;
-      padding:12px 14px;
+      padding:calc(12px * var(--sts)) calc(14px * var(--sts));
       text-align:left;
-      font-size:14px;
+      font-size:calc(14px * var(--sts));
       line-height:1.45;
       color:#2e2d2b;
       cursor:pointer;
@@ -1218,30 +1260,38 @@
     }
     .scene-sim-custom label {
       display:block;
-      margin-bottom:6px;
-      font-size:13px;
+      margin-bottom:calc(6px * var(--sts));
+      font-size:calc(13px * var(--sts));
       font-weight:700;
       color:#5a5752;
     }
     .scene-sim-custom textarea {
       width:100%;
-      min-height:64px;
-      max-height:100px;
-      padding:10px 12px;
+      min-height:calc(64px * var(--sts));
+      max-height:calc(100px * var(--sts));
+      padding:calc(10px * var(--sts)) calc(12px * var(--sts));
       border:1.5px solid #e5f2e8;
       border-radius:12px;
       background:#fff;
       resize:vertical;
-      font-size:14px;
+      font-size:calc(14px * var(--sts));
       line-height:1.45;
     }
     .scene-sim-actions {
       display:flex;
-      justify-content:flex-end;
-      gap:10px;
-      margin-top:14px;
+      justify-content:space-between;
+      align-items:center;
+      gap:calc(12px * var(--sts));
+      margin-top:calc(14px * var(--sts));
+    }
+    .scene-sim-actions-start {
+      display:flex;
+      align-items:center;
+      min-width:0;
     }
     .scene-sim-actions .btn {
+      flex-shrink:0;
+      margin-left:auto;
       min-width:140px;
       border-radius:999px;
       background:#aac393;
@@ -1249,20 +1299,23 @@
       color:#fff;
       font-weight:700;
     }
+    .scene-sim-actions-start:not(:empty) + .btn {
+      margin-left:0;
+    }
     .scene-sim-placeholder h3 {
-      margin:0 0 8px;
-      font-size:18px;
+      margin:0 0 calc(8px * var(--sts));
+      font-size:calc(18px * var(--sts));
       color:#2e2d2b;
     }
     .scene-sim-placeholder p {
       margin:0;
       color:#7a7873;
-      font-size:14px;
+      font-size:calc(14px * var(--sts));
       line-height:1.55;
     }
     .scene-sim-step {
-      margin:0 0 10px;
-      font-size:12px;
+      margin:0 0 calc(10px * var(--sts));
+      font-size:calc(12px * var(--sts));
       font-weight:700;
       color:#aac393;
       letter-spacing:.04em;
@@ -1329,8 +1382,8 @@
       padding-right:4px;
     }
     .scene-sim-phase-label {
-      margin:0 0 8px;
-      font-size:12px;
+      margin:0 0 calc(8px * var(--sts));
+      font-size:calc(12px * var(--sts));
       font-weight:700;
       letter-spacing:.06em;
       text-transform:uppercase;
@@ -1338,16 +1391,16 @@
     }
     .scene-sim-question--solo {
       margin:4px 0 0;
-      font-size:clamp(16px,1.5vw,18px);
+      font-size:calc(clamp(16px,1.5vw,18px) * var(--sts));
       line-height:1.55;
     }
     .scene-sim-ghost {
       border:1.5px solid #e5f2e8;
       border-radius:999px;
       background:#fff;
-      padding:10px 18px;
+      padding:calc(10px * var(--sts)) calc(18px * var(--sts));
       color:#5a5752;
-      font-size:14px;
+      font-size:calc(14px * var(--sts));
       font-weight:600;
       cursor:pointer;
     }
@@ -1355,10 +1408,20 @@
     @media (max-width:900px) {
       .scene-sim-panel {
         border-radius:24px;
-        max-height:min(48vh,360px);
+        max-height:min(52vh,400px);
       }
-      .scene-sim-art {
-        inset:64px 12px 180px;
+      .scene-sim-stage {
+        inset:56px 6px 200px;
+        gap:6px;
+      }
+      .scene-sim-side-btn {
+        min-width:152px;
+        height:40px;
+        padding:0 16px;
+        font-size:13px;
+      }
+      .scene-sim-art img {
+        transform:scale(1.05);
       }
     }
     @media (max-width:700px) {
