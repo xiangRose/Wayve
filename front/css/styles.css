@@ -77,7 +77,8 @@
     .bar { height:14px; width:440px; max-width:75vw; border:2px solid var(--ink); margin:26px auto 9px; background:#fff; }
     .bar > span { display:block; height:100%; background:var(--ink); width:70%; transition:width .25s; }
     .loading-list { display:grid; gap:10px; text-align:left; width:350px; max-width:75vw; margin:28px auto 0; color:var(--muted); }
-    .loading-list .done::before { content:'✓'; color:var(--ink); font-weight:bold; display:inline-block; width:23px; }
+    .loading-list > div::before { content:'○'; color:var(--muted); display:inline-block; width:23px; }
+    .loading-list > .done::before { content:'✓'; color:var(--ink); font-weight:bold; }
     #recommend { text-align:center; }
     #recommend > h1 { margin-bottom:7px; }
     .recommendations { min-height:clamp(380px,52vh,500px); max-width:1080px; margin:24px auto 0; display:flex; justify-content:center; align-items:center; padding:28px 48px 44px; overflow:visible; }
@@ -116,6 +117,17 @@
       height:100%;
       min-height:calc(100dvh - 96px);
       background:#fff;
+    }
+    .roles-return-recommend {
+      position:absolute;
+      z-index:20;
+      top:clamp(16px,2.6vh,28px);
+      left:clamp(18px,4vw,58px);
+      padding:7px 4px;
+      border:0;
+      border-bottom:2px solid #f2c94c;
+      background:rgba(255,255,255,.9);
+      font-weight:700;
     }
     .roles-explore-scene {
       position:relative;
@@ -246,6 +258,7 @@
     }
     @media (max-width:900px) {
       #roles { padding:0; }
+      .roles-return-recommend { top:12px; left:14px; font-size:13px; }
       .roles-explore,
       .roles-explore-scene {
         min-height:calc(100dvh - 70px);

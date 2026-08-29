@@ -48,6 +48,7 @@
     sceneDraft: { selectedOptionId: null, customText: '' },
     sceneStepStates: {},
     sceneFlowStarted: false,
+    rolesEntrySource: null,
   };
 
   const ROLE_DESK_ITEMS = [
@@ -243,7 +244,7 @@
     const button = document.getElementById(config.buttonId);
     const step = document.getElementById(config.stepId);
     if (button) { button.disabled = true; button.textContent = config.pendingLabel; }
-    if (step) { step.classList.remove('done'); step.textContent = '○ ' + config.doneStep; }
+    if (step) { step.classList.remove('done'); step.textContent = config.doneStep; }
     setAnalysisProgress(key, 0);
     const timer = window.setInterval(() => {
       const current = analysisProgress[key]?.value || 0;
@@ -314,7 +315,11 @@
     if (active) active.scrollTop = 0;
     window.scrollTo(0, 0);
     if (id === 'growth') renderGrowth();
-    if (id === 'roles') renderRoles();
+    if (id === 'roles') {
+      renderRoles();
+      const returnButton = document.getElementById('rolesReturnRecommendBtn');
+      if (returnButton) returnButton.hidden = state.rolesEntrySource !== 'recommend';
+    }
     if (id === 'sceneSim') renderSceneSim();
     if (id === 'analyze1') startAnalysisProgress('profile');
     if (id === 'analyze2') startAnalysisProgress('task');
@@ -1624,6 +1629,9 @@
         const screen = nav.closest('.screen');
         const isProfileForward = screen && nav.closest('.form-actions') && ['profile1', 'profile2'].includes(screen.id);
         if (isProfileForward && !validateProfileStep(screen.id)) return;
+        if (nav.dataset.go === 'roles' && nav.dataset.rolesEntry !== 'preserve') {
+          state.rolesEntrySource = nav.dataset.rolesEntry === 'recommend' ? 'recommend' : null;
+        }
         go(nav.dataset.go);
         updateAllProfileCtaStates();
       }
@@ -1672,12 +1680,16 @@
       if (drawerGo) {
         document.getElementById('drawer').classList.remove('show');
         document.getElementById('drawerShade').classList.remove('show');
+        if (drawerGo.dataset.go === 'roles') state.rolesEntrySource = null;
         go(drawerGo.dataset.go);
       }
     });
 
     document.querySelectorAll('[data-nav]').forEach((b) => {
-      b.addEventListener('click', () => go(b.dataset.nav));
+      b.addEventListener('click', () => {
+        if (b.dataset.nav === 'roles') state.rolesEntrySource = null;
+        go(b.dataset.nav);
+      });
     });
 
     document.querySelectorAll('.selectable .chip').forEach((c) => {
