@@ -819,27 +819,24 @@
     .question-arrow:not(:disabled)[data-qnav="next"]::before { filter:brightness(0) invert(1); }
     .question-arrow:disabled { cursor:not-allowed; opacity:.35; background:#fff; }
     @media (min-width:701px) {
-      :is(#choice,#ranking,#category,#evidence,#open) .question {
-        position:relative;
-        container-type:inline-size;
-      }
+      :is(#choice,#ranking,#category,#evidence,#open) { position:relative; aspect-ratio:1440 / 900; overflow:hidden; }
       :is(#choice,#ranking,#category,#evidence,#open) .question-nav {
-        position:relative;
-        margin-top:1.84cqw;
-        margin-left:calc(70.764vw - 50vw + 50%);
-        width:14.84cqw;
-        height:6.17cqw;
-        gap:2.49cqw;
         margin:0;
+        position:absolute;
+        left:70.7638889%;
+        top:77%;
+        width:9.5138889%;
+        height:6.3333333%;
+        gap:1.5972222%;
       }
       :is(#choice,#ranking,#category,#evidence,#open) .question-arrow {
-        width:6.17cqw;
-        height:6.17cqw;
-        flex-basis:6.17cqw;
+        width:41.6666667%;
+        height:100%;
+        flex-basis:41.6666667%;
       }
       :is(#choice,#ranking,#category,#evidence,#open) .question-arrow::before {
-        width:2.92cqw;
-        height:3.03cqw;
+        width:47.3684211%;
+        height:49.122807%;
       }
     }
     @media (max-width:700px) { .question-nav { gap:16px; padding-right:0; } .question-arrow { width:52px; height:52px; flex-basis:52px; } }

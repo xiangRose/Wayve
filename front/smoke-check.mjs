@@ -16,12 +16,11 @@ assert(css.includes('width:57px') && css.includes('height:57px') && css.includes
 assert(css.includes('border-radius:50%') && css.includes('#a3e092'), 'Figma pagination circle styling drift');
 assert(css.includes('.question-arrow:not(:disabled)[data-qnav="next"]') && css.includes('background:#8ac27b'), 'active Next state missing');
 assert(css.includes('filter:brightness(0) invert(1)'), 'active Next white arrow state missing');
-assert(css.includes('container-type:inline-size') && css.includes('margin-top:1.84cqw') && css.includes('margin-left:calc(70.764vw - 50vw + 50%)'), 'pagination X is not mapped to exploration frame');
-assert(!css.includes('.question-nav { margin-left:auto'), 'pagination X must not anchor to answer column');
-assert(css.includes('width:14.84cqw') && css.includes('gap:2.49cqw'), 'pagination group scaling drift');
-assert(!css.includes('77vh') && !css.includes('70.764%'), 'pagination remains viewport anchored');
-assert(css.includes('width:6.17cqw') && css.includes('height:6.17cqw'), 'button dimensions are not scaled with composition');
-assert(css.includes('width:2.92cqw') && css.includes('height:3.03cqw'), 'vector dimensions are not scaled with composition');
+assert(css.includes('aspect-ratio:1440 / 900') && css.includes('left:70.7638889%') && css.includes('top:77%'), 'pagination is not mapped to root exploration stage');
+assert(!css.includes('70.764vw') && !css.includes('77vh') && !css.includes('margin-left:calc(70.764vw'), 'pagination remains viewport anchored');
+assert(css.includes('width:9.5138889%') && css.includes('gap:1.5972222%'), 'pagination group scaling drift');
+assert(css.includes('width:41.6666667%') && css.includes('height:100%'), 'button dimensions are not scaled with composition');
+assert(css.includes('width:47.3684211%') && css.includes('height:49.122807%'), 'vector dimensions are not scaled with composition');
 assert(css.includes('.question-arrow {') && css.includes('font-size:0') && css.includes('.question-arrow span { display:none; }'), 'legacy pagination glyphs are not visually suppressed');
 assert(!html.includes('提交回答') && !html.includes('提交匹配') && !html.includes('提交选择'), 'per-question submit CTA remains');
 assert(app.includes('navigateQuestion') && app.includes('persistQuestion') && app.includes('restoreQuestionAnswer'), 'pagination handlers incomplete');
