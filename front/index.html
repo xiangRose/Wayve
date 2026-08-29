@@ -4,16 +4,16 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>AI 职业方向探索</title>
-  <link rel="stylesheet" href="css/styles.css?v=roles-explore-desk" />
+  <link rel="stylesheet" href="css/styles.css?v=scene-s2-s3" />
 </head>
 <body>
   <main class="shell">
     <section class="intro intro-wayve" id="intro" aria-label="开场动画">
-      <div class="intro-wayve-plane" aria-hidden="true"><svg viewBox="0 0 64 64"><path d="M7 29 56 9 41 54 28 37 7 29Z" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="M28 37 56 9" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div>
-      <div class="intro-wayve-cloud" aria-hidden="true"><svg viewBox="0 0 80 42"><path d="M13 31c3-10 10-13 18-10 4-12 22-12 26 1 9-2 15 4 15 9H13Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
-      <div class="intro-wayve-stars" aria-hidden="true">✦&nbsp;&nbsp;✦</div>
+      <div class="intro-wayve-plane" aria-hidden="true"><img src="assets/intro-plane-cutout.png" alt="" /></div>
+      <div class="intro-wayve-sparkles" aria-hidden="true"><img src="assets/intro-sparkles-cutout.png" alt="" /></div>
+      <div class="intro-wayve-bulb" aria-hidden="true"><img src="assets/intro-bulb-cutout.png" alt="" /></div>
       <div class="intro-wayve-inner">
-        <div class="intro-wayve-badge">AI</div><h1>探索 AI 时代的职业可能性</h1><p class="intro-wayve-en">AI Career Explorer</p>
+        <div class="intro-wayve-badge"><img src="assets/wayve-logo.png" alt="试途 Wayve" /></div><h1>仕途之前 先“试途”</h1><p class="intro-wayve-en">AI Career Explorer</p>
         <div class="intro-wayve-path" aria-hidden="true"><svg viewBox="0 0 760 90" preserveAspectRatio="none"><path class="intro-wayve-main-path" d="M8 46C170 44 215 52 370 46S590 42 744 46"/><path class="intro-wayve-tail-path" d="M744 46c-24 10-44 11-58 22-12 8-2 16 13 10 16-7 21-21 20-31"/></svg></div>
         <p class="intro-wayve-sub">通过真实的工作微任务，发现更适合你的 AI 职业方向。</p>
         <div class="intro-wayve-actions"><button id="introEnterBtn" type="button">开始探索&nbsp;&nbsp;→</button><p>不急着做决定，先走一段看看。</p></div>
@@ -46,6 +46,8 @@
             <small>先做几个真实任务，再看哪条路更适合你。</small>
           </div>
 
+          <button class="landing-scroll-cue" id="homeScrollCue" type="button" aria-label="向下浏览下一屏">↓</button>
+
           <div class="landing-path path-left" aria-hidden="true"></div>
           <div class="landing-path path-right" aria-hidden="true"></div>
           <div class="career-tag tag-a"><i></i> 正在找工作</div>
@@ -64,8 +66,8 @@
           </div>
         </div>
       </section>
-      <section class="home-panel home-entry-panel" aria-label="职业探索入口">
-        <div class="hero"><h1>开始探索 AI 时代的职业可能性</h1><p class="subtitle">通过真实的工作微任务，发现更适合你的 AI 职业方向。</p><div class="entry-grid"><article class="card entry-card"><h2>AI 推荐适合你的岗位</h2><p>基于你的背景和兴趣，智能推荐值得优先体验的岗位。</p><button class="btn" data-go="profile1" type="button">获取职位推荐</button></article><article class="card entry-card"><h2>我想自己选择岗位体验</h2><p>从热门 AI 岗位中自由选择，开始任务体验。</p><button class="btn" data-go="roles" type="button">直接体验岗位</button></article></div></div>
+      <section class="home-panel home-entry-panel" id="homeEntry" aria-label="职业探索入口">
+        <div class="hero"><h1>开始探索 AI 时代的职业可能性</h1><p class="subtitle">通过真实的工作微任务，发现更适合你的 AI 职业方向。</p><div class="entry-grid"><article class="card entry-card"><h2>AI 推荐适合你的岗位</h2><p>基于你的背景和兴趣，智能推荐值得优先体验的岗位。</p><button class="btn" data-go="profile1" type="button">获取职位推荐</button></article><article class="card entry-card"><h2>我想自己选择岗位体验</h2><p>从热门 AI 岗位中自由选择，开始任务体验。</p><button class="btn" data-go="roles" type="button">直接体验岗位</button></article></div><div class="entry-illustrations" aria-hidden="true"><img src="assets/entry-recommendation.png" alt="" /><img src="assets/entry-self-explore.png" alt="" /></div></div>
       </section>
     </section>
 
@@ -193,6 +195,6 @@
 
     <div class="drawer-shade" id="drawerShade"></div><aside class="drawer" id="drawer"><div class="drawer-head"><b>我的</b><button class="close" id="drawerClose" type="button">×</button></div><div class="avatar"><img src="assets/profile-avatar.jpg" alt="小途头像" /></div><h2 style="margin-bottom:2px">探索者</h2><p class="profile-id" id="drawerSessionId">会话加载中…</p><ul class="drawer-menu"><li data-go="roles">我的岗位</li><li data-go="growth">我的报告</li><li>我的收藏</li><li>设置</li><li>帮助与反馈</li><li class="logout">退出登录</li></ul></aside>
   </main>
-  <script src="js/app.js?v=roles-explore-desk"></script>
+  <script src="js/app.js?v=scene-s2-s3"></script>
 </body>
 </html>
