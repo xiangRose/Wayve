@@ -16,6 +16,7 @@ assert(css.includes('width:57px') && css.includes('height:57px') && css.includes
 assert(css.includes('border-radius:50%') && css.includes('#a3e092'), 'Figma pagination circle styling drift');
 assert(css.includes('.question-arrow:not(:disabled)[data-qnav="next"]') && css.includes('background:#8ac27b'), 'active Next state missing');
 assert(css.includes('filter:brightness(0) invert(1)'), 'active Next white arrow state missing');
+assert(css.includes('.option:focus-visible') && css.includes('.check-option:has(input:focus-visible)'), 'keyboard focus feedback missing');
 assert(css.includes('.figma-question-panel') && css.includes('container-type:inline-size') && css.includes('right:11.05cqw') && css.includes('bottom:2.4919cqw'), 'pagination is not mapped to Figma question panel');
 assert(!css.includes('70.764vw') && !css.includes('77vh') && !css.includes('left:70.7638889%'), 'pagination remains root viewport anchored');
 assert(css.includes('width:14.84cqw') && css.includes('gap:2.49cqw'), 'pagination group scaling drift');

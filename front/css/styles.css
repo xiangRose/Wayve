@@ -232,6 +232,7 @@
     .option,.sort-item,.check-option,.match-item { background:#fffaf0; border-color:var(--line); border-radius:4px 9px 5px 7px; box-shadow:3px 4px 0 rgba(69,65,73,.14); }
     .option:hover,.sort-item:hover,.match-item:hover { background:#fff0b5; transform:translateY(-2px); }
     .option.selected,.match-item.selected { background:var(--coral); color:#fff; }
+    .option:focus-visible,.check-option:has(input:focus-visible) { outline:3px solid var(--blue); outline-offset:2px; }
     .matching-board { background:rgba(255,255,255,.35); padding:16px; border:2px dashed rgba(69,65,73,.34); }
     .score { background:#fff0ad; border-right:2px dashed var(--line); }
     .section:nth-child(odd),.track-item:nth-child(odd) { background:#fff4df; }
