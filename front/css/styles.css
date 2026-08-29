@@ -846,10 +846,10 @@
     }
 
     .question-nav { display:flex; justify-content:flex-end; align-items:center; gap:23px; margin:0; padding:0; }
-    .question-arrow { display:grid; place-items:center; width:57px; height:57px; flex:0 0 57px; border:1px solid #a3e092; border-radius:50%; background:#fff; padding:0; cursor:pointer; font-size:0; transition:background .15s ease, opacity .15s ease, box-shadow .15s ease; }
-    .question-arrow::before { content:""; display:block; width:27px; height:28px; background:center / contain no-repeat; }
-    .question-arrow[data-qnav="prev"]::before { background-image:url("../assets/figma/question-arrow-left.svg"); transform:rotate(90deg); }
-    .question-arrow[data-qnav="next"]::before { background-image:url("../assets/figma/question-arrow-right.svg"); transform:rotate(-90deg); }
+    .question-arrow { position:relative; display:block; width:57px; height:57px; flex:0 0 57px; border:1px solid #a3e092; border-radius:50%; background:#fff; padding:0; cursor:pointer; font-size:0; transition:background .15s ease, opacity .15s ease, box-shadow .15s ease; }
+    .question-arrow::before { content:""; position:absolute; left:50%; top:50%; display:block; width:27px; height:28px; background:center / contain no-repeat; transform:translate(-50%,-50%); transform-origin:50% 50%; }
+    .question-arrow[data-qnav="prev"]::before { background-image:url("../assets/figma/question-arrow-left.svg"); transform:translate(-50%,-50%) rotate(90deg); }
+    .question-arrow[data-qnav="next"]::before { background-image:url("../assets/figma/question-arrow-right.svg"); transform:translate(-50%,-50%) rotate(-90deg); }
     .question-arrow span { display:none; }
     .question-arrow:hover:not(:disabled), .question-arrow:focus-visible:not(:disabled) { background:#f6fff6; box-shadow:0 0 0 3px rgba(163,224,146,.25); outline:none; }
     .question-arrow:not(:disabled)[data-qnav="next"] { background:#8ac27b; }
@@ -861,7 +861,7 @@
         margin:0;
         position:absolute;
         right:11.05cqw;
-        bottom:3.745cqw;
+        bottom:2.4919cqw;
         width:14.84cqw;
         height:6.17cqw;
         gap:2.49cqw;
@@ -870,10 +870,6 @@
         width:41.57%;
         height:100%;
         flex-basis:41.57%;
-      }
-      :is(#choice,#ranking,#category,#evidence,#open) .question-arrow::before {
-        width:47.37%;
-        height:49.12%;
       }
     }
     @media (max-width:700px) { .question-nav { gap:16px; padding-right:0; } .question-arrow { width:52px; height:52px; flex-basis:52px; } }

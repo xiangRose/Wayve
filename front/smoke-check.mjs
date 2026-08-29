@@ -16,12 +16,13 @@ assert(css.includes('width:57px') && css.includes('height:57px') && css.includes
 assert(css.includes('border-radius:50%') && css.includes('#a3e092'), 'Figma pagination circle styling drift');
 assert(css.includes('.question-arrow:not(:disabled)[data-qnav="next"]') && css.includes('background:#8ac27b'), 'active Next state missing');
 assert(css.includes('filter:brightness(0) invert(1)'), 'active Next white arrow state missing');
-assert(css.includes('.question { position:relative; container-type:inline-size; }') && css.includes('right:11.05cqw') && css.includes('bottom:3.745cqw'), 'pagination is not mapped to Figma question panel');
+assert(css.includes('.figma-question-panel') && css.includes('container-type:inline-size') && css.includes('right:11.05cqw') && css.includes('bottom:2.4919cqw'), 'pagination is not mapped to Figma question panel');
 assert(!css.includes('70.764vw') && !css.includes('77vh') && !css.includes('left:70.7638889%'), 'pagination remains root viewport anchored');
 assert(css.includes('width:14.84cqw') && css.includes('gap:2.49cqw'), 'pagination group scaling drift');
 assert(css.includes('width:41.57%') && css.includes('height:100%'), 'button dimensions are not scaled with panel');
-assert(css.includes('width:47.37%') && css.includes('height:49.12%'), 'vector dimensions are not scaled with panel');
-assert(css.includes('.question-arrow {') && css.includes('font-size:0') && css.includes('.question-arrow span { display:none; }'), 'legacy pagination glyphs are not visually suppressed');
+assert(css.includes('.question-arrow { position:relative; display:block;') && css.includes('position:absolute; left:50%; top:50%;') && css.includes('width:27px; height:28px;'), 'Figma arrow is not absolutely centered at source dimensions');
+assert(css.includes('width:1698px;') && css.includes('height:866px;') && css.includes('background-size:cover;'), 'laptop artwork fit must preserve the Figma node box with cover');
+assert(!/<button[^>]*class="question-arrow"[^>]*>[←→]/.test(html), 'legacy pagination glyph remains in button layout');
 assert(!html.includes('提交回答') && !html.includes('提交匹配') && !html.includes('提交选择'), 'per-question submit CTA remains');
 assert(app.includes('navigateQuestion') && app.includes('persistQuestion') && app.includes('restoreQuestionAnswer'), 'pagination handlers incomplete');
 assert(app.includes('questionAnswers') && app.includes('persistedQuestions') && app.includes('quizCompleted'), 'answer persistence/completion state missing');
