@@ -433,7 +433,7 @@
     .path-right { right:13%; bottom:19%; width:27%; height:23%; transform:rotate(-15deg); }
     .career-tag { position:absolute; z-index:2; display:flex; align-items:center; gap:10px; min-width:150px; max-width:220px; padding:12px 15px; border:2px solid var(--hero-ink); border-radius:14px 17px 13px 16px; box-shadow:4px 5px 0 rgba(32,35,42,.16); font-size:14px; font-weight:800; line-height:1.4; }
     .career-tag i { flex:0 0 auto; width:13px; height:13px; border:2px solid var(--hero-ink); border-radius:50%; background:white; }
-    .tag-a { top:43%; left:9%; background:var(--hero-yellow); transform:rotate(-1deg); }.tag-b { top:36%; right:11%; background:var(--hero-mint); transform:rotate(1.5deg); }.tag-c { left:3%; bottom:21%; background:#ffd5d9; transform:rotate(1.5deg); }.tag-d { left:30%; bottom:7%; background:#d8f1e8; transform:rotate(-1deg); }.tag-e { right:10%; bottom:7%; background:#ffd5d9; transform:rotate(-1.4deg); }
+    .tag-a { top:43%; left:9%; background:var(--hero-yellow); transform:rotate(-1deg); }.tag-b { top:36%; right:11%; background:var(--hero-mint); transform:rotate(1.5deg); }.tag-c { left:3%; bottom:21%; background:#ffd5d9; transform:rotate(1.5deg); }.tag-d { left:33%; bottom:13%; background:#d8f1e8; transform:rotate(-1deg); }.tag-e { right:10%; bottom:7%; background:#ffd5d9; transform:rotate(-1.4deg); }
     .career-scene { position:absolute; z-index:2; left:50%; bottom:3.5%; width:min(880px,76vw); height:37%; transform:translateX(-50%); pointer-events:none; }
     .scene-person { position:absolute; bottom:9%; width:130px; height:190px; }
     .person-left { left:3%; }.person-center { left:43%; transform:scale(.9); transform-origin:bottom center; }
