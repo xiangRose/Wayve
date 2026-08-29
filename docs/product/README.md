@@ -2,7 +2,7 @@
 
 Status: Hackathon P0 Active Snapshot
 Source of Truth: Feishu
-Repository Snapshot Updated: 2026-08-28
+Repository Snapshot Updated: 2026-08-29
 
 This directory is the repository execution snapshot for WAYVE product decisions. Feishu owns decision history. When Feishu and this snapshot conflict, record the gap before implementation.
 
@@ -14,7 +14,7 @@ Each product responsibility has exactly one canonical owner.
 | --- | --- |
 | [Product Overview](product-overview.md) | Product definition, P0 goal and scope, information architecture, global boundaries. |
 | [Jobs and Recommendations](jobs-and-recommendations.md) | Canonical job definitions, role navigation, recommendation inputs and boundaries. |
-| [Career Trials](career-trials.md) | Shared trial contract, the `ai_product` P0 vertical slice, interaction grammars, and trial-specific delegation. |
+| [Career Trials](career-trials.md) | Shared trial contract, five playable Mini Career Trials, interaction grammars, and trial-specific delegation. |
 | [Behavior and Evidence](behavior-and-evidence.md) | Behavior Events, evidence interpretation, replay, uncertainty, and evaluation isolation. |
 | [Analysis and Growth](analysis-and-growth.md) | Analysis Report reading logic, Interest Feedback, Next Mission, Growth Track, and Direction Update. |
 | [Schemas](schemas/README.md) | Stable engineering-facing containers and field contracts. |
@@ -22,7 +22,16 @@ Each product responsibility has exactly one canonical owner.
 
 Specific career trials live under `trials/`. They are normative only for the named trial and must follow the shared owners above:
 
-- [AI UI Design Career Trial](trials/ai-ui-design.md) — candidate `ai_ui_design` experience; not P0 production integration.
+- [AI UI Design Career Trial](trials/ai-ui-design.md) — frozen/pass canonical `ai_ui_design` Trial: AI Document-to-Checklist Flow - Partial Result and Recovery.
+
+## Authority Domains
+
+- Product Docs own WHAT/WHY, shared semantics, and semantic boundaries.
+- Frontend and implementation technical specs own implementation and data organization inside their technical domain.
+- Frozen Role Trial Specs own role interaction mechanics.
+- The Task Content Library owns concrete scenario fixtures, evidence cards, messages, cases, choices, configuration values, deterministic consequence fixtures, and replay snapshot content.
+
+No layer silently overrides another outside its authority domain. Structured choice is one supported interaction primitive, not the definition of every Trial. Teammate tiers (`2/3/4/5`) are internal authoring calibration only.
 
 ## Supporting Artifacts
 

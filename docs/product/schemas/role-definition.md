@@ -2,9 +2,11 @@
 
 Status: Hackathon P0 Frozen
 Source of Truth: Feishu
-Repository Snapshot Updated: 2026-08-28
+Repository Snapshot Updated: 2026-08-29
 
 `RoleDefinition` is the stable first-level container for canonical role metadata and requirement profiles. Product definitions, recommendation behavior, and migration policy belong to [Jobs and Recommendations](../jobs-and-recommendations.md).
+
+`RoleDefinition` records role requirements and semantic boundaries; it does not own concrete Task Content Library fixtures or implementation organization. Requirement mappings remain contextual and bounded: one Evidence item maps to one role requirement, and `not_observed` never means inability.
 
 Container name and canonical `jobId` values should remain stable. Fields may be extended as product learning continues.
 

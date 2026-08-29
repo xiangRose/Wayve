@@ -2,7 +2,7 @@
 
 Status: Hackathon P0 Frozen
 Source of Truth: Feishu
-Repository Snapshot Updated: 2026-08-28
+Repository Snapshot Updated: 2026-08-29
 
 This document exclusively owns WAYVE's product definition, P0 scope, information architecture, and global product boundaries. Detailed rules are delegated to the linked canonical owners.
 
@@ -18,12 +18,12 @@ Recommendation helps a user choose where to start. Evaluation uses only replayab
 
 ## Hackathon Goal
 
-P0 demonstrates one trustworthy Current Exploration Cycle:
+P0 demonstrates one trustworthy Current Exploration Cycle across five playable complete Mini Career Trials:
 
 1. A user enters Career Exploration without needing a profile.
 2. The product presents the five canonical roles equally; up to three navigation recommendations may be shown as optional starting points.
 3. The user may choose any canonical role, including a non-recommended role.
-4. The user completes a 3–5 minute career trial.
+4. The user completes a 3–5 minute career trial for any of the five roles end to end.
 5. Behavior Events become replayable, bounded Evidence.
 6. The Analysis Report separates background, task evidence, and Interest Feedback.
 7. The product proposes one Next Mission tied to an unknown or evidence gap.
@@ -37,14 +37,14 @@ P0 serves students, early-career users, career changers, and people with adjacen
 
 - Five canonical job definitions.
 - Navigation-only role recommendations using internal `navigationScore`.
-- One complete minimum viable vertical slice for `ai_product`; the historical “Hero” label is an implementation convenience, not a role ranking.
+- Five playable complete Mini Career Trials: `ai_product`, `ai_ops`, `ai_data_eval`, `ai_app_dev`, and `ai_ui_design`. Depth may differ; `ai_product` is the Showcase, not a privileged career option.
 - A reusable career-trial container.
 - Structured Behavior Event capture and replayable Evidence.
 - Analysis Report with the canonical reading order defined in [Analysis and Growth](analysis-and-growth.md).
 - One evidence-gap-based Next Mission.
 - Current Exploration Cycle in Growth Track.
 - Seeded demo fallbacks that preserve all product boundaries.
-- Frozen, implementation-ready contracts for the other four roles; production integration is follow-up work.
+- Distinct role mechanics remain governed by their Frozen Role Trial Specs.
 
 ## Out of Scope
 
@@ -59,7 +59,11 @@ P0 serves students, early-career users, career changers, and people with adjacen
 - Full journal, nudge, reminder, notification, account, or cloud-sync systems.
 - Monthly or quarterly reports in P0.
 - Fabricated historical cycles, completed missions, new evidence, trends, or direction changes.
-- Production integration of the candidate `ai_ui_design` scene trial in this documentation change.
+- Frontend/backend implementation, data migration, and production integration work in this documentation-only change.
+
+## Authority Domains
+
+Product Docs define WHAT/WHY and semantic boundaries. Frontend and implementation technical specs define implementation and data organization within their technical domain. Frozen Role Trial Specs define role mechanics. The Task Content Library defines concrete authored fixtures and deterministic replay/consequence content. These layers are complementary and cannot silently override one another outside their authority domain.
 
 ## Information Architecture
 

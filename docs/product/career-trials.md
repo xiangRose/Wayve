@@ -2,9 +2,9 @@
 
 Status: Hackathon P0 Frozen
 Source of Truth: Feishu
-Repository Snapshot Updated: 2026-08-28
+Repository Snapshot Updated: 2026-08-29
 
-This document exclusively owns shared Career Trial behavior and the P0 `ai_product` vertical slice. Evidence interpretation belongs to [Behavior and Evidence](behavior-and-evidence.md); report presentation belongs to [Analysis and Growth](analysis-and-growth.md).
+This document exclusively owns shared Career Trial behavior and the five-role P0 Trial contract. Evidence interpretation belongs to [Behavior and Evidence](behavior-and-evidence.md); report presentation belongs to [Analysis and Growth](analysis-and-growth.md); concrete fixtures belong to the Task Content Library.
 
 ## Shared Trial Contract
 
@@ -21,7 +21,7 @@ The stages are evidence anchors, not mandatory pages. A visible experience may u
 | Structured decision | Prioritization, evaluation, and implementation judgments. | Visible steps normally map one-to-one to semantic stages. |
 | Persistent work scene | Investigation, composition, simulation, and revision of one work object. | Scene acts may contain several semantic stages; emitted events retain one `sourceStep` each. |
 
-The P0 `ai_product` slice uses structured decision. The canonical [AI UI Design Career Trial](trials/ai-ui-design.md) uses a persistent scene. A role-specific trial cannot redefine shared stage, evidence, report, or growth rules.
+The five roles are distinct Career Trials, not five MCQ variants: `ai_product` uses priority + evidence inspection + consequence + revision; `ai_ops` uses lifecycle/cohort diagnosis + intervention configuration + modeled consequence + revision; `ai_data_eval` uses case inspection + quality gate/routing + bounded evaluation audit + retest + rollout revision; `ai_app_dev` uses runtime/source configuration + a fixed A/B/C request suite + regression/fallback consequence + revision; `ai_ui_design` uses state/transition editing + uncertainty/recovery + a deterministic simulated-user path + revision. A role-specific trial cannot redefine shared stage, evidence, report, or growth rules.
 
 ## Experience Requirements
 
@@ -54,7 +54,7 @@ When a frozen role mechanic naturally uses a structured choice, content authors 
 
 If a trial cannot observe a stage, it must state why. Related requirements become `not_observed`; the trial must not silently infer them.
 
-## P0 Minimum Viable Role: ai_product
+## Showcase Trial: ai_product
 
 The user joins an AI meeting-assistant team. Registrations rise, first successful generation is low, and seven-day retention declines. Users who finish setup value the summary, but first use is difficult. With limited engineering capacity, the user must choose the most valuable near-term improvement.
 
@@ -75,22 +75,26 @@ The five roles share the trial, Behavior, Evidence, Replay, Interest, and report
 
 | jobId | Role purpose | Must-have mechanic | P0 status |
 | --- | --- | --- | --- |
-| `ai_product` | Product direction under user, business, and delivery constraints. | Evidence-informed priority, visible consequence, retain/revise, final deliverable. | One complete vertical slice. |
-| `ai_ops` | Activation, retention, feedback, and experiment loops. | Diagnose a lifecycle gap, choose an intervention, inspect modeled consequence, revise. | Frozen contract; implementation follow-up. |
-| `ai_data_eval` | Defensible quality standards and launch decisions. | Inspect cases, configure quality/review boundary, retest contradiction, revise rollout judgment. | Frozen contract; implementation follow-up. |
-| `ai_app_dev` | AI application behavior under quality, latency, cost, and stability constraints. | Configure a fixed request suite, inspect regression/fallback consequence, revise runtime choice. | Frozen contract; implementation follow-up. |
-| `ai_ui_design` | Understandable AI states, uncertainty, waiting, and recovery. | Edit a state/transition flow, simulate a supplied path, inspect consequence, revise. | Frozen contract; implementation follow-up. |
+| `ai_product` | Product direction under user, business, and delivery constraints. | Evidence-informed priority, visible consequence, retain/revise, final deliverable. | Playable complete Mini Career Trial; Showcase. |
+| `ai_ops` | Activation, retention, feedback, and experiment loops. | Diagnose a lifecycle gap, choose an intervention, inspect modeled consequence, revise. | Playable complete Mini Career Trial; depth may differ. |
+| `ai_data_eval` | Defensible quality standards and launch decisions. | Inspect cases, configure quality/review boundary, retest contradiction, revise rollout judgment. | Playable complete Mini Career Trial; depth may differ. |
+| `ai_app_dev` | AI application behavior under quality, latency, cost, and stability constraints. | Configure a fixed request suite, inspect regression/fallback consequence, revise runtime choice. | Playable complete Mini Career Trial; depth may differ. |
+| `ai_ui_design` | Understandable AI states, uncertainty, waiting, and recovery. | Edit a state/transition flow, simulate a supplied path, inspect consequence, revise. | Playable complete Mini Career Trial; canonical spec FROZEN / PASS. |
 
 Each role's detailed mechanics remain in its frozen Role Trial Spec. Requirement IDs and event mappings must be promoted to `RoleDefinition` and `TaskTemplate` before implementation; runtime inference is prohibited.
 
-## Other Role Trial Ownership
+## Task Content Library
+
+The Task Content Library owns concrete scenario fixtures, evidence cards, messages, cases, choices, configuration values, deterministic consequence fixtures, and replay snapshot content. Structured choice is only one supported primitive. Content must follow the shared Product contract and the Frozen Role Trial Specs; it cannot override role mechanics or semantic boundaries. Teammate tiers (`2/3/4/5`) are internal authoring calibration only.
+
+## Role Trial Ownership
 
 | jobId | Role work focus | Status |
 | --- | --- | --- |
-| `ai_ops` | Diagnose activation or retention and choose a bounded experiment. | Follow-up content. |
-| `ai_data_eval` | Inspect outputs and criteria, encounter contradiction, revise a rubric. | Follow-up content. |
-| `ai_app_dev` | Connect AI capability to a workflow under implementation constraints. | Follow-up content. |
-| `ai_ui_design` | Configure, test, and revise document-to-checklist states, uncertainty, recovery, and continuity. | Frozen canonical Trial; implementation follow-up, not current P0 production integration. |
+| `ai_ops` | Diagnose activation or retention and choose a bounded experiment. | P0 playable complete Trial; content depth may differ. |
+| `ai_data_eval` | Inspect outputs and criteria, encounter contradiction, revise a rubric. | P0 playable complete Trial; content depth may differ. |
+| `ai_app_dev` | Connect AI capability to a workflow under implementation constraints. | P0 playable complete Trial; content depth may differ. |
+| `ai_ui_design` | Configure, test, and revise document-to-checklist states, uncertainty, recovery, and continuity. | P0 playable complete Trial; canonical spec FROZEN / PASS. |
 
 ## Behavior Capture Handoff
 

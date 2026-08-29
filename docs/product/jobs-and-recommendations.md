@@ -16,7 +16,7 @@ This document exclusively owns canonical jobs and navigation recommendation beha
 | `ai_app_dev` | AI Application Development | Connects product intent, model behavior, and implementation constraints into AI application flows. |
 | `ai_ui_design` | AI UI Design | Turns AI capabilities and uncertainty into understandable interfaces, feedback states, and user control. |
 
-All five roles are presented as equal exploration choices. `ai_product` is the current P0 vertical slice because its existing content is closest to a complete loop; this is an execution convenience, not a product ranking.
+All five roles are presented as equal exploration choices. Hackathon P0 requires five playable complete Mini Career Trials; `ai_product` is the Showcase because its existing content is closest to a complete loop, not a privileged career option or product ranking.
 
 ## Legacy ID Migration
 

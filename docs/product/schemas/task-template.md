@@ -2,9 +2,11 @@
 
 Status: Hackathon P0 Frozen
 Source of Truth: Feishu
-Repository Snapshot Updated: 2026-08-28
+Repository Snapshot Updated: 2026-08-29
 
 `TaskTemplate` is the stable first-level container for a role trial. Shared experience semantics belong to [Career Trial Design](../career-trials.md), and event/evidence semantics belong to [Behavior and Evidence](../behavior-and-evidence.md). This schema only defines their engineering representation.
+
+Concrete authored content inside the container is owned by the Task Content Library: scenario fixtures, evidence cards, messages, cases, choices, configuration values, deterministic consequence fixtures, and replay snapshot content. This schema does not grant content authority over shared Product semantics or Frozen Role Trial mechanics.
 
 ## Canonical Container
 
