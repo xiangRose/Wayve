@@ -484,7 +484,44 @@
 
     /* Desktop task content sits inside the laptop screen rather than on top of it. */
     @media (min-width:851px) {
-      :is(#previewNotice,#choice,#ranking,#category,#evidence,#open)::before { top:-58px; width:min(1560px,104vw); transform:translateX(-50%); }
+      :is(#choice,#ranking,#category,#evidence,#open) .figma-question-panel {
+        position:absolute;
+        top:63px;
+        left:335px;
+        width:923px;
+        height:614px;
+        transform:none;
+        container-type:inline-size;
+        background:rgba(255,255,255,.6);
+        border-radius:4px;
+      }
+      :is(#choice,#ranking,#category,#evidence,#open) .figma-question-panel > .question {
+        position:static;
+        container-type:normal;
+        width:740px;
+      }
+      #choice .figma-question-panel > .question.question--choice {
+        margin:86px 0 0 87px;
+      }
+      :is(#ranking,#category,#evidence,#open) .figma-question-panel > .question:is(.question--sort,.question--category,.question--evidence,.question--open) {
+        margin:129px 0 0 87px;
+      }
+      #choice .figma-question-panel > .question > .question-dropdown { height:92px; border:0; background:transparent; }
+      #choice .figma-question-panel .question-dropdown__head { display:none; }
+      #choice .figma-question-panel .question-dropdown__body { padding:0; overflow:visible; }
+      #choice .figma-question-panel .question-dropdown__body .scenario { display:none; }
+      #choice .figma-question-panel .question-dropdown__body h2 { width:815px; height:68px; margin:0; }
+      #choice .figma-question-panel .options { gap:17px; margin:0 0 20px; }
+      #choice .figma-question-panel .option { height:72px; min-height:72px; padding:14px; }
+      :is(#previewNotice,#choice,#ranking,#category,#evidence,#open)::before {
+        top:-61px;
+        width:1698px;
+        height:866px;
+        aspect-ratio:auto;
+        transform:translateX(-50%);
+        background-size:cover;
+        background-position:50% 93%;
+      }
       :is(#choice,#ranking,#category,#evidence,#open) .task-top { width:min(740px,52vw); margin:clamp(84px,11vh,112px) auto 10px; margin-left:calc(50% - min(370px,26vw) + var(--microtask-shift-x,0px)); margin-right:auto; padding:0 0 8px; border-bottom:1px solid rgba(32,35,42,.15); background:transparent; }
       :is(#choice,#ranking,#category,#evidence,#open) .question,#category .question { width:min(740px,52vw); margin:0 auto 28px; margin-left:calc(50% - min(370px,26vw) + var(--microtask-shift-x,0px)); margin-right:auto; }
       #choice .question-dropdown--chat .question-dropdown__meta { font-size:16px; }

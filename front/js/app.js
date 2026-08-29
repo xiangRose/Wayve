@@ -709,12 +709,24 @@
     document.getElementById('viewReportBtn').addEventListener('click', loadReport);
   }
 
+  function establishFigmaQuestionPanels() {
+    document.querySelectorAll(':is(#choice,#ranking,#category,#evidence,#open) > .question').forEach((question) => {
+      const variant = question.closest('.screen')?.id;
+      if (variant) question.classList.add(`question--${variant === 'ranking' ? 'sort' : variant}`);
+      const panel = document.createElement('div');
+      panel.className = 'figma-question-panel';
+      question.parentNode.insertBefore(panel, question);
+      panel.appendChild(question);
+    });
+  }
+
   document.addEventListener('DOMContentLoaded', async () => {
     buildFigmaReport();
     state.jobs = fallbackJobs();
     renderRoles();
     renderRecommendations();
     renderGrowth();
+    establishFigmaQuestionPanels();
     bindUi();
     await initApi();
     go('home');
