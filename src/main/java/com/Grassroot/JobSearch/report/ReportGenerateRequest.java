@@ -5,5 +5,5 @@ import java.util.Map;
 
 public record ReportGenerateRequest(
         List<Map<String, Object>> microtaskChoiceSignals,
-        String setId) {
-}
+        List<Map<String, Object>> userSubjectiveHighlights,
+        String setId) {}

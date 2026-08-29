@@ -777,44 +777,345 @@
     return t.trim();
   }
 
-  function formatLocalJudgmentLine(q, row) {
-    const selected = (q.options || []).find((o) => o.id === row.selectedOptionId);
-    const label = selected?.label || row.selectedOptionId || '';
-    const others = (q.options || []).filter((o) => o.id !== row.selectedOptionId).map((o) => o.label);
-    const who = [q.speaker, q.speakerRole, q.time].filter(Boolean).join('｜');
-    let contrast = '这一选择体现了你在该题里优先关注的判断线索。';
-    if (others.length === 1) {
-      contrast = '相比「' + clipText(others[0], 40) + '」等方向，你更先把注意力放在当前选项所代表的路径上。';
-    } else if (others.length >= 2) {
-      contrast =
-        '相比「' + clipText(others[0], 40) + '」「' + clipText(others[1], 40) + '」等备选，你更先把注意力放在当前选项所代表的路径上。';
+  function stripOptionPrefix(label) {
+    const t = String(label || '').trim();
+    if (t.length >= 2 && t.charAt(1) === '.' && /[A-D]/.test(t.charAt(0))) {
+      return t.slice(2).trim();
     }
-    const tag = q.dimension ? '【' + q.dimension + '】' : '';
-    const whoPrefix = who ? who : '题目情境';
-    return (
-      tag + whoPrefix +
-      '在「' + clipText(q.message, 72) + '」的情境里，面对「' + clipText(q.prompt, 72) + '」，你选择了「' + clipText(label, 56) + '」。' +
-      contrast
+    return t;
+  }
+
+  function promptCoreQuestion(prompt) {
+    return String(prompt || '').trim().replace(/[？?]$/, '');
+  }
+
+  function isEmotionalOrAvoidantLabel(label) {
+    return /辞职|想辞职|不想干|不想做|不想继续|算了|放弃|太累|崩溃|受不了|没意义|懒得|沮丧|干不下去|想逃|烦死|好烦|摆烂|倦怠|熬不下去/.test(
+      String(label || '')
     );
   }
 
-  async function buildLocalJudgmentBasis() {
-    if (!state.localMicrotaskAnswers.length) return [];
-    return state.localMicrotaskAnswers
+  function inferRawScoreFromLabel(label, optionId) {
+    if (isEmotionalOrAvoidantLabel(label)) return 2;
+    if (optionId === 'D') return 2;
+    if (optionId === 'C') return 3;
+    if (optionId === 'B') return 4;
+    if (optionId === 'A') return 4;
+    return 0;
+  }
+
+  function isSubjectiveChoice(optionId, selectedLabel, selectedRawLabel) {
+    return optionId === 'C' ||
+      isEmotionalOrAvoidantLabel(selectedLabel) ||
+      isEmotionalOrAvoidantLabel(selectedRawLabel);
+  }
+
+  function buildSubjectiveLead(emotional) {
+    if (emotional) return '你先回应了当下的压力。';
+    return '你先说了真实想法。';
+  }
+
+  function buildSubjectiveObservation(message, selectedLabel, emotional) {
+    const focus = clipText(selectedLabel || '此刻的感受', 48);
+    if (emotional) {
+      return '你的第一反应：' + focus + '。';
+    }
+    return '你的主观回应：' + focus + '。';
+  }
+
+  function buildSubjectiveInsight(dimension, emotional) {
+    if (emotional) return '压力先占满判断空间，需追问哪个环节不可持续。';
+    return '自身体验先于标准解题路径。';
+  }
+
+  function buildSubjectiveGapNote(emotional) {
+    if (!emotional) return '';
+    return '这不等于不适合岗位，先分清压力来自任务、协作还是节奏。';
+  }
+
+  function buildSignalLead(prompt, emotional) {
+    if (emotional) return '你先回应了当下的压力。';
+    const core = promptCoreQuestion(prompt);
+    if (!core) return '你做出了一个判断。';
+    return '你先想：' + clipText(core, 40) + '。';
+  }
+
+  function buildSignalObservation(message, selectedLabel, emotional) {
+    const focus = clipText(selectedLabel || '关键线索', 48);
+    if (emotional) return '你的第一反应：' + focus + '。';
+    return '你优先关注：' + focus + '。';
+  }
+
+  function buildSignalInsight(dimension, rawScore, emotional) {
+    if (emotional) return '压力先占满判断空间，需追问不可持续的环节。';
+    if (rawScore >= 5) return '判断路径清晰，能往动机与价值推进。';
+    if (rawScore >= 4) return '开始从现象追问原因。';
+    if (rawScore >= 3) return '更关注局部信号，因果还可再展开。';
+    return '判断尚初步，分析层次还可加深。';
+  }
+
+  function buildSignalGapNote(rawScore, emotional) {
+    if (emotional) return buildSubjectiveGapNote(true);
+    if (rawScore >= 5) return '';
+    if (rawScore >= 4) return '可补一条外部数据，结论会更稳。';
+    return '';
+  }
+
+  function buildBehaviorSignal(stepNum, q, row, scoreDef, radarDimensionScore) {
+    const dimension = scoreDef?.dimension || '行为信号';
+    const selectedRawLabel = (q.options || []).find((o) => o.id === row.selectedOptionId)?.label || '';
+    const selectedLabel = stripOptionPrefix(selectedRawLabel);
+    const option = (scoreDef?.options || []).find((o) => o.id === row.selectedOptionId);
+    const raw = option
+      ? option.score
+      : inferRawScoreFromLabel(selectedLabel || selectedRawLabel, row.selectedOptionId);
+    const score = typeof radarDimensionScore === 'number' ? radarDimensionScore : radarScore(raw);
+    const emotional =
+      isEmotionalOrAvoidantLabel(selectedLabel) || isEmotionalOrAvoidantLabel(selectedRawLabel);
+    const subjective = isSubjectiveChoice(row.selectedOptionId, selectedLabel, selectedRawLabel);
+    const signal = {
+      step: stepNum,
+      dimension,
+      optionId: row.selectedOptionId,
+      subjective,
+      emotional,
+      score,
+      rawScore: raw,
+    };
+    if (subjective) {
+      signal.lead = buildSubjectiveLead(emotional);
+      signal.observation = buildSubjectiveObservation(q.message, selectedLabel, emotional);
+      signal.insight = buildSubjectiveInsight(dimension, emotional);
+      if (emotional) signal.gapNote = buildSubjectiveGapNote(emotional);
+    } else {
+      signal.lead = buildSignalLead(q.prompt, emotional);
+      signal.observation = buildSignalObservation(q.message, selectedLabel, emotional);
+      signal.insight = buildSignalInsight(dimension, raw, emotional);
+      if (score < 100) signal.gapNote = buildSignalGapNote(raw, emotional);
+    }
+    return signal;
+  }
+
+  function buildSceneSubjectiveSignals() {
+    const out = [];
+    Object.keys(state.sceneStepStates).forEach((stepIdx) => {
+      const saved = state.sceneStepStates[stepIdx];
+      const text = saved?.draft?.customText?.trim();
+      if (!text) return;
+      const step = SCENE_STEPS[Number(stepIdx)];
+      const emotional = isEmotionalOrAvoidantLabel(text);
+      const scenario = step?.badge || '情景模拟';
+      out.push({
+        step: 100 + Number(stepIdx),
+        dimension: '主观回应',
+        optionId: 'CUSTOM',
+        subjective: true,
+        emotional,
+        lead: buildSubjectiveLead(emotional),
+        observation: buildSubjectiveObservation(scenario, text, emotional),
+        insight: buildSubjectiveInsight('主观回应', emotional),
+        gapNote: emotional ? buildSubjectiveGapNote(emotional) : '',
+        score: emotional ? 40 : 60,
+        rawScore: emotional ? 2 : 3,
+      });
+    });
+    return out;
+  }
+
+  function pickTopSignals(signals) {
+    const sorted = signals.slice().sort((a, b) => {
+      if (a.subjective && !b.subjective) return -1;
+      if (!a.subjective && b.subjective) return 1;
+      if (a.emotional && !b.emotional) return -1;
+      if (!a.emotional && b.emotional) return 1;
+      return (b.rawScore || 0) - (a.rawScore || 0) || (b.score || 0) - (a.score || 0);
+    });
+    const picked = [];
+    const seen = new Set();
+    sorted.forEach((s) => {
+      if (picked.length >= 3) return;
+      if (seen.has(s.dimension)) return;
+      seen.add(s.dimension);
+      picked.push(s);
+    });
+    sorted.forEach((s) => {
+      if (picked.length >= 3) return;
+      if (!picked.includes(s)) picked.push(s);
+    });
+    const subjectiveSignals = signals.filter((s) => s.subjective);
+    if (subjectiveSignals.length) {
+      const primary =
+        subjectiveSignals.find((s) => s.emotional) ||
+        subjectiveSignals.find((s) => s.optionId === 'C') ||
+        subjectiveSignals.find((s) => s.optionId === 'CUSTOM') ||
+        subjectiveSignals[0];
+      const idx = picked.findIndex((p) => p.step === primary.step);
+      if (idx === -1) {
+        if (picked.length >= 3) picked[0] = primary;
+        else picked.unshift(primary);
+      } else if (idx > 0) {
+        picked.splice(idx, 1);
+        picked.unshift(primary);
+      }
+    }
+    return picked.slice(0, 3);
+  }
+
+  function toggleAllBehaviorEvidence() {
+    const allHost = document.getElementById('figmaAllEvidence');
+    const toggle = document.getElementById('figmaEvidenceToggle');
+    if (!allHost || !toggle || toggle.hidden) return;
+    const collapsed = allHost.classList.toggle('is-collapsed');
+    const total = allHost.dataset.total || allHost.querySelectorAll('.figma-signal-card').length || 6;
+    toggle.textContent = collapsed
+      ? '查看全部 ' + total + ' 项行为证据 ↓'
+      : '收起行为证据 ↑';
+  }
+
+  function getMicrotaskAnswerRows() {
+    if (state.localMicrotaskAnswers.length) {
+      return state.localMicrotaskAnswers.slice().sort((a, b) => a.step - b.step);
+    }
+    return Object.keys(state.microtaskStepAnswers)
+      .map((step) => ({
+        step: Number(step),
+        selectedOptionId: state.microtaskStepAnswers[step],
+      }))
+      .filter((row) => row.selectedOptionId)
+      .sort((a, b) => a.step - b.step);
+  }
+
+  async function ensureMicrotaskContextForReport() {
+    await loadMicrotaskBank();
+    await loadMicrotaskScores();
+    if (!state.microtaskQuestionPlan.length) {
+      const backendId = getMicrotaskBackendId();
+      if (!state.useMock && state.taskSessionId) {
+        try {
+          const task = await api('/tasks/' + state.taskSessionId, { headers: apiHeaders() });
+          if (task.questionPlan) {
+            applyMicrotaskQuestionPlanFromApi(task.questionPlan);
+          } else if (task.setId) {
+            buildLegacyMicrotaskPlan(backendId, task.setId);
+          }
+        } catch (err) {
+          console.warn('恢复微任务题序失败', err);
+        }
+      }
+      if (!state.microtaskQuestionPlan.length && state.microtaskSetId && state.microtaskSetId !== 'MIXED') {
+        buildLegacyMicrotaskPlan(backendId, state.microtaskSetId);
+      }
+    }
+  }
+
+  async function buildLocalBehaviorSignals() {
+    await ensureMicrotaskContextForReport();
+    const rows = getMicrotaskAnswerRows();
+    const radar = state.microtaskRadar;
+    const microtaskEvidence = rows
       .map((row) => {
         const q = getMicrotaskQuestionAtStep(row.step);
-        return q ? formatLocalJudgmentLine(q, row) : null;
+        if (!q) return null;
+        const scoreDef = getMicrotaskScoreDefAtStep(row.step);
+        const dimIdx = row.step - 1;
+        const radarScore = radar?.scores?.[dimIdx];
+        return buildBehaviorSignal(row.step, q, row, scoreDef, radarScore);
       })
       .filter(Boolean);
+    const allEvidence = microtaskEvidence.concat(buildSceneSubjectiveSignals());
+    if (!allEvidence.length) return { topSignals: [], allEvidence: [] };
+    return { topSignals: pickTopSignals(allEvidence), allEvidence };
+  }
+
+  function renderBehaviorSignalCard(signal, index) {
+    const num = String(index + 1).padStart(2, '0');
+    const main = clipText(signal.observation || signal.lead || '', 80);
+    const sub = clipText(signal.insight || '', 56);
+    const note = signal.emotional && signal.gapNote ? clipText(signal.gapNote, 48) : '';
+    const body = [main, sub, note].filter(Boolean)
+      .map((p) => '<p>' + esc(p) + '</p>')
+      .join('');
+    return (
+      '<article class="figma-signal-card">' +
+      '<header class="figma-signal-head"><span class="figma-signal-num">' + num + '</span>' +
+      '<h4>' + esc(signal.dimension) + '</h4></header>' +
+      body +
+      '</article>'
+    );
+  }
+
+  function patchBehaviorSignals(report) {
+    const topHost = document.getElementById('figmaTopSignals');
+    const allHost = document.getElementById('figmaAllEvidence');
+    const toggle = document.getElementById('figmaEvidenceToggle');
+    if (!topHost) return;
+
+    const apply = (pack) => {
+      const topSignals = pack.topSignals || [];
+      const allEvidence = pack.allEvidence || topSignals;
+      if (!topSignals.length) {
+        topHost.innerHTML = '<p class="figma-signal-empty">完成微任务后，这里会呈现本轮最明显的行为信号。</p>';
+        if (toggle) toggle.hidden = true;
+        if (allHost) allHost.classList.add('is-collapsed');
+        return;
+      }
+      topHost.innerHTML = topSignals.map((s, i) => renderBehaviorSignalCard(s, i)).join('');
+      if (allHost && allEvidence.length > 0) {
+        allHost.innerHTML = allEvidence.map((s, i) => renderBehaviorSignalCard(s, i)).join('');
+        allHost.dataset.total = String(allEvidence.length);
+        allHost.classList.add('is-collapsed');
+        if (toggle && allEvidence.length > topSignals.length) {
+          toggle.hidden = false;
+          toggle.removeAttribute('hidden');
+          toggle.textContent = '查看全部 ' + allEvidence.length + ' 项行为证据 ↓';
+        } else if (toggle) {
+          toggle.hidden = true;
+        }
+      } else if (toggle) {
+        toggle.hidden = true;
+      }
+    };
+
+    buildLocalBehaviorSignals().then((local) => {
+      const rows = getMicrotaskAnswerRows();
+      const apiPack = report?.behaviorSignals;
+      let pack = { topSignals: [], allEvidence: [] };
+      const localComplete = local.allEvidence.length >= rows.length && rows.length > 0;
+      const apiComplete = apiPack?.allEvidence?.length >= rows.length && rows.length > 0;
+      const localEmotional = (local.allEvidence || []).some((s) => s.emotional);
+      const apiEmotional = (apiPack?.allEvidence || []).some((s) => s.emotional);
+
+      const localSubjective = (local.allEvidence || []).some((s) => s.subjective);
+      const apiSubjective = (apiPack?.allEvidence || []).some((s) => s.subjective);
+
+      if (apiSubjective && apiPack?.topSignals?.length) {
+        pack = apiPack;
+      } else if (localSubjective && local.topSignals.length) {
+        pack = local;
+      } else if (localComplete || (localEmotional && local.topSignals.length)) {
+        pack = local;
+      } else if (apiComplete || (apiEmotional && apiPack?.topSignals?.length)) {
+        pack = apiPack;
+      } else if (local.topSignals.length) {
+        pack = local;
+      } else if (apiPack?.topSignals?.length) {
+        pack = apiPack;
+      }
+      apply(pack);
+    });
   }
 
   async function buildMicrotaskChoiceSignalsForReport() {
-    if (!state.localMicrotaskAnswers.length) return [];
-    return state.localMicrotaskAnswers.map((row) => {
+    await ensureMicrotaskContextForReport();
+    const rows = getMicrotaskAnswerRows();
+    if (!rows.length) return [];
+    return rows.map((row) => {
       const q = getMicrotaskQuestionAtStep(row.step);
       if (!q) return null;
       const scoreDef = getMicrotaskScoreDefAtStep(row.step);
       const selected = (q.options || []).find((o) => o.id === row.selectedOptionId);
+      const selectedLabel = stripOptionPrefix(selected?.label || '');
+      const subjective = isSubjectiveChoice(row.selectedOptionId, selectedLabel, selected?.label || '');
       const others = (q.options || []).filter((o) => o.id !== row.selectedOptionId).map((o) => o.label);
       return {
         step: row.step,
@@ -825,19 +1126,47 @@
         scenario: q.message,
         prompt: q.prompt,
         selectedOption: selected?.label || row.selectedOptionId,
+        selectedOptionId: row.selectedOptionId,
         otherOptions: others,
+        answerNature: subjective ? 'subjective' : 'capability',
+        priority: subjective ? 'high' : 'normal',
       };
     }).filter(Boolean);
   }
 
+  function buildSubjectiveHighlightsForReport() {
+    const highlights = [];
+    getMicrotaskAnswerRows().forEach((row) => {
+      if (row.selectedOptionId !== 'C') return;
+      const q = getMicrotaskQuestionAtStep(row.step);
+      const scoreDef = getMicrotaskScoreDefAtStep(row.step);
+      const selected = q?.options?.find((o) => o.id === row.selectedOptionId);
+      highlights.push({
+        source: 'microtask',
+        step: row.step,
+        dimension: scoreDef?.dimension || '',
+        userWords: stripOptionPrefix(selected?.label || row.selectedOptionId),
+        scenario: q?.message || '',
+        prompt: q?.prompt || '',
+        answerNature: 'subjective',
+        priority: 'high',
+      });
+    });
+    Object.keys(state.sceneStepStates).forEach((stepIdx) => {
+      const text = state.sceneStepStates[stepIdx]?.draft?.customText?.trim();
+      if (!text) return;
+      highlights.push({
+        source: 'scene',
+        userWords: text,
+        answerNature: 'subjective',
+        priority: 'high',
+      });
+    });
+    return highlights;
+  }
+
   function patchJudgmentBasis(items) {
-    const basis = document.getElementById('figmaReportBasis');
-    if (!basis || !items || !items.length) return;
-    basis.innerHTML = items
-      .map((line) => sanitizeJudgmentLine(line))
-      .filter((line) => line.length > 0)
-      .map((line) => '<li>' + esc(line) + '</li>')
-      .join('');
+    patchBehaviorSignals({ behaviorSignals: null });
   }
 
   function updateMicrotaskNavButtons(step, total, status) {
@@ -1053,17 +1382,8 @@
       renderReportRadar(taskRadar);
     }
 
-    if (report.judgmentBasis && report.judgmentBasis.length) {
-      patchJudgmentBasis(report.judgmentBasis);
-    } else {
-      buildLocalJudgmentBasis().then((localBasis) => {
-        if (localBasis.length) patchJudgmentBasis(localBasis);
-        else {
-          const basis = document.getElementById('figmaReportBasis');
-          if (basis) basis.innerHTML = '<li>暂无判断依据，请完成微任务后重新生成报告。</li>';
-        }
-      });
-    }
+    patchBehaviorSignals(report);
+
     if (report.learningAdvice && report.learningAdvice.length) {
       patchLearningAdvice(report.learningAdvice);
     } else if (taskRadar) {
@@ -1109,7 +1429,15 @@
                 <svg id="reportRadarSvg" viewBox="0 0 370 335" role="img" aria-label="岗位能力雷达图"></svg>
               </div>
             </div>
-            <div class="figma-evidence-copy"><h3>AI判断依据</h3><ul id="figmaReportBasis"><li class="figma-basis-pending">正在结合你的答题生成判断依据…</li></ul><p id="figmaReportNotice" class="figma-notice"></p></div>
+            <div class="figma-evidence-copy">
+              <h3>本次最明显的三个信号</h3>
+              <div id="figmaTopSignals" class="figma-signal-list">
+                <p class="figma-signal-empty figma-basis-pending">正在整理本轮行为信号…</p>
+              </div>
+              <button type="button" id="figmaEvidenceToggle" class="figma-evidence-toggle" hidden>查看全部 6 项行为证据 ↓</button>
+              <div id="figmaAllEvidence" class="figma-signal-list figma-signal-list--all is-collapsed"></div>
+              <p id="figmaReportNotice" class="figma-notice"></p>
+            </div>
           </section>
           <section class="figma-advice">
             <h2>💡 给你的「学习建议」💡</h2>
@@ -1595,9 +1923,15 @@
       try {
         const q = '?jobId=' + encodeURIComponent(state.currentJobId);
         const signals = await buildMicrotaskChoiceSignalsForReport();
-        const payload = signals.length
-          ? { microtaskChoiceSignals: signals, setId: state.microtaskSetId }
-          : null;
+        const subjectiveHighlights = buildSubjectiveHighlightsForReport();
+        const payload =
+          signals.length || subjectiveHighlights.length
+            ? {
+                microtaskChoiceSignals: signals,
+                userSubjectiveHighlights: subjectiveHighlights,
+                setId: state.microtaskSetId,
+              }
+            : null;
         const report = await api('/reports/generate' + q, {
           method: 'POST',
           headers: apiHeaders(payload != null),
@@ -1643,6 +1977,12 @@
       if (reportBtn) {
         state.currentJobId = reportBtn.dataset.jobId;
         loadReport();
+      }
+
+      if (e.target.closest('#figmaEvidenceToggle')) {
+        e.preventDefault();
+        toggleAllBehaviorEvidence();
+        return;
       }
 
       const sceneSideBtn = e.target.closest('#sceneSimPrevBtn, #sceneSimNextBtn');
