@@ -471,6 +471,12 @@
     .home-entry-panel { min-height:100%; display:grid; place-items:center; padding:50px 90px 64px; background:#fff; border-top:2px dashed var(--line); }
     .home-entry-panel .hero { max-width:980px; margin:0; text-align:center; }
     .home-entry-panel .entry-grid { max-width:880px; margin:clamp(54px,9vh,105px) auto 0; grid-template-columns:1fr 1fr; gap:22px; }
+    .entry-illustrations { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:22px; max-width:880px; margin:10px auto 0; pointer-events:none; }
+    .entry-illustrations img { display:block; justify-self:center; width:min(100%,460px); height:clamp(240px,30vh,320px); object-fit:contain; object-position:center top; }
+    @media (max-width:850px) {
+      .entry-illustrations { grid-template-columns:1fr; gap:0; margin-top:12px; }
+      .entry-illustrations img { height:220px; }
+    }
     .entry-card { min-height:202px; padding:24px; text-align:left; }
     .entry-card h2 { font-size:24px; margin-bottom:8px; }
     .entry-card .btn { margin-top:0; }
@@ -534,6 +540,8 @@
     .landing-cta:hover { transform:translate(-2px,-3px); box-shadow:8px 8px 0 var(--hero-ink); }
     .landing-cta b { font-size:25px; line-height:.8; }
     .landing-head small { display:block; margin-top:14px; color:#777b84; font-size:13px; }
+    .landing-scroll-cue { position:absolute; z-index:4; left:50%; bottom:42px; width:48px; height:48px; padding:0; transform:translateX(-50%); border:2px solid var(--hero-ink); border-radius:50%; background:#fff; color:var(--hero-ink); font-size:30px; font-weight:700; line-height:42px; cursor:pointer; animation:landingScrollCue 1.7s ease-in-out infinite; }
+    @keyframes landingScrollCue { 0%,100% { transform:translateX(-50%) translateY(0); } 50% { transform:translateX(-50%) translateY(6px); } }
     .hero-plane,.hero-sparkles { position:absolute; z-index:1; color:var(--hero-ink); }
     .hero-plane { top:14%; left:4%; width:clamp(130px,13vw,220px); transform:rotate(-6deg); }
     .hero-sparkles { top:43%; left:52%; width:clamp(76px,9vw,130px); transform:rotate(8deg); }
@@ -580,7 +588,8 @@
     .intro-wayve::before { content:""; position:absolute; inset:0; z-index:-2; background:radial-gradient(circle at 1px 1px,rgba(32,35,42,.075) 1px,transparent 1.1px) 0 0/22px 22px; opacity:.48; }
     .intro-wayve::after { content:""; position:absolute; z-index:-1; top:50%; left:50%; width:min(780px,82vw); height:min(510px,62vh); border:3px solid #20232a; border-radius:30px 38px 28px 34px; background:#fbf6eb; transform:translate(-50%,-50%); }
     .intro-wayve-inner { width:min(720px,76vw); position:relative; z-index:2; text-align:center; transform:translateY(-1vh); }
-    .intro-wayve-badge { display:grid; place-items:center; width:98px; height:98px; margin:0 auto 22px; border:3px solid #20232a; border-radius:23px 28px 21px 27px; background:#d8f1e8; font-size:24px; font-weight:800; opacity:0; transform:rotate(-3deg); animation:wayveBadgeDrop .72s cubic-bezier(.2,.8,.22,1.2) .12s forwards; }
+    .intro-wayve-badge { display:grid; place-items:center; width:min(228px,46vw); height:auto; margin:0 auto 18px; border:0; border-radius:0; background:transparent; opacity:0; transform:rotate(-3deg); animation:wayveBadgeDrop .72s cubic-bezier(.2,.8,.22,1.2) .12s forwards; }
+    .intro-wayve-badge img { display:block; width:100%; height:auto; }
     .intro-wayve h1 { margin:0; color:#20232a; font-size:clamp(31px,3.8vw,52px); font-weight:800; line-height:1.18; letter-spacing:-.035em; opacity:0; animation:wayveFadeUp .68s ease .55s forwards; }
     .intro-wayve-en { margin:10px 0 0; color:#70747c; font-size:17px; letter-spacing:.08em; opacity:0; animation:wayveFadeUp .62s ease .78s forwards; }
     .intro-wayve-path { width:min(560px,70vw); height:52px; margin:9px auto 0; opacity:0; animation:wayveAppear .2s linear 1.05s forwards; }
@@ -592,16 +601,17 @@
     .intro-wayve-actions { margin-top:28px; opacity:0; animation:wayvePop .52s cubic-bezier(.2,.85,.28,1.15) 2.45s forwards; }
     .intro-wayve-actions button { border:2px solid #20232a; border-radius:999px; background:#ff8659; color:#fff; padding:13px 26px; font-size:17px; font-weight:800; }
     .intro-wayve-actions p { margin:12px 0 0; color:#70747c; font-size:13px; }
-    .intro-wayve-plane,.intro-wayve-cloud,.intro-wayve-stars { position:absolute; z-index:1; color:#20232a; opacity:0; }
-    .intro-wayve-plane { top:20%; left:9%; width:74px; height:74px; animation:wayveFlyIn 1.2s cubic-bezier(.2,.8,.2,1) 1.45s forwards,wayveFloat 3.4s ease-in-out 2.7s infinite; }.intro-wayve-plane svg,.intro-wayve-cloud svg { width:100%; height:100%; }
-    .intro-wayve-cloud { top:23%; right:10%; width:55px; height:32px; animation:wayveFadeUp .5s ease 1.8s forwards,wayveFloatTwo 4.2s ease-in-out 2.2s infinite; }
-    .intro-wayve-stars { top:18%; right:15%; color:#c9b7ff; font-size:42px; letter-spacing:19px; transform:rotate(8deg); animation:wayveFadeUp .5s ease 1.8s forwards; }
+    .intro-wayve-plane,.intro-wayve-sparkles,.intro-wayve-bulb { position:absolute; z-index:1; opacity:0; pointer-events:none; }
+    .intro-wayve-plane img,.intro-wayve-sparkles img,.intro-wayve-bulb img { display:block; width:100%; height:auto; }
+    .intro-wayve-plane { top:18%; left:7%; width:128px; animation:wayveFlyIn 1.2s cubic-bezier(.2,.8,.2,1) 1.45s forwards,wayveFloat 3.4s ease-in-out 2.7s infinite; }
+    .intro-wayve-sparkles { top:14%; right:8%; width:116px; transform:rotate(8deg); animation:wayveFadeUp .5s ease 1.8s forwards,wayveFloatTwo 4.2s ease-in-out 2.2s infinite; }
+    .intro-wayve-bulb { top:39%; right:8%; width:78px; transform:rotate(45deg); animation:wayveFadeUp .56s ease 1.95s forwards,wayveFloat 3.7s ease-in-out 2.55s infinite; }
     .intro-wayve-skip { position:absolute; z-index:3; right:30px; bottom:27px; border:2px solid #20232a; border-radius:999px; background:#fff; padding:7px 11px; color:#20232a; font-size:13px; font-weight:700; opacity:0; animation:wayveAppear .5s ease 2.5s forwards; }
     .intro-wayve-route { position:absolute; z-index:4; inset:0; pointer-events:none; opacity:0; }.intro-wayve-route svg { width:100%; height:100%; }.intro-wayve-route path { fill:none; stroke:#ff8659; stroke-width:4; stroke-linecap:round; stroke-dasharray:2400; stroke-dashoffset:2400; }
     .intro-wayve.leaving .intro-wayve-route { opacity:1; }.intro-wayve.leaving .intro-wayve-route path { animation:wayveBigRoute .95s cubic-bezier(.4,0,.2,1) forwards; }
     @keyframes wayveBadgeDrop { 0% { opacity:0; transform:translateY(-30px) rotate(-3deg) scale(.86); } 70% { opacity:1; transform:translateY(5px) rotate(-3deg) scale(1.04); } 100% { opacity:1; transform:rotate(-3deg); } }
     @keyframes wayveFadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:none; } } @keyframes wayveAppear { to { opacity:1; } } @keyframes wayveDraw { to { stroke-dashoffset:0; } } @keyframes wayveDrawSmall { to { stroke-dashoffset:0; } } @keyframes wayvePop { 0% { opacity:0; transform:translateY(12px) scale(.94); } 100% { opacity:1; transform:none; } } @keyframes wayveFlyIn { 0% { opacity:0; transform:translate(-40px,30px) rotate(-18deg); } 100% { opacity:1; transform:none; } } @keyframes wayveFloat { 50% { transform:translateY(-8px) rotate(2deg); } } @keyframes wayveFloatTwo { 50% { transform:translateY(7px); } } @keyframes wayveBigRoute { to { stroke-dashoffset:0; } }
-    @media (max-width:780px) { .intro-wayve::after { width:90vw; height:535px; }.intro-wayve-inner { width:86vw; }.intro-wayve-path { width:74vw; }.intro-wayve h1 { font-size:38px; }.intro-wayve-plane { top:13%; left:1%; transform:scale(.75); }.intro-wayve-cloud { top:20%; right:2%; transform:scale(.75); }.intro-wayve-stars { top:16%; right:3%; font-size:28px; }.intro-wayve-skip { right:16px; bottom:16px; } }
+    @media (max-width:780px) { .intro-wayve::after { width:90vw; height:535px; }.intro-wayve-inner { width:86vw; }.intro-wayve-path { width:74vw; }.intro-wayve h1 { font-size:38px; }.intro-wayve-plane { top:13%; left:1%; width:92px; }.intro-wayve-sparkles { top:15%; right:2%; width:82px; }.intro-wayve-bulb { top:37%; right:3%; width:58px; }.intro-wayve-skip { right:16px; bottom:16px; } }
     @media (prefers-reduced-motion:reduce) { .intro-wayve * { animation:none !important; opacity:1; }.intro-wayve-main-path,.intro-wayve-tail-path { stroke-dashoffset:0; } }
 
     /* Microtask workspace: adapted from Figma node 132:878. */
@@ -1069,12 +1079,20 @@
       font-size:14px;
       line-height:1.45;
       color:#2e2d2b;
+      display:flex;
+      align-items:baseline;
+      gap:8px;
+      flex-wrap:wrap;
     }
-    .scene-sim-message b {
-      display:block;
-      margin-bottom:4px;
+    .scene-sim-message-speaker {
+      flex-shrink:0;
       font-size:12px;
+      font-weight:700;
       color:#779d56;
+    }
+    .scene-sim-message-text {
+      flex:1;
+      min-width:0;
     }
     .scene-sim-question {
       margin:0 0 12px;

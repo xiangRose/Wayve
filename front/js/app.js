@@ -145,6 +145,20 @@
     ai_data_eval: 'DATA_S1',
     ai_app_dev: 'DEV_S1',
   };
+  const SCENE_S2_IDS = {
+    ai_product: 'PRODUCT_S2',
+    ai_ui_design: 'UI_S2',
+    ai_ops: 'OPS_S2',
+    ai_data_eval: 'DATA_S2',
+    ai_app_dev: 'DEV_S2',
+  };
+  const SCENE_S3_IDS = {
+    ai_product: 'PRODUCT_S3',
+    ai_ui_design: 'UI_S3',
+    ai_ops: 'OPS_S3',
+    ai_data_eval: 'DATA_S3',
+    ai_app_dev: 'DEV_S3',
+  };
 
   const SCENE_STEPS = [
     {
@@ -155,20 +169,18 @@
       sceneIdForJob: (jobId) => SCENE_S1_IDS[jobId],
     },
     {
-      badge: '发布现场',
-      theme: 'orange',
-      art: 'assets/scenes/scene-release.png',
-      scripted: false,
-      placeholderTitle: '发布现场',
-      placeholderDesc: '团队正在对齐发布目标、风险与依赖。完整情景剧本筹备中，可先继续体验流程。',
-    },
-    {
       badge: '客户沟通',
       theme: 'purple',
       art: 'assets/scenes/scene-client.png',
-      scripted: false,
-      placeholderTitle: '客户沟通',
-      placeholderDesc: '与客户确认需求要点与交付边界。完整情景剧本筹备中，可先继续体验流程。',
+      scripted: true,
+      sceneIdForJob: (jobId) => SCENE_S2_IDS[jobId],
+    },
+    {
+      badge: '发布现场',
+      theme: 'orange',
+      art: 'assets/scenes/scene-release.png',
+      scripted: true,
+      sceneIdForJob: (jobId) => SCENE_S3_IDS[jobId],
     },
   ];
 
@@ -586,24 +598,44 @@
 
   async function loadSceneScripts() {
     if (state.sceneScripts) return state.sceneScripts;
+    const jobId = state.currentJobId;
+    const sceneIds = [
+      SCENE_S1_IDS[jobId],
+      SCENE_S2_IDS[jobId],
+      SCENE_S3_IDS[jobId],
+    ].filter(Boolean);
+
     const loadLocal = async () => {
       try {
-        const res = await fetch('data/s1-meeting.json');
-        if (!res.ok) return null;
-        return await res.json();
+        const [s1, s2, s3] = await Promise.all([
+          fetch('data/s1-meeting.json'),
+          fetch('data/s2-client.json'),
+          fetch('data/s3-release.json'),
+        ]);
+        if (!s1.ok || !s2.ok || !s3.ok) return null;
+        return {
+          ...(await s1.json()),
+          ...(await s2.json()),
+          ...(await s3.json()),
+        };
       } catch (err) {
         console.warn('本地情景剧本加载失败', err);
         return null;
       }
     };
-    const sceneId = SCENE_S1_IDS[state.currentJobId];
-    if (!state.useMock && state.sessionId && sceneId) {
-      try {
-        const scene = await api('/scenes/' + sceneId, { headers: apiHeaders() });
-        state.sceneScripts = { [sceneId]: scene };
+
+    if (!state.useMock && state.sessionId && sceneIds.length) {
+      const scripts = {};
+      for (const id of sceneIds) {
+        try {
+          scripts[id] = await api('/scenes/' + id, { headers: apiHeaders() });
+        } catch (err) {
+          console.warn('情景剧本接口失败', id, err);
+        }
+      }
+      if (Object.keys(scripts).length) {
+        state.sceneScripts = scripts;
         return state.sceneScripts;
-      } catch (err) {
-        console.warn('情景剧本接口失败，回退本地数据', err);
       }
     }
     state.sceneScripts = await loadLocal();
@@ -624,20 +656,6 @@
     return scripts[sceneId] || null;
   }
 
-  function renderScenePhaseNav() {
-    return SCENE_PANEL_PHASES.map((phase, i) => {
-      const done = i < state.scenePanelPhase;
-      const active = i === state.scenePanelPhase;
-      const clickable = i <= state.scenePanelMaxPhase;
-      return (
-        '<button class="scene-sim-phase-tab' + (active ? ' active' : '') + (done ? ' done' : '') +
-        (clickable ? '' : ' locked') + '" type="button" data-scene-phase="' + i + '"' +
-        (clickable ? '' : ' disabled') + '>' +
-        '<span class="scene-sim-phase-num">' + (i + 1) + '</span>' + esc(phase.label) + '</button>'
-      );
-    }).join('');
-  }
-
   function renderScenePanelPhase(scene, step) {
     const phase = state.scenePanelPhase;
     const draft = state.sceneDraft;
@@ -647,7 +665,11 @@
 
     if (phase === 0) {
       const messages = (scene.messages || [])
-        .map((m) => '<div class="scene-sim-message"><b>' + esc(m.speaker) + '</b>' + esc(m.text) + '</div>')
+        .map(
+          (m) =>
+            '<div class="scene-sim-message"><span class="scene-sim-message-speaker">' +
+            esc(m.speaker) + '</span><span class="scene-sim-message-text">' + esc(m.text) + '</span></div>'
+        )
         .join('');
       return (
         '<div class="scene-sim-phase scene-sim-phase--active">' +
@@ -734,7 +756,6 @@
     panel.innerHTML =
       '<div class="scene-sim-panel-inner scene-sim-panel-inner--phased">' +
       '<p class="scene-sim-step">情景 ' + (state.sceneStep + 1) + ' / ' + SCENE_STEPS.length + '</p>' +
-      '<nav class="scene-sim-phase-nav" aria-label="情景步骤">' + renderScenePhaseNav() + '</nav>' +
       '<div class="scene-sim-phase-body">' + renderScenePanelPhase(scene, step) + '</div>' +
       renderScenePanelActions(step) + '</div>';
   }
@@ -809,6 +830,7 @@
 
   async function startSceneFlow() {
     state.sceneStep = 0;
+    state.sceneScripts = null;
     resetScenePanelState();
     await loadSceneScripts();
     go('sceneSim');
@@ -877,11 +899,6 @@
         state.sceneDraft.selectedOptionId = sceneOption.dataset.sceneOption;
         state.sceneDraft.customText = '';
         renderSceneSim();
-      }
-
-      const scenePhaseTab = e.target.closest('[data-scene-phase]');
-      if (scenePhaseTab && !scenePhaseTab.disabled) {
-        goScenePanelPhase(Number(scenePhaseTab.dataset.scenePhase));
       }
 
       if (e.target.closest('[data-action="scene-phase-next"]')) advanceScenePanelPhase();
@@ -1007,6 +1024,14 @@
     };
     document.getElementById('drawerClose').onclick = closeDrawer;
     shade.onclick = closeDrawer;
+
+    const homeScrollCue = document.getElementById('homeScrollCue');
+    if (homeScrollCue) {
+      homeScrollCue.addEventListener('click', () => {
+        const homeEntry = document.getElementById('homeEntry');
+        if (homeEntry) homeEntry.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    }
 
     const intro = document.getElementById('intro');
     let introDismissed = false;
