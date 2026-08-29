@@ -335,6 +335,38 @@
     return [...el.querySelectorAll('.chip.selected')].map((c) => c.textContent.trim());
   }
 
+  function hasProfileText(id) {
+    const field = document.getElementById(id);
+    return Boolean(field && field.value.trim());
+  }
+
+  function hasProfileSelection(id) {
+    const group = document.getElementById(id);
+    return Boolean(group && group.querySelector('.chip.selected'));
+  }
+
+  function validateProfileStep(step) {
+    if (step === 'profile1') {
+      const status = document.getElementById('profileStatus');
+      return Boolean(status && status.value.trim() && hasProfileText('profileBackground'));
+    }
+    if (step === 'profile2') return hasProfileSelection('experienceChips') && hasProfileText('profileSkills');
+    if (step === 'profile3') {
+      return hasProfileSelection('interestChips') && hasProfileSelection('workStyleChips') && hasProfileText('profileGoal');
+    }
+    return true;
+  }
+
+  function updateProfileCtaState(step) {
+    const screen = document.getElementById(step);
+    const button = screen && screen.querySelector('.form-actions .btn');
+    if (button) button.disabled = !validateProfileStep(step);
+  }
+
+  function updateAllProfileCtaStates() {
+    ['profile1', 'profile2', 'profile3'].forEach(updateProfileCtaState);
+  }
+
   function normalizeJobs(raw) {
     return raw.map((j) => ({
       jobId: API_JOB_TO_FRONT[j.jobId] || j.jobId,
@@ -1588,7 +1620,13 @@
 
     document.addEventListener('click', (e) => {
       const nav = e.target.closest('[data-go]');
-      if (nav && !nav.closest('#drawer')) go(nav.dataset.go);
+      if (nav && !nav.closest('#drawer')) {
+        const screen = nav.closest('.screen');
+        const isProfileForward = screen && nav.closest('.form-actions') && ['profile1', 'profile2'].includes(screen.id);
+        if (isProfileForward && !validateProfileStep(screen.id)) return;
+        go(nav.dataset.go);
+        updateAllProfileCtaStates();
+      }
 
       const startBtn = e.target.closest('[data-action="start-job"]');
       if (startBtn) startJob(startBtn.dataset.jobId);
@@ -1643,8 +1681,20 @@
     });
 
     document.querySelectorAll('.selectable .chip').forEach((c) => {
-      c.addEventListener('click', () => c.classList.toggle('selected'));
+      c.addEventListener('click', () => {
+        c.classList.toggle('selected');
+        updateAllProfileCtaStates();
+      });
     });
+
+    ['profileStatus', 'profileBackground', 'profileSkills', 'profileStory', 'profileGoal']
+      .map((id) => document.getElementById(id))
+      .filter(Boolean)
+      .forEach((field) => {
+        field.addEventListener('input', updateAllProfileCtaStates);
+        field.addEventListener('change', updateAllProfileCtaStates);
+      });
+    updateAllProfileCtaStates();
 
     const microtaskNextBtn = document.getElementById('microtaskNextBtn');
     if (microtaskNextBtn) {
@@ -1692,10 +1742,6 @@
       e.stopPropagation();
       dismissIntro(true);
     });
-    document.getElementById('introSkipBtn').addEventListener('click', (e) => {
-      e.stopPropagation();
-      dismissIntro(false);
-    });
     intro.addEventListener('click', (e) => {
       if (!e.target.closest('button')) dismissIntro(true);
     });
@@ -1710,6 +1756,7 @@
     });
 
     document.getElementById('submitProfileBtn').addEventListener('click', async () => {
+      if (!validateProfileStep('profile3')) return;
       go('analyze1');
       try {
         await saveProfile();

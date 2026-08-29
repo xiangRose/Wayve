@@ -491,7 +491,8 @@
     body, body * { font-family:"PingFang SC","PingFang TC",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif !important; }
     *, *::before, *::after { box-shadow:none !important; }
     .bar > span { transition:width .18s ease; }
-    .btn:disabled { cursor:wait; opacity:.68; filter:saturate(.72); transform:rotate(-1deg); }
+    .btn:disabled { cursor:not-allowed; opacity:1; background:#d8d2ca; color:#817a74; border-color:#aaa29a; filter:none; transform:none; }
+    .btn:disabled:hover { background:#d8d2ca; color:#817a74; border-color:#aaa29a; filter:none; transform:none; }
     .entry-card:first-child { background:#ffe7d8; }
     .entry-card:last-child { background:#ddf4ef; }
     .fan-card:first-child { background:#ffe1a6; }
@@ -581,7 +582,7 @@
     @media (max-width:1100px) { .landing-scroll-cue { left:50%; right:auto; bottom:22%; transform:translateX(-50%); animation-name:landingScrollCue; } }
     @media (min-width:701px) and (max-width:800px) { .landing-scroll-cue { left:50%; right:auto; bottom:1%; transform:translateX(-50%); animation-name:landingScrollCue; } }
     @media (max-width:700px) { .landing-scroll-cue { left:50%; right:auto; bottom:1%; transform:translateX(-50%); animation-name:landingScrollCue; } }
-    #profile1 .form,#profile2 .form,#profile3 .form { max-width:980px; min-height:590px; margin-top:-18px; padding:100px 46px 68px; overflow:visible; background:transparent url("../assets/wide-sticky-note.svg") center / 100% 100% no-repeat; border:0; border-radius:0; box-shadow:none; }
+    #profile1 .form,#profile2 .form,#profile3 .form { max-width:980px; min-height:590px; margin-top:-18px; padding:100px 46px 68px; overflow:visible; background:transparent; border:0; border-image-source:url("../assets/wide-sticky-note.svg"); border-image-slice:114 104 94 42 fill; border-image-width:90px 90px 90px 36px; border-image-repeat:stretch; border-radius:0; box-shadow:none; }
     #profile1 .form::before,#profile2 .form::before,#profile3 .form::before,#profile1 .form::after,#profile2 .form::after,#profile3 .form::after { content:none; }
     #profile1 .form .form-actions,#profile2 .form .form-actions,#profile3 .form .form-actions { position:relative; z-index:1; margin-top:38px; padding-right:42px; }
     @media (max-width:850px) { #profile1 .form,#profile2 .form,#profile3 .form { min-height:0; padding:88px 24px 62px; } #profile1 .form::before,#profile2 .form::before,#profile3 .form::before { width:190px; left:calc(50% - 95px); } }
@@ -780,14 +781,13 @@
     }
     #profile1 .form,#profile2 .form,#profile3 .form {
       width:min(980px,100%);
-      height:min(680px,calc(100dvh - 144px));
       min-height:0;
       margin:0;
       padding:clamp(74px,8vh,92px) clamp(30px,4vw,46px) clamp(42px,5vh,56px);
-      overflow:hidden;
-      transform:translateY(clamp(-72px,-6vh,-42px));
+      overflow:visible;
+      transform:none;
     }
-    #profile1 .form .field,#profile2 .form .field,#profile3 .form .field { margin:14px 0; }
+    #profile1 .form .field,#profile2 .form .field,#profile3 .form .field { margin:14px 0 0; }
     #profile1 .form h1,#profile2 .form h1,#profile3 .form h1 {
       max-width:360px;
       font-size:clamp(26px,2.25vw,30px);
@@ -795,7 +795,7 @@
     #profile1 .form textarea,#profile2 .form textarea,#profile3 .form textarea { min-height:82px; }
     #profile1 .form .form-actions,#profile2 .form .form-actions,#profile3 .form .form-actions { margin-top:18px; }
     @media (max-height:800px) {
-      #profile1 .form,#profile2 .form,#profile3 .form { height:calc(100dvh - 122px); padding-top:62px; padding-bottom:32px; }
+      #profile1 .form,#profile2 .form,#profile3 .form { padding-top:62px; padding-bottom:32px; }
       #profile1 .form h1,#profile2 .form h1,#profile3 .form h1 { font-size:clamp(24px,2.25vw,28px); margin-bottom:6px; }
       #profile1 .form .subtitle,#profile2 .form .subtitle,#profile3 .form .subtitle { font-size:14px; margin-bottom:8px; }
       #profile1 .form .field,#profile2 .form .field,#profile3 .form .field { margin:10px 0; }
@@ -806,7 +806,7 @@
     @media (max-width:850px) {
       :is(#profile1,#profile2,#profile3) { padding:16px; }
       :is(#profile1,#profile2,#profile3) .page-top { top:16px; left:18px; right:18px; font-size:12px; }
-      #profile1 .form,#profile2 .form,#profile3 .form { width:100%; height:calc(100dvh - 100px); padding:68px 24px 26px; }
+      #profile1 .form,#profile2 .form,#profile3 .form { width:100%; padding:68px 24px 26px; }
     }
 
     /* Figma node 108:561 — 轨迹页 */
