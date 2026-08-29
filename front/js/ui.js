@@ -13,11 +13,22 @@
       const nav = e.target.closest('[data-go]');
       if (!nav || nav.closest('#drawer')) return;
       CareerApp.go(nav.dataset.go);
+      if (nav.dataset.scrollTarget) {
+        const target = document.getElementById(nav.dataset.scrollTarget);
+        if (target) requestAnimationFrame(() => target.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+      }
     });
 
     document.querySelectorAll('[data-nav]').forEach((btn) => {
       btn.addEventListener('click', () => CareerApp.go(btn.dataset.nav));
     });
+  }
+
+  function bindHomeArrow() {
+    const arrow = document.getElementById('homeNextArrow');
+    const home = document.getElementById('home');
+    const next = home && home.querySelector('.home-panel:nth-child(2)');
+    if (arrow && next) arrow.addEventListener('click', () => next.scrollIntoView({ behavior: 'smooth', block: 'start' }));
   }
 
   function bindDrawer() {
@@ -69,8 +80,21 @@
       option.addEventListener('click', () => {
         option.parentElement.querySelectorAll('.option').forEach((x) => x.classList.remove('selected'));
         option.classList.add('selected');
+        const group = option.closest('[data-validity="single-choice"]');
+        const btn = document.getElementById('choiceContinue');
+        if (group && btn) { btn.disabled = group.querySelectorAll('.option.selected').length !== 1; document.getElementById('choiceFeedback').textContent = '已选择 1 项，可以继续。'; }
       });
     });
+  }
+
+  function bindEvidenceSelection() {
+    const group = document.getElementById('evidenceChoices');
+    const btn = document.getElementById('evidenceContinue');
+    const feedback = document.getElementById('evidenceFeedback');
+    if (!group || !btn || !feedback) return;
+    const boxes = [...group.querySelectorAll('input[type="checkbox"]')];
+    const update = () => { const n = boxes.filter(x => x.checked).length; feedback.textContent = n === 2 ? '已选择 2/2 项，可以继续。' : `已选择 ${n}/2 项，请选择 2 项。`; btn.disabled = n !== 2; boxes.forEach(x => { x.disabled = n >= 2 && !x.checked; }); };
+    boxes.forEach(x => x.addEventListener('change', update)); update();
   }
 
   function bindRankingDrag() {
@@ -169,10 +193,12 @@
 
   function init() {
     bindNavigation();
+    bindHomeArrow();
     bindDrawer();
     bindIntro();
     bindChips();
     bindSingleSelect();
+    bindEvidenceSelection();
     bindRankingDrag();
     bindMatchingBoard();
     bindCustomInteractions();
