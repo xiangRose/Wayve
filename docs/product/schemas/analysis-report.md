@@ -1,143 +1,42 @@
 # AnalysisReport Schema
 
-Status: Hackathon P0 Frozen
-Source of Truth: Feishu
-Repository Snapshot Updated: 2026-08-28
+状态：CURRENT PRODUCT SOT — APPROVED FOR FEISHU SOT
 
-`AnalysisReport` is the stable first-level container for the post-trial report. Product reading order, language, Next Mission, and Growth Track behavior belong exclusively to [Analysis Report, Next Mission, and Growth Track](../analysis-and-growth.md). Evidence semantics belong to [Behavior and Evidence](../behavior-and-evidence.md).
+AnalysisReport 是对多个来源进行分层呈现的容器，永远不包含 Unified Job Fit Score。
 
-It must not contain a unified Job Fit Score.
-
-The existing `AnalysisReport` top-level container is sufficient for P0. Do not add a new top-level schema only for visual sections.
-
-## Canonical Container
+## 必要结构
 
 ```json
 {
   "type": "AnalysisReport",
   "reportId": "uuid",
   "sessionId": "uuid",
-  "generatedAt": "2026-08-28T00:00:00Z",
-  "targetJobId": "ai_product",
-  "roleRequirementProfiles": {},
-  "currentEvidenceProfile": {},
+  "roleContext": {},
+  "hardSkillAssessment": {},
   "backgroundEvidence": [],
   "taskEvidence": [],
+  "collaborationEvidence": [],
+  "workingPortrait": {},
+  "responseToChange": {},
   "interestFeedback": [],
-  "evidenceReplay": [],
-  "unknowns": [],
+  "userReflection": {},
   "tensions": [],
-  "comparisonSummary": "...",
+  "unknowns": [],
+  "evidenceReplay": [],
   "nextMission": {},
   "boundaryNotice": "..."
 }
 ```
 
-## Stable First-Level Fields
+## Hard Skill Assessment
 
-| Field | Required | Meaning |
-| --- | --- | --- |
-| `type` | Yes | Must be `AnalysisReport`. |
-| `reportId` | Yes | Report ID. |
-| `sessionId` | Yes | Session ID. |
-| `generatedAt` | Yes | Generation timestamp. |
-| `targetJobId` | No | User-selected target direction, if selected. |
-| `roleRequirementProfiles` | Yes | Role requirements used for interpretation. |
-| `currentEvidenceProfile` | Yes | Current evidence map. This is not a permanent ability profile. |
-| `backgroundEvidence` | Yes | Resume / Background Evidence. |
-| `taskEvidence` | Yes | Evidence generated from trial behavior. |
-| `interestFeedback` | Yes | User interest and willingness, separate from evidence. |
-| `evidenceReplay` | Yes | Replayable links from claims to source actions. |
-| `unknowns` | Yes | Not observed or unresolved areas. |
-| `tensions` | Yes | Conflicting or nuanced signals. |
-| `comparisonSummary` | No | Bounded summary of observed evidence across tried roles. |
-| `nextMission` | Yes | Follow-up mission for gathering missing evidence. |
-| `boundaryNotice` | Yes | Product boundary and non-verdict notice. |
+每个 dimension 包含 `requirementId`、`observationStatus`、可选的 `performanceLevel`、`confidence`、`evidenceRefs`、`supports` 和 `limits`。
 
-## Product Presentation Handoff
+- `observed` 或 `partially_observed` 且 session 提供有效评估机会时，才可有 0–4；
+- Level 0 表示有效机会存在但未展示可用 requirement-level performance 或明显 off-task；
+- `not_observed` 没有 performanceLevel 或 numeric value，不等于 Level 0；
+- assessment 只针对当前 Role Work Sample。
 
-Schema field order is not presentation order. Implementations must follow the single reading order owned by [Analysis and Growth](../analysis-and-growth.md); this schema does not restate or redefine it.
+## Presentation Boundary
 
-## Evidence Shape
-
-```json
-{
-  "evidenceId": "uuid",
-  "jobId": "ai_product",
-  "requirementId": "evidence_judgment",
-  "sourceType": "task",
-  "sourceStep": "evidence_gathering",
-  "sourceEventIds": ["uuid"],
-  "observedAction": "The user selected funnel and segment data before deciding.",
-  "judgmentRelation": "direct",
-  "supportLevel": "moderate_support",
-  "confidence": "medium",
-  "notObserved": false,
-  "tension": null,
-  "supports": "May support evidence-seeking behavior in a constrained product scenario.",
-  "limits": "Does not prove broader product strategy ability.",
-  "replay": {
-    "stepTitle": "Evidence Gathering",
-    "userAction": "...",
-    "userReason": "..."
-  }
-}
-```
-
-## Interest Feedback Shape
-
-```json
-{
-  "jobId": "ai_product",
-  "likeLevel": "high",
-  "longTermWillingness": "maybe",
-  "feelingSource": "task_process",
-  "freeText": "..."
-}
-```
-
-Interest Feedback must remain separate from Background Evidence and Task Evidence.
-
-Interest Feedback may express willingness to continue similar work. It must not enter `currentEvidenceProfile` and must not affect capability judgment.
-
-If a trial UI captures engagement or energy, normalize the explicit self-report into `interestFeedback`; do not create a capability dimension.
-
-## Next Mission Shape
-
-```json
-{
-  "targetJobId": "ai_product",
-  "evidenceGap": "Metric validation was only partially observed.",
-  "missionPrompt": "...",
-  "steps": [],
-  "estimatedTime": "45-60 minutes",
-  "deliverable": "...",
-  "futureEvidenceUse": "Can update Current Evidence Profile after review."
-}
-```
-
-The schema represents the Next Mission; pending state and later-cycle rules remain owned by Analysis and Growth.
-
-## Evidence Card Presentation
-
-Evidence Card is a UI/content presentation pattern over existing evidence fields. It should use:
-
-- `sourceStep`
-- `sourceEventIds`
-- `observedAction`
-- `supports`
-- `limits`
-- `replay`
-
-No `signalScore` or equivalent field should be introduced for Evidence Cards.
-
-## Boundary Rules
-
-- Do not include `fitScore`.
-- Do not include a unified Job Fit Score under another name.
-- Do not treat `notObserved` as inability.
-- Do not let recommendation `navigationScore` flow into this container.
-- If radar UI is retained, bind it to `currentEvidenceProfile` only.
-- Do not use HealthKit, heart rate, sleep, steps, or energy values for career judgment.
-- Do not add Tide Score, Signal Score, or an ability-growth score history.
-- Do not claim Recurring Pattern or Trend from a single trial.
+Schema 定义数据意义，不冻结 UI 组件。Report 必须遵循 Narrative Spine、Visual Readability、Evidence Explainability 和 Minimal Labeling。Interest 与 Reflection 是用户自述来源，不得覆盖系统 Evidence。

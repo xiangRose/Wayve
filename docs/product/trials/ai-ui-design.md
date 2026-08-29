@@ -1,36 +1,23 @@
-# AI UI Design Career Trial
+# AI UI Design Role Work Sample
 
-Status: FROZEN / PASS
-Canonical jobId: `ai_ui_design`
-Source of Truth: Feishu
-Repository Snapshot Updated: 2026-08-28
+状态：FROZEN / PASS — Canonical Role Work Sample
 
-This canonical named trial is the approved **AI Document-to-Checklist Flow - Partial Result and Recovery**. It supersedes the older meeting-assistant component-budget candidate. It follows the shared Career Trial, Behavior/Evidence, and Analysis/Growth owners and does not authorize production implementation.
+## 工作样本契约
 
-## Trial Contract
+名称：AI Document-to-Checklist Flow — Partial Result and Recovery。
 
-The user designs how a person experiences a supplied low-risk community-event brief becoming an editable checklist. The work object is semantic states, transitions, uncertainty, recovery, and state continuity. It is not component placement, visual design, Figma work, meeting-assistant work, extraction correctness, or a knowledge test.
+用户在一个文档转清单的 AI 产品中，设计处理进度、部分结果、不确定信息和失败恢复流程。体验使用 persistent state-flow workbench、固定 simulated user、deterministic path，并允许最多一次 retain/revise rerun。时长由 experience layer 决定，不是硬性 SLA。
 
-The fixed fixture contains normal items, exactly one meaningful uncertain item, and exactly one unreadable/failed page or section. The user must make bounded decisions about processing/waiting and partial-result behavior; uncertainty disclosure and source/confirm/edit action path; failed-page recovery and preservation or reset of confirmed checklist work; and final flow risk and next usability test.
+## 语义流程与后果
 
-The experience uses a persistent state-flow workbench, one fixed supplied simulated user, a deterministic path, and at most one retain/revise rerun. It targets 3-5 minutes and exposes consequence drivers rather than scores.
+`scenario → first_judgment → evidence_gathering → twist → reconsideration → final_decision`
 
-## Semantic Flow and Consequence
+用户编辑状态和转移，而不是视觉样式。系统模拟用户如何面对 partial result、uncertainty、failure 和 recovery，并展示 confusion、trust、state loss / preservation 等 consequence。
 
-The shared semantic stages remain `scenario`, `first_judgment`, `evidence_gathering`, `twist`, `reconsideration`, and `final_decision`. A first meaningful state change occurs within 20-30 seconds. The supplied user path is deterministic for a given flow configuration and may show friction, ambiguity, state loss, or state preservation. A failed first path is information, not a penalty.
+## Participant Behavior 与 Simulation Trace
 
-## Participant Behavior vs Simulation Trace
+用户操作产生 Participant Behavior Events。simulated user 的行为只属于 consequence trace，不是用户行为，不得单独进入 Evidence。
 
-Designer Behavior records only participant actions: state/flow inspection, waiting/partial decision, transition change, uncertainty path selection, recovery selection, simulation run, consequence inspection, retain/revise, and final submission. Each event uses exactly one canonical `sourceStep` and the shared event envelope.
+## Evidence 与 Report 边界
 
-`simulated_user_step` is a deterministic consequence/simulation trace. It may store simulated state, supplied end-user action, next state, friction or ambiguity, work loss or preservation, and consequence driver. It is **not** participant Behavior, is not a direct Evidence input, and cannot independently support a designer capability claim. Replay may link it as consequence context.
-
-## Evidence and Report Boundaries
-
-Each Evidence item maps participant Behavior to exactly one role requirement with a maximum bounded claim, explicit limits, source event IDs, source step, and replay. Fixture correctness, simulated user action, Interest, time, and scores cannot independently support a capability claim. `not_observed` means no usable Evidence was produced and never means inability.
-
-Interest Feedback is explicit self-report after the Trial and remains outside Evidence and Current Evidence Profile. The output is compatible with the canonical seven-part Analysis Report and one Next Mission tied to an unknown or evidence gap. No ability score, fit score, radar, stable trait, or career verdict is allowed.
-
-## Minimum Acceptance
-
-The trial is complete when the user changes a state/transition, configures uncertainty and recovery, runs the fixed path, inspects a real consequence, retains or revises, and submits a final decision with risk and next test. Recovery must enact actual checklist continuity or reset. Dragging is never required; click and keyboard alternatives are available.
+Evidence 只能支持本次 supplied flow 中观察到的交互逻辑、AI 状态、信息层级、恢复和修订。不得推断视觉设计能力、长期 UX 能力、人格或职业适配度。
