@@ -1445,24 +1445,25 @@
         loadReport();
       }
 
+      const sceneSideBtn = e.target.closest('#sceneSimPrevBtn, #sceneSimNextBtn');
+      if (sceneSideBtn && !sceneSideBtn.hidden) {
+        const action = sceneSideBtn.getAttribute('data-action');
+        if (action === 'scene-phase-prev') {
+          goScenePanelPhase(state.scenePanelPhase - 1);
+        } else if (action === 'scene-phase-next') {
+          advanceScenePanelPhase();
+        } else if (action === 'scene-submit' || action === 'scene-continue') {
+          submitSceneStep();
+        }
+        return;
+      }
+
       const sceneOption = e.target.closest('[data-scene-option]');
       if (sceneOption) {
         state.sceneDraft.selectedOptionId = sceneOption.dataset.sceneOption;
         state.sceneDraft.customText = '';
         renderSceneSim();
       }
-
-      if (e.target.closest('[data-action="scene-phase-next"]')) advanceScenePanelPhase();
-
-      if (e.target.closest('[data-action="scene-phase-prev"]')) {
-        goScenePanelPhase(state.scenePanelPhase - 1);
-      }
-
-      const sceneSubmit = e.target.closest('[data-action="scene-submit"]');
-      if (sceneSubmit) submitSceneStep();
-
-      const sceneContinue = e.target.closest('[data-action="scene-continue"]');
-      if (sceneContinue) submitSceneStep();
 
       const microOption = e.target.closest('[data-microtask-option]');
       if (microOption) {
