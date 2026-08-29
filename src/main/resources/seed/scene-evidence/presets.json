@@ -1,0 +1,422 @@
+{
+  "PRODUCT_S1_A": {
+    "sceneId": "PRODUCT_S1",
+    "roleId": "ai_pm",
+    "optionId": "PRODUCT_S1_A",
+    "observedBehavior": "在质量风险尚未完全解决时，缩小高风险范围，同时保持版本发布。",
+    "workstyleEvidence": {
+      "decision_style": { "direction": "stage_decision", "strength": 1.5, "confidence": 0.9 },
+      "conflict_style": { "direction": "tradeoff_and_commit", "strength": 1.2, "confidence": 0.9 },
+      "communication_style": { "direction": "conclusion_first", "strength": 0.8, "confidence": 0.85 }
+    },
+    "roleTags": ["scope_control", "progressive_release", "ownership", "risk_containment"],
+    "evidenceSummary": "面对发布与质量冲突，用户选择缩小风险范围后继续推进。",
+    "confidence": 0.9
+  },
+  "PRODUCT_S1_B": {
+    "sceneId": "PRODUCT_S1",
+    "roleId": "ai_pm",
+    "optionId": "PRODUCT_S1_B",
+    "observedBehavior": "接受延期成本，以保留版本的核心用户价值。",
+    "workstyleEvidence": {
+      "decision_style": { "direction": "protect_value_before_release", "strength": 1.3, "confidence": 0.9 },
+      "conflict_style": { "direction": "hold_core_position", "strength": 1.2, "confidence": 0.9 },
+      "communication_style": { "direction": "clear_commitment", "strength": 0.9, "confidence": 0.85 }
+    },
+    "roleTags": ["core_value_protection", "release_delay", "quality_over_schedule", "ownership"],
+    "evidenceSummary": "用户选择推迟发布以保护版本核心价值，而非为守时间硬发。",
+    "confidence": 0.9
+  },
+  "UI_S1_A": {
+    "sceneId": "UI_S1",
+    "roleId": "ai_ux",
+    "optionId": "UI_S1_A",
+    "observedBehavior": "在交付压力下，优先避免用户完成操作后才发现限制。",
+    "workstyleEvidence": {
+      "conflict_style": { "direction": "actively_challenge", "strength": 1.4, "confidence": 0.9 },
+      "communication_style": { "direction": "principle_with_reason", "strength": 1.0, "confidence": 0.85 },
+      "decision_style": { "direction": "protect_experience_boundary", "strength": 1.1, "confidence": 0.9 }
+    },
+    "roleTags": ["expectation_management", "preventive_design", "experience_boundary", "design_advocacy"],
+    "evidenceSummary": "用户主张在操作前明确限制，而非上传失败后再提示。",
+    "confidence": 0.9
+  },
+  "UI_S1_B": {
+    "sceneId": "UI_S1",
+    "roleId": "ai_ux",
+    "optionId": "UI_S1_B",
+    "observedBehavior": "接受当前技术限制，通过改善失败后的反馈和恢复流程降低体验损伤。",
+    "workstyleEvidence": {
+      "conflict_style": { "direction": "adaptive_compromise", "strength": 1.1, "confidence": 0.85 },
+      "decision_style": { "direction": "delivery_oriented", "strength": 1.2, "confidence": 0.9 },
+      "communication_style": { "direction": "solution_focused", "strength": 0.9, "confidence": 0.85 }
+    },
+    "roleTags": ["fallback_design", "delivery_adaptation", "damage_control", "pragmatic_design"],
+    "evidenceSummary": "用户在限制下选择优化失败后的恢复体验以保障交付。",
+    "confidence": 0.9
+  },
+  "OPS_S1_A": {
+    "sceneId": "OPS_S1",
+    "roleId": "ai_operator",
+    "optionId": "OPS_S1_A",
+    "observedBehavior": "保留活动，但先缩小目标用户范围，通过第一批真实使用结果决定是否扩大。",
+    "workstyleEvidence": {
+      "decision_style": { "direction": "experiment_then_expand", "strength": 1.4, "confidence": 0.9 },
+      "conflict_style": { "direction": "work_with_constraints", "strength": 1.0, "confidence": 0.85 },
+      "communication_style": { "direction": "action_with_next_check", "strength": 1.0, "confidence": 0.85 }
+    },
+    "roleTags": ["user_segmentation", "controlled_experiment", "targeted_reach", "learn_and_expand"],
+    "evidenceSummary": "用户选择缩小首批覆盖范围，用真实反馈验证后再扩大。",
+    "confidence": 0.9
+  },
+  "OPS_S1_B": {
+    "sceneId": "OPS_S1",
+    "roleId": "ai_operator",
+    "optionId": "OPS_S1_B",
+    "observedBehavior": "根据产品当前能力重新调整活动重点，而不是继续放大原有卖点。",
+    "workstyleEvidence": {
+      "decision_style": { "direction": "replan_before_scale", "strength": 1.2, "confidence": 0.9 },
+      "conflict_style": { "direction": "accept_constraint_and_redirect", "strength": 1.0, "confidence": 0.85 },
+      "communication_style": { "direction": "goal_reframing", "strength": 0.9, "confidence": 0.85 }
+    },
+    "roleTags": ["campaign_reframing", "expectation_management", "resource_reallocation", "positioning_adjustment"],
+    "evidenceSummary": "用户根据当前产品能力重定活动重点，而非硬推原卖点。",
+    "confidence": 0.9
+  },
+  "DATA_S1_A": {
+    "sceneId": "DATA_S1",
+    "roleId": "ai_researcher",
+    "optionId": "DATA_S1_A",
+    "observedBehavior": "将高风险问题与已验证范围分开，限制未确认部分，同时继续补充证据。",
+    "workstyleEvidence": {
+      "decision_style": { "direction": "evidence_before_expansion", "strength": 1.4, "confidence": 0.9 },
+      "conflict_style": { "direction": "hold_quality_boundary", "strength": 1.3, "confidence": 0.9 },
+      "communication_style": { "direction": "explicit_risk_boundary", "strength": 1.0, "confidence": 0.85 }
+    },
+    "roleTags": ["risk_segmentation", "targeted_evaluation", "quality_gate", "evidence_boundary"],
+    "evidenceSummary": "用户划分高风险与已验证范围，限制未确认部分并继续补测。",
+    "confidence": 0.9
+  },
+  "DATA_S1_B": {
+    "sceneId": "DATA_S1",
+    "roleId": "ai_researcher",
+    "optionId": "DATA_S1_B",
+    "observedBehavior": "按现有标准认可整体上线结论，同时将新增风险作为独立问题继续追踪。",
+    "workstyleEvidence": {
+      "decision_style": { "direction": "standard_consistency", "strength": 1.2, "confidence": 0.9 },
+      "conflict_style": { "direction": "rule_based_commitment", "strength": 1.0, "confidence": 0.85 },
+      "communication_style": { "direction": "clarify_known_unknowns", "strength": 1.0, "confidence": 0.85 }
+    },
+    "roleTags": ["standard_consistency", "known_risk_tracking", "post_release_evaluation", "evidence_boundary"],
+    "evidenceSummary": "用户认可整体达标结论，并将新增风险单列追踪。",
+    "confidence": 0.9
+  },
+  "DEV_S1_A": {
+    "sceneId": "DEV_S1",
+    "roleId": "ai_consultant",
+    "optionId": "DEV_S1_A",
+    "observedBehavior": "在产品需求和发布风险之间选择最小技术改动，保留核心效果并控制变更范围。",
+    "workstyleEvidence": {
+      "decision_style": { "direction": "minimal_viable_change", "strength": 1.4, "confidence": 0.9 },
+      "conflict_style": { "direction": "engineering_tradeoff", "strength": 1.1, "confidence": 0.85 },
+      "communication_style": { "direction": "solution_with_constraints", "strength": 1.0, "confidence": 0.85 }
+    },
+    "roleTags": ["minimal_solution", "scope_control", "controlled_change", "engineering_tradeoff"],
+    "evidenceSummary": "用户选择最小可行改动以平衡需求与发布风险。",
+    "confidence": 0.9
+  },
+  "DEV_S1_B": {
+    "sceneId": "DEV_S1",
+    "roleId": "ai_consultant",
+    "optionId": "DEV_S1_B",
+    "observedBehavior": "发布前优先保护现有稳定版本，将新的技术方案延后到获得更多真实数据后处理。",
+    "workstyleEvidence": {
+      "decision_style": { "direction": "stability_first", "strength": 1.3, "confidence": 0.9 },
+      "conflict_style": { "direction": "hold_technical_boundary", "strength": 1.1, "confidence": 0.85 },
+      "communication_style": { "direction": "risk_explanation", "strength": 0.9, "confidence": 0.85 }
+    },
+    "roleTags": ["stability_first", "change_risk_control", "deferred_optimization", "production_safety"],
+    "evidenceSummary": "用户优先保护稳定版本，将完整方案延后到有更多真实数据。",
+    "confidence": 0.9
+  },
+  "PRODUCT_S2_A": {
+    "sceneId": "PRODUCT_S2",
+    "roleId": "ai_pm",
+    "optionId": "PRODUCT_S2_A",
+    "observedBehavior": "面对客户直接提出的解决方案，先追问实际任务和返回原文的原因。",
+    "workstyleEvidence": {
+      "ambiguity_response": { "direction": "clarify_underlying_problem", "strength": 1.4, "confidence": 0.9 },
+      "communication_style": { "direction": "exploratory_questioning", "strength": 1.1, "confidence": 0.88 },
+      "feedback_response": { "direction": "interpret_before_change", "strength": 1.2, "confidence": 0.88 }
+    },
+    "roleTags": ["problem_discovery", "user_need_clarification", "solution_request_separation", "evidence_gathering"],
+    "evidenceSummary": "用户先追问客户回原文的真实原因，再决定是否调整产品。",
+    "confidence": 0.9
+  },
+  "PRODUCT_S2_B": {
+    "sceneId": "PRODUCT_S2",
+    "roleId": "ai_pm",
+    "optionId": "PRODUCT_S2_B",
+    "observedBehavior": "将单个客户反馈作为初始信号，通过更多相似用户确认其代表性后再调整产品。",
+    "workstyleEvidence": {
+      "ambiguity_response": { "direction": "validate_across_users", "strength": 1.3, "confidence": 0.88 },
+      "communication_style": { "direction": "structured_followup", "strength": 0.9, "confidence": 0.84 },
+      "feedback_response": { "direction": "validate_before_change", "strength": 1.3, "confidence": 0.88 }
+    },
+    "roleTags": ["signal_validation", "cross_user_evidence", "feedback_pattern_detection", "product_change_threshold"],
+    "evidenceSummary": "用户通过更多相似客户验证反馈代表性后再考虑改动。",
+    "confidence": 0.88
+  },
+  "UI_S2_A": {
+    "sceneId": "UI_S2",
+    "roleId": "ai_ux",
+    "optionId": "UI_S2_A",
+    "observedBehavior": "面对模糊反馈，通过再次观察实际操作定位具体问题。",
+    "workstyleEvidence": {
+      "ambiguity_response": { "direction": "observe_before_define", "strength": 1.4, "confidence": 0.91 },
+      "communication_style": { "direction": "behavior_led_inquiry", "strength": 1.1, "confidence": 0.87 },
+      "feedback_response": { "direction": "investigate_feedback", "strength": 1.2, "confidence": 0.88 }
+    },
+    "roleTags": ["behavior_observation", "interaction_diagnosis", "problem_reframing", "user_flow_analysis"],
+    "evidenceSummary": "用户通过观察实际操作定位「页面乱」背后的具体交互问题。",
+    "confidence": 0.91
+  },
+  "UI_S2_B": {
+    "sceneId": "UI_S2",
+    "roleId": "ai_ux",
+    "optionId": "UI_S2_B",
+    "observedBehavior": "根据已经观察到的切换行为形成设计假设，并优先改善总结与原文之间的位置对应。",
+    "workstyleEvidence": {
+      "ambiguity_response": { "direction": "act_on_visible_signals", "strength": 1.2, "confidence": 0.86 },
+      "communication_style": { "direction": "solution_focused", "strength": 0.9, "confidence": 0.84 },
+      "feedback_response": { "direction": "rapid_design_response", "strength": 1.2, "confidence": 0.87 }
+    },
+    "roleTags": ["interaction_hypothesis", "navigation_continuity", "rapid_iteration", "design_response"],
+    "evidenceSummary": "用户基于可见切换行为优先改善总结与原文的位置对应。",
+    "confidence": 0.87
+  },
+  "OPS_S2_A": {
+    "sceneId": "OPS_S2",
+    "roleId": "ai_operator",
+    "optionId": "OPS_S2_A",
+    "observedBehavior": "不直接将低使用频率解释为需要更多提醒，而是先寻找用户自然使用的任务和触发条件。",
+    "workstyleEvidence": {
+      "ambiguity_response": { "direction": "diagnose_usage_context", "strength": 1.4, "confidence": 0.9 },
+      "communication_style": { "direction": "behavior_questioning", "strength": 1.0, "confidence": 0.85 },
+      "feedback_response": { "direction": "interpret_before_intervention", "strength": 1.2, "confidence": 0.88 }
+    },
+    "roleTags": ["usage_trigger", "behavior_context", "retention_diagnosis", "user_motivation"],
+    "evidenceSummary": "用户先诊断自然使用场景，再决定提醒策略而非直接加推送。",
+    "confidence": 0.9
+  },
+  "OPS_S2_B": {
+    "sceneId": "OPS_S2",
+    "roleId": "ai_operator",
+    "optionId": "OPS_S2_B",
+    "observedBehavior": "将提醒作为小范围实验，通过真实使用变化验证其是否能重新激活用户。",
+    "workstyleEvidence": {
+      "ambiguity_response": { "direction": "test_under_uncertainty", "strength": 1.2, "confidence": 0.87 },
+      "communication_style": { "direction": "action_with_measurement", "strength": 1.0, "confidence": 0.85 },
+      "feedback_response": { "direction": "experiment_on_feedback", "strength": 1.3, "confidence": 0.89 }
+    },
+    "roleTags": ["controlled_experiment", "reactivation_test", "behavior_validation", "low_cost_intervention"],
+    "evidenceSummary": "用户用小范围提醒实验验证能否重新激活用户。",
+    "confidence": 0.89
+  },
+  "DATA_S2_A": {
+    "sceneId": "DATA_S2",
+    "roleId": "ai_researcher",
+    "optionId": "DATA_S2_A",
+    "observedBehavior": "面对单个高风险错误，先判断错误类型，再通过同类样本确认其是否具有重复性。",
+    "workstyleEvidence": {
+      "ambiguity_response": { "direction": "classify_then_test", "strength": 1.4, "confidence": 0.91 },
+      "communication_style": { "direction": "evidence_oriented", "strength": 1.0, "confidence": 0.86 },
+      "feedback_response": { "direction": "investigate_high_risk_signals", "strength": 1.3, "confidence": 0.9 }
+    },
+    "roleTags": ["error_classification", "targeted_sampling", "pattern_validation", "risk_investigation"],
+    "evidenceSummary": "用户先分类错误类型，再用同类样本验证是否可重复。",
+    "confidence": 0.91
+  },
+  "DATA_S2_B": {
+    "sceneId": "DATA_S2",
+    "roleId": "ai_researcher",
+    "optionId": "DATA_S2_B",
+    "observedBehavior": "将高风险个案放回现有评测体系检查，根据覆盖缺口决定是否新增评测标准。",
+    "workstyleEvidence": {
+      "ambiguity_response": { "direction": "evaluate_against_existing_frameworks", "strength": 1.3, "confidence": 0.89 },
+      "communication_style": { "direction": "boundary_clarification", "strength": 1.0, "confidence": 0.86 },
+      "feedback_response": { "direction": "framework_update_if_needed", "strength": 1.2, "confidence": 0.88 }
+    },
+    "roleTags": ["evaluation_coverage", "high_risk_case", "framework_gap", "standard_update"],
+    "evidenceSummary": "用户对照现有评测体系检查覆盖缺口后再决定是否新增标准。",
+    "confidence": 0.89
+  },
+  "DEV_S2_A": {
+    "sceneId": "DEV_S2",
+    "roleId": "ai_consultant",
+    "optionId": "DEV_S2_A",
+    "observedBehavior": "面对一次性能异常，先查看具体运行信息定位耗时位置，不直接接受现场的表面归因。",
+    "workstyleEvidence": {
+      "ambiguity_response": { "direction": "diagnose_before_attribution", "strength": 1.4, "confidence": 0.91 },
+      "communication_style": { "direction": "evidence_before_claims", "strength": 1.1, "confidence": 0.88 },
+      "feedback_response": { "direction": "investigate_signals", "strength": 1.1, "confidence": 0.87 }
+    },
+    "roleTags": ["root_cause_diagnosis", "runtime_evidence", "performance_analysis", "avoid_premature_attribution"],
+    "evidenceSummary": "用户先查运行数据定位慢在哪里，不直接归因为长文档问题。",
+    "confidence": 0.91
+  },
+  "DEV_S2_B": {
+    "sceneId": "DEV_S2",
+    "roleId": "ai_consultant",
+    "optionId": "DEV_S2_B",
+    "observedBehavior": "将用户反馈转化为可验证的技术假设，通过相似输入复现后再决定优化方向。",
+    "workstyleEvidence": {
+      "ambiguity_response": { "direction": "hypothesis_then_reproduce", "strength": 1.3, "confidence": 0.89 },
+      "communication_style": { "direction": "qualified_assessment", "strength": 1.0, "confidence": 0.86 },
+      "feedback_response": { "direction": "reproduce_from_feedback", "strength": 1.2, "confidence": 0.88 }
+    },
+    "roleTags": ["hypothesis_testing", "reproduction", "performance_pattern", "technical_validation"],
+    "evidenceSummary": "用户以长文档为假设方向复现验证后再决定优化。",
+    "confidence": 0.89
+  },
+  "PRODUCT_S3_A": {
+    "sceneId": "PRODUCT_S3",
+    "roleId": "ai_pm",
+    "optionId": "PRODUCT_S3_A",
+    "observedBehavior": "新风险出现后，主动收缩受影响场景，同时保留其他已经正常运行的范围。",
+    "workstyleEvidence": {
+      "pressure_response": { "direction": "contain_risk_then_continue", "strength": 1.4, "confidence": 0.9 },
+      "decision_style": { "direction": "adjust_scope_under_pressure", "strength": 1.3, "confidence": 0.89 },
+      "feedback_response": { "direction": "revise_plan_on_new_signals", "strength": 1.3, "confidence": 0.9 }
+    },
+    "roleTags": ["scope_adjustment", "risk_containment", "progressive_release", "plan_revision"],
+    "evidenceSummary": "用户收缩合同和政策类场景，保留其他正常范围。",
+    "confidence": 0.9
+  },
+  "PRODUCT_S3_B": {
+    "sceneId": "PRODUCT_S3",
+    "roleId": "ai_pm",
+    "optionId": "PRODUCT_S3_B",
+    "observedBehavior": "暂时保留原发布范围，通过加强监测和明确停止条件等待更多证据。",
+    "workstyleEvidence": {
+      "pressure_response": { "direction": "monitor_before_intervention", "strength": 1.2, "confidence": 0.88 },
+      "decision_style": { "direction": "conditional_continuation", "strength": 1.2, "confidence": 0.88 },
+      "feedback_response": { "direction": "update_on_thresholds", "strength": 1.3, "confidence": 0.89 }
+    },
+    "roleTags": ["conditional_release", "monitoring", "stop_condition", "evidence_threshold"],
+    "evidenceSummary": "用户保留发布范围并设定监测与停止条件等待更多证据。",
+    "confidence": 0.89
+  },
+  "UI_S3_A": {
+    "sceneId": "UI_S3",
+    "roleId": "ai_ux",
+    "optionId": "UI_S3_A",
+    "observedBehavior": "接受临时功能降级，但要求用户明确知道当前能力发生了变化。",
+    "workstyleEvidence": {
+      "pressure_response": { "direction": "controlled_experience_degradation", "strength": 1.3, "confidence": 0.89 },
+      "decision_style": { "direction": "keep_service_with_transparency", "strength": 1.2, "confidence": 0.88 },
+      "feedback_response": { "direction": "adapt_experience_to_incidents", "strength": 1.2, "confidence": 0.88 }
+    },
+    "roleTags": ["expectation_management", "transparent_degradation", "fallback_experience", "service_continuity"],
+    "evidenceSummary": "用户接受临时关闭来源定位，但要求明确告知能力变化。",
+    "confidence": 0.89
+  },
+  "UI_S3_B": {
+    "sceneId": "UI_S3",
+    "roleId": "ai_ux",
+    "optionId": "UI_S3_B",
+    "observedBehavior": "在关键体验能力缺失时，优先暂停受影响场景，而不是继续提供一个明显改变原使用方式的版本。",
+    "workstyleEvidence": {
+      "pressure_response": { "direction": "protect_core_experience", "strength": 1.3, "confidence": 0.89 },
+      "decision_style": { "direction": "pause_when_experience_breaks", "strength": 1.3, "confidence": 0.89 },
+      "feedback_response": { "direction": "revise_delivery_boundary", "strength": 1.1, "confidence": 0.86 }
+    },
+    "roleTags": ["experience_boundary", "core_flow_protection", "temporary_pause", "design_integrity"],
+    "evidenceSummary": "用户优先暂停受影响长文档，保护核对原文的核心使用方式。",
+    "confidence": 0.89
+  },
+  "OPS_S3_A": {
+    "sceneId": "OPS_S3",
+    "roleId": "ai_operator",
+    "optionId": "OPS_S3_A",
+    "observedBehavior": "问题出现后立即重新分配活动资源，将流量从受影响场景转向当前表现稳定的场景。",
+    "workstyleEvidence": {
+      "pressure_response": { "direction": "rapid_resource_reallocation", "strength": 1.4, "confidence": 0.9 },
+      "decision_style": { "direction": "immediate_campaign_adjustment", "strength": 1.3, "confidence": 0.89 },
+      "feedback_response": { "direction": "redirect_on_negative_signals", "strength": 1.2, "confidence": 0.88 }
+    },
+    "roleTags": ["resource_reallocation", "traffic_redirect", "campaign_adjustment", "damage_control"],
+    "evidenceSummary": "用户将活动资源从长文档转向短文档用户。",
+    "confidence": 0.9
+  },
+  "OPS_S3_B": {
+    "sceneId": "OPS_S3",
+    "roleId": "ai_operator",
+    "optionId": "OPS_S3_B",
+    "observedBehavior": "保留活动运行，但主动降低受影响场景的覆盖，并用实时反馈决定是否进一步暂停。",
+    "workstyleEvidence": {
+      "pressure_response": { "direction": "controlled_continuation", "strength": 1.2, "confidence": 0.88 },
+      "decision_style": { "direction": "gradual_adjustment", "strength": 1.2, "confidence": 0.88 },
+      "feedback_response": { "direction": "monitor_and_escalate", "strength": 1.3, "confidence": 0.89 }
+    },
+    "roleTags": ["controlled_reach", "live_monitoring", "adaptive_campaign", "escalation_condition"],
+    "evidenceSummary": "用户缩小长文档推广范围并持续监测决定是否暂停。",
+    "confidence": 0.89
+  },
+  "DATA_S3_A": {
+    "sceneId": "DATA_S3",
+    "roleId": "ai_researcher",
+    "optionId": "DATA_S3_A",
+    "observedBehavior": "面对上线后首次出现的高风险错误，先限制同类范围，并立即通过相似样本确认风险边界。",
+    "workstyleEvidence": {
+      "pressure_response": { "direction": "high_risk_containment", "strength": 1.4, "confidence": 0.91 },
+      "decision_style": { "direction": "restrict_then_validate", "strength": 1.3, "confidence": 0.9 },
+      "feedback_response": { "direction": "update_quality_boundary_on_new_cases", "strength": 1.4, "confidence": 0.91 }
+    },
+    "roleTags": ["risk_containment", "targeted_evaluation", "quality_boundary_update", "high_risk_signal"],
+    "evidenceSummary": "用户限制同类合同并补测相似样本确认风险范围。",
+    "confidence": 0.91
+  },
+  "DATA_S3_B": {
+    "sceneId": "DATA_S3",
+    "roleId": "ai_researcher",
+    "optionId": "DATA_S3_B",
+    "observedBehavior": "暂时保留当前范围，但立即增加抽查，并提前定义什么情况下必须停止。",
+    "workstyleEvidence": {
+      "pressure_response": { "direction": "monitored_risk_acceptance", "strength": 1.2, "confidence": 0.89 },
+      "decision_style": { "direction": "continue_with_stop_conditions", "strength": 1.2, "confidence": 0.89 },
+      "feedback_response": { "direction": "threshold_based_revision", "strength": 1.4, "confidence": 0.9 }
+    },
+    "roleTags": ["stop_condition", "risk_monitoring", "evidence_threshold", "quality_gate_update"],
+    "evidenceSummary": "用户保持当前范围并设定停止条件与抽查机制。",
+    "confidence": 0.9
+  },
+  "DEV_S3_A": {
+    "sceneId": "DEV_S3",
+    "roleId": "ai_consultant",
+    "optionId": "DEV_S3_A",
+    "observedBehavior": "系统已经影响用户时，优先通过简化处理降低失败率，同时保留运行证据继续定位根因。",
+    "workstyleEvidence": {
+      "pressure_response": { "direction": "contain_failure_first", "strength": 1.5, "confidence": 0.92 },
+      "decision_style": { "direction": "degrade_service_to_restore", "strength": 1.3, "confidence": 0.9 },
+      "feedback_response": { "direction": "preserve_evidence_while_fixing", "strength": 1.2, "confidence": 0.89 }
+    },
+    "roleTags": ["service_degradation", "failure_containment", "incident_response", "root_cause_followup"],
+    "evidenceSummary": "用户先简化长文档处理降失败率，同时保留记录查根因。",
+    "confidence": 0.92
+  },
+  "DEV_S3_B": {
+    "sceneId": "DEV_S3",
+    "roleId": "ai_consultant",
+    "optionId": "DEV_S3_B",
+    "observedBehavior": "通过退回最近的技术变更快速验证问题是否与该变更有关，同时尝试恢复稳定状态。",
+    "workstyleEvidence": {
+      "pressure_response": { "direction": "rollback_to_stable_state", "strength": 1.4, "confidence": 0.91 },
+      "decision_style": { "direction": "reversible_action_first", "strength": 1.3, "confidence": 0.9 },
+      "feedback_response": { "direction": "use_recovery_result_as_evidence", "strength": 1.3, "confidence": 0.9 }
+    },
+    "roleTags": ["rollback", "reversible_action", "incident_diagnosis", "stability_recovery"],
+    "evidenceSummary": "用户回退来源功能并用恢复结果缩小问题范围。",
+    "confidence": 0.91
+  }
+}

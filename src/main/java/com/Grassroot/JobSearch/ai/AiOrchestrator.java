@@ -3,6 +3,7 @@ package com.Grassroot.JobSearch.ai;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.Grassroot.JobSearch.llm.LlmClient;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,7 +60,23 @@ public class AiOrchestrator {
     /** 模块6：报告文字生成（差距分析 + 行动任务） */
     public Map<String, Object> generateReport(Map<String, Object> context) {
         String prompt = promptLoader.load("06-report-generation");
-        return chatJsonMap(prompt, context, "report-generation");
+        return chatJsonMap(prompt, context, "report-generation", true);
+    }
+
+    /** 专项：根据题目选择与情景行为生成 AI 判断依据（不含分数） */
+  public List<String> generateJudgmentBasis(Map<String, Object> context) {
+        String prompt = promptLoader.load("07-judgment-basis");
+        Map<String, Object> payload = Map.of(
+                "microtask_choice_signals", context.getOrDefault("microtask_choice_signals", List.of()),
+                "scene_evidences", context.getOrDefault("scene_evidences", List.of()),
+                "selected_target_job", context.getOrDefault("selected_target_job", ""));
+        try {
+            Map<String, Object> result = chatJsonMap(prompt, payload, "judgment-basis", false, true);
+            return castStringList(result.get("judgmentBasis"));
+        } catch (Exception ex) {
+            log.warn("AI 判断依据生成失败: {}", ex.getMessage());
+            return List.of();
+        }
     }
 
     /**
@@ -92,6 +109,20 @@ public class AiOrchestrator {
     }
 
     private Map<String, Object> chatJsonMap(String prompt, Object payload, String fallbackName) {
+        return chatJsonMap(prompt, payload, fallbackName, false, false);
+    }
+
+    private Map<String, Object> chatJsonMap(
+            String prompt, Object payload, String fallbackName, boolean reportOutput) {
+        return chatJsonMap(prompt, payload, fallbackName, reportOutput, false);
+    }
+
+    private Map<String, Object> chatJsonMap(
+            String prompt,
+            Object payload,
+            String fallbackName,
+            boolean reportOutput,
+            boolean judgmentBasisOutput) {
         try {
             String userJson = payload instanceof String ? (String) payload : objectMapper.writeValueAsString(payload);
             String raw = llmClient.chatJson(prompt, userJson);
@@ -99,11 +130,31 @@ public class AiOrchestrator {
                 log.warn("LLM 未返回，使用 fallback: {}", fallbackName);
                 return outputValidator.fallback(fallbackName);
             }
-            outputValidator.validateNoForbiddenWords(raw);
+            if (judgmentBasisOutput) {
+                outputValidator.validateJudgmentBasisOutput(raw);
+            } else if (reportOutput) {
+                outputValidator.validateReportOutput(raw);
+            } else {
+                outputValidator.validateNoForbiddenWords(raw);
+            }
             return objectMapper.readValue(raw, new TypeReference<>() {});
         } catch (Exception ex) {
             log.warn("AI 调用失败，使用 fallback {}: {}", fallbackName, ex.getMessage());
             return outputValidator.fallback(fallbackName);
         }
+    }
+
+    @SuppressWarnings("unchecked")
+    private List<String> castStringList(Object v) {
+        if (v instanceof List<?> list) {
+            List<String> out = new ArrayList<>();
+            for (Object item : list) {
+                if (item != null && !String.valueOf(item).isBlank()) {
+                    out.add(String.valueOf(item).trim());
+                }
+            }
+            return out;
+        }
+        return List.of();
     }
 }

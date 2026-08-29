@@ -38,6 +38,11 @@ public class TaskController {
         return taskService.submitStep(id, req);
     }
 
+    @GetMapping("/{id}/radar")
+    public Map<String, Object> radar(@PathVariable String id) {
+        return taskService.radarForSession(id);
+    }
+
     @PostMapping("/{id}/help")
     public Map<String, Object> help(@PathVariable String id, @RequestBody Map<String, String> body) {
         return taskService.help(id, body.getOrDefault("helpType", "thinking_prompt"));

@@ -1,0 +1,364 @@
+{
+  "jobId": "ai_researcher",
+  "scaffoldType": "career_changer",
+  "title": "下午新模型分数更高，但上线前争议越来越多",
+  "scenario": "下午新模型分数更高，但上线前争议越来越多",
+  "setId": "A",
+  "estimatedMinutes": 7,
+  "steps": [
+    {
+      "stepNumber": 1,
+      "stepTitle": "微任务 1",
+      "stepType": "microtask_choice",
+      "time": "13:30",
+      "speaker": "Mia",
+      "speakerRole": "评测负责人",
+      "message": "总分提高了，但上线前抽检发现几条高风险错误。",
+      "prompt": "你会先看哪部分？",
+      "dimension": "质量敏感度",
+      "options": [
+        {
+          "id": "A",
+          "label": "高风险错误集中在哪些场景",
+          "score": 5
+        },
+        {
+          "id": "B",
+          "label": "随机再抽一批样本",
+          "score": 4
+        },
+        {
+          "id": "C",
+          "label": "总体得分变化最大的指标",
+          "score": 3
+        },
+        {
+          "id": "D",
+          "label": "高分样本是否稳定",
+          "score": 2
+        }
+      ],
+      "decision": {
+        "type": "single_choice",
+        "prompt": "你会先看哪部分？",
+        "options": [
+          {
+            "id": "A",
+            "label": "高风险错误集中在哪些场景",
+            "score": 5
+          },
+          {
+            "id": "B",
+            "label": "随机再抽一批样本",
+            "score": 4
+          },
+          {
+            "id": "C",
+            "label": "总体得分变化最大的指标",
+            "score": 3
+          },
+          {
+            "id": "D",
+            "label": "高分样本是否稳定",
+            "score": 2
+          }
+        ]
+      }
+    },
+    {
+      "stepNumber": 2,
+      "stepTitle": "微任务 2",
+      "stepType": "microtask_choice",
+      "time": "13:50",
+      "speaker": "评测员A",
+      "speakerRole": "",
+      "message": "这条我判Pass，B判Fail，而且我们俩都能从规则里找到依据。",
+      "prompt": "你下一步会怎么处理？",
+      "dimension": "规则与边界判断",
+      "options": [
+        {
+          "id": "A",
+          "label": "找出规则究竟在哪个条件上产生了两种解释",
+          "score": 5
+        },
+        {
+          "id": "B",
+          "label": "让更资深的评测员直接决定",
+          "score": 4
+        },
+        {
+          "id": "C",
+          "label": "这次先按更严格的Fail处理",
+          "score": 3
+        },
+        {
+          "id": "D",
+          "label": "看大多数评测员会怎么判",
+          "score": 2
+        }
+      ],
+      "decision": {
+        "type": "single_choice",
+        "prompt": "你下一步会怎么处理？",
+        "options": [
+          {
+            "id": "A",
+            "label": "找出规则究竟在哪个条件上产生了两种解释",
+            "score": 5
+          },
+          {
+            "id": "B",
+            "label": "让更资深的评测员直接决定",
+            "score": 4
+          },
+          {
+            "id": "C",
+            "label": "这次先按更严格的Fail处理",
+            "score": 3
+          },
+          {
+            "id": "D",
+            "label": "看大多数评测员会怎么判",
+            "score": 2
+          }
+        ]
+      }
+    },
+    {
+      "stepNumber": 3,
+      "stepTitle": "微任务 3",
+      "stepType": "microtask_choice",
+      "time": "14:10",
+      "speaker": "Mia",
+      "speakerRole": "评测负责人",
+      "message": "最近很多Bad Case都出现在‘退款政策’问题上。",
+      "prompt": "你下一步会怎么处理？",
+      "dimension": "Badcase归因",
+      "options": [
+        {
+          "id": "A",
+          "label": "把所有Bad Case归为准确性问题",
+          "score": 2
+        },
+        {
+          "id": "B",
+          "label": "区分是事实错误、规则理解还是信息遗漏",
+          "score": 5
+        },
+        {
+          "id": "C",
+          "label": "先统计这一类Bad Case数量",
+          "score": 3
+        },
+        {
+          "id": "D",
+          "label": "先提高这一类样本的评测权重",
+          "score": 4
+        }
+      ],
+      "decision": {
+        "type": "single_choice",
+        "prompt": "你下一步会怎么处理？",
+        "options": [
+          {
+            "id": "A",
+            "label": "把所有Bad Case归为准确性问题",
+            "score": 2
+          },
+          {
+            "id": "B",
+            "label": "区分是事实错误、规则理解还是信息遗漏",
+            "score": 5
+          },
+          {
+            "id": "C",
+            "label": "先统计这一类Bad Case数量",
+            "score": 3
+          },
+          {
+            "id": "D",
+            "label": "先提高这一类样本的评测权重",
+            "score": 4
+          }
+        ]
+      }
+    },
+    {
+      "stepNumber": 4,
+      "stepTitle": "微任务 4",
+      "stepType": "microtask_choice",
+      "time": "14:30",
+      "speaker": "Leo",
+      "speakerRole": "数据分析师",
+      "message": "整体准确率升了3%，但退款场景下降了12%。",
+      "prompt": "你会怎么理解？",
+      "dimension": "数据洞察",
+      "options": [
+        {
+          "id": "A",
+          "label": "整体模型还是变好了",
+          "score": 2
+        },
+        {
+          "id": "B",
+          "label": "平均分可能掩盖了高风险场景问题",
+          "score": 5
+        },
+        {
+          "id": "C",
+          "label": "退款场景样本可能太少",
+          "score": 4
+        },
+        {
+          "id": "D",
+          "label": "先看其他场景有没有下降",
+          "score": 3
+        }
+      ],
+      "decision": {
+        "type": "single_choice",
+        "prompt": "你会怎么理解？",
+        "options": [
+          {
+            "id": "A",
+            "label": "整体模型还是变好了",
+            "score": 2
+          },
+          {
+            "id": "B",
+            "label": "平均分可能掩盖了高风险场景问题",
+            "score": 5
+          },
+          {
+            "id": "C",
+            "label": "退款场景样本可能太少",
+            "score": 4
+          },
+          {
+            "id": "D",
+            "label": "先看其他场景有没有下降",
+            "score": 3
+          }
+        ]
+      }
+    },
+    {
+      "stepNumber": 5,
+      "stepTitle": "微任务 5",
+      "stepType": "microtask_choice",
+      "time": "14:50",
+      "speaker": "Mia",
+      "speakerRole": "评测负责人",
+      "message": "退款只占5%流量，但答错风险很高；FAQ占60%，目前表现稳定。",
+      "prompt": "剩下20个样本怎么补？",
+      "dimension": "评测设计",
+      "options": [
+        {
+          "id": "A",
+          "label": "多补退款，同时留一些样本给高频场景",
+          "score": 5
+        },
+        {
+          "id": "B",
+          "label": "全部补FAQ，更符合真实流量",
+          "score": 2
+        },
+        {
+          "id": "C",
+          "label": "按线上流量比例分配",
+          "score": 4
+        },
+        {
+          "id": "D",
+          "label": "每个场景平均分",
+          "score": 3
+        }
+      ],
+      "decision": {
+        "type": "single_choice",
+        "prompt": "剩下20个样本怎么补？",
+        "options": [
+          {
+            "id": "A",
+            "label": "多补退款，同时留一些样本给高频场景",
+            "score": 5
+          },
+          {
+            "id": "B",
+            "label": "全部补FAQ，更符合真实流量",
+            "score": 2
+          },
+          {
+            "id": "C",
+            "label": "按线上流量比例分配",
+            "score": 4
+          },
+          {
+            "id": "D",
+            "label": "每个场景平均分",
+            "score": 3
+          }
+        ]
+      }
+    },
+    {
+      "stepNumber": 6,
+      "stepTitle": "微任务 6",
+      "stepType": "microtask_choice",
+      "time": "15:10",
+      "speaker": "Mia",
+      "speakerRole": "评测负责人",
+      "message": "总分达标了，但退款场景仍明显低于上线门槛。",
+      "prompt": "你会怎么建议？",
+      "dimension": "质量决策",
+      "options": [
+        {
+          "id": "A",
+          "label": "按总分结果正常上线",
+          "score": 3
+        },
+        {
+          "id": "B",
+          "label": "暂缓全量上线，先修关键风险",
+          "score": 5
+        },
+        {
+          "id": "C",
+          "label": "仅向不涉及该场景的用户灰度",
+          "score": 4
+        },
+        {
+          "id": "D",
+          "label": "下调该场景权重后重新评测",
+          "score": 2
+        }
+      ],
+      "decision": {
+        "type": "single_choice",
+        "prompt": "你会怎么建议？",
+        "options": [
+          {
+            "id": "A",
+            "label": "按总分结果正常上线",
+            "score": 3
+          },
+          {
+            "id": "B",
+            "label": "暂缓全量上线，先修关键风险",
+            "score": 5
+          },
+          {
+            "id": "C",
+            "label": "仅向不涉及该场景的用户灰度",
+            "score": 4
+          },
+          {
+            "id": "D",
+            "label": "下调该场景权重后重新评测",
+            "score": 2
+          }
+        ]
+      }
+    }
+  ]
+}

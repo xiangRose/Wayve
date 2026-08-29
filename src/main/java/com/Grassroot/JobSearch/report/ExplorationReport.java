@@ -47,6 +47,14 @@ public class ExplorationReport {
     @Column(name = "action_tasks")
     private List<Map<String, Object>> actionTasks;
 
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(name = "judgment_basis")
+    private List<String> judgmentBasis;
+
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(name = "learning_advice")
+    private List<Map<String, Object>> learningAdvice;
+
     @Column(length = 2000)
     private String comparisonSummary;
 
@@ -73,6 +81,10 @@ public class ExplorationReport {
     public void setGapAnalysis(Map<String, Object> gapAnalysis) { this.gapAnalysis = gapAnalysis; }
     public List<Map<String, Object>> getActionTasks() { return actionTasks; }
     public void setActionTasks(List<Map<String, Object>> actionTasks) { this.actionTasks = actionTasks; }
+    public List<String> getJudgmentBasis() { return judgmentBasis; }
+    public void setJudgmentBasis(List<String> judgmentBasis) { this.judgmentBasis = judgmentBasis; }
+    public List<Map<String, Object>> getLearningAdvice() { return learningAdvice; }
+    public void setLearningAdvice(List<Map<String, Object>> learningAdvice) { this.learningAdvice = learningAdvice; }
     public String getComparisonSummary() { return comparisonSummary; }
     public void setComparisonSummary(String comparisonSummary) { this.comparisonSummary = comparisonSummary; }
     public String getBoundaryNotice() { return boundaryNotice; }

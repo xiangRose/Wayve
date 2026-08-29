@@ -29,14 +29,20 @@ public class SeedDataLoader implements CommandLineRunner {
         this.taskTemplateRepository = taskTemplateRepository;
     }
 
+    private static final List<String> TASK_TEMPLATE_PATHS = List.of(
+            "seed/task-templates/ai_pm.career_changer.json",
+            "seed/task-templates/ai_ux.career_changer.json",
+            "seed/task-templates/ai_operator.career_changer.json",
+            "seed/task-templates/ai_researcher.career_changer.json",
+            "seed/task-templates/ai_consultant.career_changer.json"
+    );
+
     @Override
     public void run(String... args) {
-        if (jobRepository.count() > 0) {
-            return;
+        if (jobRepository.count() == 0) {
+            seedJobs();
         }
-        seedJobs();
-        seedTemplate("seed/task-templates/ai_pm.career_changer.json");
-        seedTemplate("seed/task-templates/ai_ux.career_changer.json");
+        upsertTaskTemplates();
         log.info("Seed 完成");
     }
 
@@ -58,11 +64,20 @@ public class SeedDataLoader implements CommandLineRunner {
         }
     }
 
-    private void seedTemplate(String path) {
+    private void upsertTaskTemplates() {
+        for (String path : TASK_TEMPLATE_PATHS) {
+            upsertTemplate(path);
+        }
+    }
+
+    private void upsertTemplate(String path) {
         Map<String, Object> data = json.load(path, new TypeReference<>() {});
-        TaskTemplate t = new TaskTemplate();
-        t.setJobId((String) data.get("jobId"));
-        t.setScaffoldType(ScaffoldType.valueOf((String) data.get("scaffoldType")));
+        String jobId = (String) data.get("jobId");
+        ScaffoldType scaffold = ScaffoldType.valueOf((String) data.get("scaffoldType"));
+        TaskTemplate t = taskTemplateRepository.findByJobIdAndScaffoldType(jobId, scaffold)
+                .orElseGet(TaskTemplate::new);
+        t.setJobId(jobId);
+        t.setScaffoldType(scaffold);
         t.setContent(data);
         taskTemplateRepository.save(t);
     }

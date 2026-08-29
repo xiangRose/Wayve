@@ -1,0 +1,23 @@
+{
+  "observed_behavior": "倾向在保留发布节奏的同时限制高风险范围，但具体对象、验证条件与责任分工未完全说明。",
+  "workstyle_evidence": {
+    "decision_style": {
+      "direction": "stage_decision",
+      "strength": 1.1,
+      "confidence": 0.55
+    },
+    "conflict_style": {
+      "direction": "tradeoff_and_commit",
+      "strength": 1.0,
+      "confidence": 0.52
+    },
+    "communication_style": {
+      "direction": "conclusion_with_actions",
+      "strength": 0.9,
+      "confidence": 0.5
+    }
+  },
+  "role_tags": ["scope_control", "incomplete_specification"],
+  "evidence_summary": "用户表达了分阶段推进的意图，但本轮证据不足以判断完整取舍逻辑。",
+  "overall_confidence": 0.52
+}

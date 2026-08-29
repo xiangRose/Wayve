@@ -1,0 +1,364 @@
+{
+  "jobId": "ai_operator",
+  "scaffoldType": "career_changer",
+  "title": "上午新用户来了，但第一次有效使用很低",
+  "scenario": "上午新用户来了，但第一次有效使用很低",
+  "setId": "A",
+  "estimatedMinutes": 7,
+  "steps": [
+    {
+      "stepNumber": 1,
+      "stepTitle": "微任务 1",
+      "stepType": "microtask_choice",
+      "time": "09:30",
+      "speaker": "Leo",
+      "speakerRole": "数据分析师",
+      "message": "昨天注册涨了30%，首次完成AI任务只有18%，不同渠道差异还很大。",
+      "prompt": "你先看什么？",
+      "dimension": "数据洞察",
+      "options": [
+        {
+          "id": "A",
+          "label": "各渠道从注册到首次任务的转化",
+          "score": 5
+        },
+        {
+          "id": "B",
+          "label": "全站哪个页面退出最多",
+          "score": 4
+        },
+        {
+          "id": "C",
+          "label": "哪个渠道带来的注册最多",
+          "score": 2
+        },
+        {
+          "id": "D",
+          "label": "新用户平均停留时间",
+          "score": 3
+        }
+      ],
+      "decision": {
+        "type": "single_choice",
+        "prompt": "你先看什么？",
+        "options": [
+          {
+            "id": "A",
+            "label": "各渠道从注册到首次任务的转化",
+            "score": 5
+          },
+          {
+            "id": "B",
+            "label": "全站哪个页面退出最多",
+            "score": 4
+          },
+          {
+            "id": "C",
+            "label": "哪个渠道带来的注册最多",
+            "score": 2
+          },
+          {
+            "id": "D",
+            "label": "新用户平均停留时间",
+            "score": 3
+          }
+        ]
+      }
+    },
+    {
+      "stepNumber": 2,
+      "stepTitle": "微任务 2",
+      "stepType": "microtask_choice",
+      "time": "09:50",
+      "speaker": "Mia",
+      "speakerRole": "运营负责人",
+      "message": "学生注册最多，企业用户完成任务最多，创作者使用频次最高。",
+      "prompt": "如果准备做差异化运营，你先怎么分？",
+      "dimension": "用户分层",
+      "options": [
+        {
+          "id": "A",
+          "label": "按主要使用目标和行为表现分",
+          "score": 5
+        },
+        {
+          "id": "B",
+          "label": "按用户身份分",
+          "score": 4
+        },
+        {
+          "id": "C",
+          "label": "按付费状态分",
+          "score": 3
+        },
+        {
+          "id": "D",
+          "label": "按注册渠道分",
+          "score": 2
+        }
+      ],
+      "decision": {
+        "type": "single_choice",
+        "prompt": "如果准备做差异化运营，你先怎么分？",
+        "options": [
+          {
+            "id": "A",
+            "label": "按主要使用目标和行为表现分",
+            "score": 5
+          },
+          {
+            "id": "B",
+            "label": "按用户身份分",
+            "score": 4
+          },
+          {
+            "id": "C",
+            "label": "按付费状态分",
+            "score": 3
+          },
+          {
+            "id": "D",
+            "label": "按注册渠道分",
+            "score": 2
+          }
+        ]
+      }
+    },
+    {
+      "stepNumber": 3,
+      "stepTitle": "微任务 3",
+      "stepType": "microtask_choice",
+      "time": "10:10",
+      "speaker": "Leo",
+      "speakerRole": "数据分析师",
+      "message": "很多新用户停在上传文件，而且有人说‘不知道为什么要上传’。",
+      "prompt": "你更倾向先判断是什么问题？",
+      "dimension": "运营归因",
+      "options": [
+        {
+          "id": "A",
+          "label": "用户没有理解这一步的价值",
+          "score": 5
+        },
+        {
+          "id": "B",
+          "label": "上传流程本身太复杂",
+          "score": 4
+        },
+        {
+          "id": "C",
+          "label": "拉来的用户需求不匹配",
+          "score": 3
+        },
+        {
+          "id": "D",
+          "label": "AI功能吸引力不足",
+          "score": 2
+        }
+      ],
+      "decision": {
+        "type": "single_choice",
+        "prompt": "你更倾向先判断是什么问题？",
+        "options": [
+          {
+            "id": "A",
+            "label": "用户没有理解这一步的价值",
+            "score": 5
+          },
+          {
+            "id": "B",
+            "label": "上传流程本身太复杂",
+            "score": 4
+          },
+          {
+            "id": "C",
+            "label": "拉来的用户需求不匹配",
+            "score": 3
+          },
+          {
+            "id": "D",
+            "label": "AI功能吸引力不足",
+            "score": 2
+          }
+        ]
+      }
+    },
+    {
+      "stepNumber": 4,
+      "stepTitle": "微任务 4",
+      "stepType": "microtask_choice",
+      "time": "10:30",
+      "speaker": "Mia",
+      "speakerRole": "运营负责人",
+      "message": "已经确认：用户知道这个功能能做什么，但第一次操作经常半途退出。",
+      "prompt": "这周先试什么？",
+      "dimension": "策略设计",
+      "options": [
+        {
+          "id": "A",
+          "label": "把第一次任务缩短，并在关键一步给提示",
+          "score": 5
+        },
+        {
+          "id": "B",
+          "label": "给首次完成任务的人发优惠券",
+          "score": 3
+        },
+        {
+          "id": "C",
+          "label": "上线一篇完整的新手教程",
+          "score": 4
+        },
+        {
+          "id": "D",
+          "label": "再做一轮功能介绍活动",
+          "score": 2
+        }
+      ],
+      "decision": {
+        "type": "single_choice",
+        "prompt": "这周先试什么？",
+        "options": [
+          {
+            "id": "A",
+            "label": "把第一次任务缩短，并在关键一步给提示",
+            "score": 5
+          },
+          {
+            "id": "B",
+            "label": "给首次完成任务的人发优惠券",
+            "score": 3
+          },
+          {
+            "id": "C",
+            "label": "上线一篇完整的新手教程",
+            "score": 4
+          },
+          {
+            "id": "D",
+            "label": "再做一轮功能介绍活动",
+            "score": 2
+          }
+        ]
+      }
+    },
+    {
+      "stepNumber": 5,
+      "stepTitle": "微任务 5",
+      "stepType": "microtask_choice",
+      "time": "10:50",
+      "speaker": "Mia",
+      "speakerRole": "运营负责人",
+      "message": "本周只有100点资源，目标是提升首次有效使用率。",
+      "prompt": "你会怎么分？",
+      "dimension": "资源与执行",
+      "options": [
+        {
+          "id": "A",
+          "label": "60点新手任务，20点用户教育，20点反馈收集",
+          "score": 5
+        },
+        {
+          "id": "B",
+          "label": "60点拉新，20点内容，20点召回",
+          "score": 2
+        },
+        {
+          "id": "C",
+          "label": "40点新手任务，40点活动，20点召回",
+          "score": 4
+        },
+        {
+          "id": "D",
+          "label": "五个方向平均投入",
+          "score": 3
+        }
+      ],
+      "decision": {
+        "type": "single_choice",
+        "prompt": "你会怎么分？",
+        "options": [
+          {
+            "id": "A",
+            "label": "60点新手任务，20点用户教育，20点反馈收集",
+            "score": 5
+          },
+          {
+            "id": "B",
+            "label": "60点拉新，20点内容，20点召回",
+            "score": 2
+          },
+          {
+            "id": "C",
+            "label": "40点新手任务，40点活动，20点召回",
+            "score": 4
+          },
+          {
+            "id": "D",
+            "label": "五个方向平均投入",
+            "score": 3
+          }
+        ]
+      }
+    },
+    {
+      "stepNumber": 6,
+      "stepTitle": "微任务 6",
+      "stepType": "microtask_choice",
+      "time": "11:10",
+      "speaker": "Leo",
+      "speakerRole": "数据分析师",
+      "message": "新手引导上线后，激活率涨了，但第二天留存没变化。",
+      "prompt": "你下一步会怎么做？",
+      "dimension": "反馈迭代",
+      "options": [
+        {
+          "id": "A",
+          "label": "继续扩大新手引导投入",
+          "score": 3
+        },
+        {
+          "id": "B",
+          "label": "看激活后的核心使用路径再调整策略",
+          "score": 5
+        },
+        {
+          "id": "C",
+          "label": "再做一轮拉新",
+          "score": 2
+        },
+        {
+          "id": "D",
+          "label": "先再观察一段时间",
+          "score": 4
+        }
+      ],
+      "decision": {
+        "type": "single_choice",
+        "prompt": "你下一步会怎么做？",
+        "options": [
+          {
+            "id": "A",
+            "label": "继续扩大新手引导投入",
+            "score": 3
+          },
+          {
+            "id": "B",
+            "label": "看激活后的核心使用路径再调整策略",
+            "score": 5
+          },
+          {
+            "id": "C",
+            "label": "再做一轮拉新",
+            "score": 2
+          },
+          {
+            "id": "D",
+            "label": "先再观察一段时间",
+            "score": 4
+          }
+        ]
+      }
+    }
+  ]
+}
