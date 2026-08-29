@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI 职业方向探索</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <main class="shell">
+    <section class="intro" id="intro" aria-label="开场动画，点击进入首页">
+      <div class="intro-inner"><div class="intro-mark">AI</div><h1>探索 AI 时代的职业可能性</h1><p class="subtitle">AI Career Explorer</p><div class="intro-line"></div><p class="subtitle">通过真实的工作微任务，发现更适合你的 AI 职业方向。</p><span class="intro-hint">点击进入</span></div>
+    </section>
+    <nav class="nav"><div class="brand"><span class="logo">AI</span> AI 职业方向探索</div><div class="links"><button class="active" data-nav="home" type="button">首页</button><button data-nav="roles" type="button">职业探索</button><button data-nav="growth" type="button">成长轨迹</button><button id="profileBtn" type="button">我的</button></div></nav>
+
+    <section class="screen active" id="home">
+      <section class="home-panel warmup-panel" aria-label="职业探索暖场">
+        <div class="warmup-canvas">
+          <span class="thought-bubble">正在找工作</span><span class="thought-bubble">想进入 AI 行业</span><span class="thought-bubble">考虑转行，但还没有方向</span><span class="thought-bubble">不知道自己适合什么岗位</span><span class="thought-bubble">担心自己的技能不够</span><span class="thought-bubble">想先真实体验一下工作</span>
+          <div class="warmup-center"><span class="warmup-kicker">先停一下，想想你现在的位置</span><h1>你最近，也在重新思考自己的职业方向吗？</h1><p class="subtitle">有时我们缺少的不是更多岗位名称，而是一次真正接近工作的体验。</p></div>
+          <div class="warmup-note">这些念头都很正常，继续向下看看另一种探索方式<button class="home-next-arrow" id="homeNextArrow" type="button" aria-label="查看下一段内容">↓</button></div>
+        </div>
+      </section>
+      <section class="home-panel home-entry-panel" id="home-entry" aria-label="职业探索入口">
+        <div class="hero"><span class="warmup-kicker">AI CAREER EXPLORER</span><h1>开始探索 AI 时代的职业可能性</h1><p class="subtitle">通过真实的工作微任务，发现更适合你的 AI 职业方向。</p><div class="entry-grid"><article class="card entry-card"><h2>AI 推荐适合你的岗位</h2><p>基于你的背景和兴趣，智能推荐值得优先体验的岗位。</p><button class="btn" data-go="profile1" type="button">获取职位推荐</button></article><article class="card entry-card"><h2>我想自己选择岗位体验</h2><p>从热门 AI 岗位中自由选择，开始任务体验。</p><button class="btn" data-go="roles" type="button">直接体验岗位</button></article></div></div>
+      </section>
+    </section>
+
+    <section class="screen" id="profile1"><div class="page-top"><button class="back" data-go="home" data-scroll-target="home-entry" type="button">← 返回</button><div class="steps">第 1 步 / 共 3 步 <i class="dot on"></i><i class="dot"></i><i class="dot"></i></div></div><div class="form"><h1>告诉我们一点你的背景</h1><p class="subtitle">这些信息将帮助我们更好地为你推荐岗位。</p><div class="field"><label for="profileStatus">当前状态</label><select id="profileStatus"><option value="">请选择</option><option>在校本科生</option><option>在校硕士 / 博士生</option><option>应届毕业生</option><option>工作 1–3 年</option><option>转行中</option></select></div><div class="field"><label for="profileBackground">专业 / 工作背景</label><textarea id="profileBackground" placeholder="简单介绍一下你的专业、工作或转行背景"></textarea></div><div class="form-actions"><button class="btn" data-go="profile2" type="button">下一步</button></div></div></section>
+    <section class="screen" id="profile2"><div class="page-top"><button class="back" data-go="profile1" type="button">← 返回</button><div class="steps">第 2 步 / 共 3 步 <i class="dot on"></i><i class="dot on"></i><i class="dot"></i></div></div><div class="form"><h1>你做过哪些事情？</h1><p class="subtitle">选择你积累过的经历，并补充一些说明。</p><div class="field"><span class="field-label">相关经历（可多选）</span><div class="chips selectable" id="experienceChips"><button class="chip" type="button">产品项目</button><button class="chip" type="button">用户研究</button><button class="chip" type="button">设计</button><button class="chip" type="button">内容运营</button><button class="chip" type="button">数据分析</button><button class="chip" type="button">技术开发</button><button class="chip" type="button">市场推广</button><button class="chip" type="button">客户沟通</button></div></div><div class="field"><label for="profileSkills">已掌握技能 / 工具</label><input id="profileSkills" placeholder="例如：Figma、Python、Prompt、用户访谈、Notion" /></div><div class="field"><label for="profileStory">代表性经历（选填）</label><textarea id="profileStory" placeholder="请简单描述这段经历中的角色、目标、你做了什么、有什么成果"></textarea></div><div class="form-actions"><button class="btn" data-go="profile3" type="button">下一步</button></div></div></section>
+    <section class="screen" id="profile3"><div class="page-top"><button class="back" data-go="profile2" type="button">← 返回</button><div class="steps">第 3 步 / 共 3 步 <i class="dot on"></i><i class="dot on"></i><i class="dot on"></i></div></div><div class="form"><h1>什么样的工作更吸引你？</h1><p class="subtitle">你的偏好将帮助我们判断推荐的初始方向。</p><div class="field"><span class="field-label">感兴趣的工作内容（可多选）</span><div class="chips selectable" id="interestChips"><button class="chip" type="button">产品设计</button><button class="chip" type="button">用户研究</button><button class="chip" type="button">数据分析</button><button class="chip" type="button">需求分析</button><button class="chip" type="button">项目管理</button><button class="chip" type="button">客户沟通</button><button class="chip" type="button">内容策划</button><button class="chip" type="button">运营增长</button></div></div><div class="field"><span class="field-label">工作偏好（可多选）</span><div class="chips selectable" id="workStyleChips"><button class="chip" type="button">独立思考</button><button class="chip" type="button">团队协作</button><button class="chip" type="button">高频沟通</button><button class="chip" type="button">深度分析</button><button class="chip" type="button">创意发散</button><button class="chip" type="button">落地执行</button></div></div><div class="field"><label for="profileGoal">当前最想解决的职业问题是什么？</label><textarea id="profileGoal" placeholder="例如：我想进入 AI 行业，但不知道自己更适合哪个岗位"></textarea></div><div class="form-actions"><button class="btn" id="submitProfileBtn" type="button">生成我的推荐</button></div></div></section>
+    <section class="screen" id="analyze1"><div class="loading"><div class="loading-icon">✦</div><h1>AI 正在分析你的信息</h1><p class="subtitle">正在匹配最适合你的岗位方向</p><div class="bar"><span id="analyze1Bar" style="width:70%"></span></div><b id="analyze1Pct">70%</b><div class="loading-list"><div class="done">理解你的背景与经历</div><div class="done">分析你的兴趣与偏好</div><div id="analyze1Step3">匹配适合的岗位方向</div></div><button class="btn" id="viewRecommendBtn" style="margin:32px auto 0" type="button">查看分析结果</button></div></section>
+
+    <section class="screen" id="recommend"><h1>根据你的背景，推荐你优先体验以下岗位</h1><p class="subtitle">三条值得优先验证的 AI 职业路径，也可以继续查看其他岗位。</p><div class="recommendations" id="recommendList"></div><button class="center-link" data-go="roles" type="button">查看全部岗位 →</button></section>
+    <section class="screen" id="roles"><h1>选择你想体验的岗位</h1><p class="subtitle">五种 AI 职业路径，选择一张卡片开始真实工作微任务。</p><div class="roles" id="rolesList"></div></section>
+    <section class="screen" id="mvu" aria-label="AI Product career trial"><div id="mvuRoot"></div></section>
+
+    <section class="screen" id="previewNotice"><div class="form" style="max-width:640px;margin:80px auto 0;text-align:center"><h1 id="previewJobName">岗位预览</h1><p class="subtitle" id="previewJobDesc"></p><p id="previewJobCopy" style="margin:24px 0">该岗位微任务仍在完善中，可先浏览岗位介绍或体验已开放岗位。</p><div class="report-actions"><button class="btn ghost" data-go="roles" type="button">返回岗位列表</button><button class="btn" id="launchMvuBtn" type="button" hidden>开始 AI Product Trial</button></div></div></section>
+
+    <section class="screen" id="choice"><div class="task-top"><div><h3>AI产品 · 微任务体验</h3><p class="subtitle">任务 1 / 5 · 选择题</p></div><div class="task-progress">25%<div class="bar"><span style="width:25%"></span></div></div></div><div class="question"><div class="scenario"><b>情境说明</b><br>你正在负责一款 AI 办公产品，近期团队收到了多条用户反馈，请根据这些信息做出判断。</div><h2>基于以上信息，你认为当前最值得优先解决的问题是什么？</h2><div class="options single-select" data-validity="single-choice"><button class="option" type="button">A. 新用户注册流程复杂</button><button class="option" type="button">B. AI 回答不准确</button><button class="option" type="button">C. 文件导入功能不稳定</button><button class="option" type="button">D. 页面加载速度较慢</button></div><p class="choice-feedback" id="choiceFeedback" role="status" aria-live="polite">请选择一个选项后继续。</p><div class="task-actions"><button class="btn" id="choiceContinue" data-go="ranking" type="button" disabled>下一题</button></div></div></section>
+    <section class="screen" id="ranking"><div class="task-top"><div><h3 class="task-job-title">AI产品 · 微任务体验</h3><p class="subtitle">任务 2 / 5 · 排序题</p></div><div class="task-progress">50%<div class="bar"><span style="width:50%"></span></div></div></div><div class="question"><h2>请按照你认为的优先级重新排序</h2><p class="subtitle">请将卡片拖动到合适的位置，最优先处理的问题放在最上方。</p><div class="ranking" id="rankingList"><div class="sort-item" draggable="true"><span class="handle">⠿</span><span>用户无法完成注册</span></div><div class="sort-item" draggable="true"><span class="handle">⠿</span><span>AI 回答不准确</span></div><div class="sort-item" draggable="true"><span class="handle">⠿</span><span>文件导入失败率高</span></div><div class="sort-item" draggable="true"><span class="handle">⠿</span><span>页面加载时间过长</span></div></div><p class="drag-tip">⠿ 按住卡片并上下拖动以调整优先级</p><div class="task-actions"><button class="btn" data-go="category" type="button">确认顺序</button></div></div></section>
+    <section class="screen" id="category"><div class="task-top"><div><h3 class="task-job-title">AI产品 · 微任务体验</h3><p class="subtitle">任务 3 / 5 · 连线匹配题</p></div><div class="task-progress">75%<div class="bar"><span style="width:75%"></span></div></div></div><div class="question"><h2>请将以下用户反馈与对应的问题类别连线</h2><p class="subtitle">先点击左侧一条反馈，再点击右侧最匹配的类别。</p><div class="matching-board" id="matchingBoard"><svg class="match-lines" id="matchLines" aria-hidden="true"></svg><div class="match-column"><h3>用户反馈</h3><button class="match-item source" type="button" data-source="导入文件"><span>不知道如何导入文件</span></button><button class="match-item source" type="button" data-source="速度"><span>感觉输出结果偏慢</span></button><button class="match-item source" type="button" data-source="准确性"><span>AI 回答有时不准确</span></button><button class="match-item source" type="button" data-source="限制"><span>上传文件大小有限制</span></button><button class="match-item source" type="button" data-source="建议"><span>希望增加自动总结</span></button><button class="match-item source" type="button" data-source="记录"><span>打不开聊天记录</span></button></div><div class="match-column"><h3>问题类别</h3><button class="match-item target" type="button" data-target="功能问题">功能问题</button><button class="match-item target" type="button" data-target="体验问题">体验问题</button><button class="match-item target" type="button" data-target="新需求 / 建议">新需求 / 建议</button></div></div><p class="match-tip">已连线的反馈可再次点击，重新选择匹配类别。</p><div class="task-actions"><button class="btn" data-go="evidence" type="button">提交匹配</button></div></div></section>
+    <section class="screen" id="evidence"><div class="task-top"><div><h3>AI产品 · 微任务体验</h3><p class="subtitle">任务 4 / 5 · 信息分析题</p></div><div class="task-progress">100%<div class="bar"><span style="width:100%"></span></div></div></div><div class="question"><h2>请阅读以下用户访谈记录，选择 2 项最值得关注的信息。</h2><div class="evidence-grid"><article class="material"><b>访谈记录（节选）</b><ul><li>用户 A：我第一次打开产品时，不知道文件应该从哪里导入……</li><li>用户 B：AI 回答有时很慢，而且我已经上传了文档，它还是继续问我问题……</li><li>用户 C：我最想要的是能够记住历史聊天记录……</li><li>用户 D：整体体验不错，但我比较在意稳定性……</li></ul></article><div id="evidenceChoices"><label class="check-option"><input type="checkbox" value="user_feedback" /> 用户不知道如何导入文件</label><label class="check-option"><input type="checkbox" value="funnel_data" /> AI 回答有时不准确</label><label class="check-option"><input type="checkbox" value="user_segments" /> 用户希望历史记录可被保存</label><label class="check-option"><input type="checkbox" value="dev_cost" /> 页面加载速度较慢</label></div></div><p class="evidence-feedback" id="evidenceFeedback" role="status" aria-live="polite">已选择 0/2 项。</p><div class="task-actions"><button class="btn" id="evidenceContinue" data-go="open" type="button" disabled>提交选择</button></div></div></section>
+    <section class="screen" id="open"><div class="task-top"><div><h3 class="task-job-title">AI产品 · 微任务体验</h3><p class="subtitle">最后一步 · 补充你的思考</p></div><div class="task-progress">100%<div class="bar"><span style="width:100%"></span></div></div></div><div class="question"><h2>如果你是产品经理，接下来你会采取什么行动？</h2><p class="subtitle">请用 1–3 句话说明你的想法。可以从验证问题、制定方案、优先级调整等角度思考。</p><textarea id="openAnswer" placeholder="输入你的回答……" style="height:190px;margin:20px 0 28px"></textarea><div class="task-actions"><button class="btn" id="submitTaskBtn" type="button">提交回答</button></div></div></section>
+    <section class="screen" id="analyze2"><div class="loading"><div class="loading-icon">✦</div><h1>AI 正在分析你的任务表现</h1><p class="subtitle">正在基于你的回答，评估岗位匹配与能力表现。</p><div class="bar"><span style="width:80%"></span></div><b>80%</b><div class="loading-list"><div class="done">理解你的题目内容</div><div class="done">评估你的判断方式</div><div>生成个性化反馈报告</div></div><button class="btn" id="viewReportBtn" style="margin:32px auto 0" type="button">查看体验报告</button></div></section>
+    <section class="screen" id="report" aria-label="职业体验报告">
+      <div class="report-v2">
+        <header class="report-v2-hero">
+          <div class="report-v2-top">
+            <button class="report-v2-back" data-go="growth" type="button" aria-label="返回成长轨迹">
+              <img src="assets/report/back.svg" width="35" height="45" alt="" />
+            </button>
+            <div class="report-v2-badge">
+              <img src="assets/report/bookmark.svg" width="24" height="24" alt="" />
+              <span>你的职业体验报告</span>
+            </div>
+          </div>
+          <div class="report-v2-hero-grid">
+            <div class="report-v2-intro">
+              <p class="report-v2-kicker">你的体验职业是：</p>
+              <h1 class="report-v2-job" id="reportJobName"></h1>
+              <div class="report-v2-fit">
+                <span class="report-v2-fit-label">适配潜力：</span>
+                <span class="report-v2-fit-value" id="reportFitLevel"></span>
+              </div>
+              <p class="report-v2-headline" id="reportHeadline"></p>
+              <p class="report-v2-summary" id="reportSummary"></p>
+            </div>
+            <div class="report-v2-illus" aria-hidden="true">
+              <div class="report-v2-illus-placeholder" id="reportHeroPlaceholder">报告插图占位</div>
+            </div>
+          </div>
+        </header>
+
+        <section class="report-v2-panel" aria-label="岗位能力对照">
+          <img class="report-v2-panel-icon" src="assets/report/frame.svg" width="92" height="92" alt="" />
+          <h2 class="report-v2-panel-title">你的岗位能力对照：</h2>
+          <div class="report-v2-panel-body">
+            <h3>AI 判断依据</h3>
+            <ul class="report-v2-basis" id="reportBasis"></ul>
+            <p class="report-v2-boundary" id="reportBoundary"></p>
+          </div>
+        </section>
+
+        <section class="report-v2-suggestions" aria-label="学习建议">
+          <h2 class="report-v2-suggestions-title">
+            <img src="assets/report/bulb.png" width="38" height="38" alt="" />
+            给你的「学习建议」
+            <img class="report-v2-bulb-flip" src="assets/report/bulb.png" width="38" height="38" alt="" />
+          </h2>
+          <div class="report-v2-cards" id="reportCards"></div>
+        </section>
+
+        <div class="report-actions">
+          <button class="btn ghost" data-go="roles" type="button">体验其他岗位</button>
+          <button class="btn" data-go="growth" type="button">查看成长轨迹</button>
+        </div>
+      </div>
+    </section>
+    <section class="screen" id="growth"><h1>我的职业探索轨迹</h1><p class="subtitle">记录你的每一次岗位体验与能力成长。</p><div class="tabs"><button class="tab active" type="button">全部岗位</button><button class="tab" type="button">已完成</button><button class="tab" type="button">未体验</button></div><div class="track-list" id="growthList"></div><section class="trend"><h2>能力变化趋势</h2><div class="trend-box"><svg viewBox="0 0 800 190" preserveAspectRatio="none"><polyline points="20,155 210,125 400,138 590,78 780,52" fill="none" stroke="#222" stroke-width="4"/><g fill="#222"><circle cx="20" cy="155" r="5"/><circle cx="210" cy="125" r="5"/><circle cx="400" cy="138" r="5"/><circle cx="590" cy="78" r="5"/><circle cx="780" cy="52" r="5"/></g></svg></div><div class="ability"><span>问题拆解：明显提升</span><span>用户理解：持续提升</span><span>证据判断：稳步提升</span><span>优先级决策：明显提升</span><span>沟通表达：持续提升</span></div></section><div class="report-actions"><button class="btn ghost" data-go="choice" type="button">重新挑战已完成岗位</button><button class="btn" data-go="roles" type="button">继续体验未完成岗位</button></div></section>
+
+    <div class="drawer-shade" id="drawerShade"></div><aside class="drawer" id="drawer"><div class="drawer-head"><b>我的</b><button class="close" id="drawerClose" type="button">×</button></div><div class="avatar">头像</div><h2 style="margin-bottom:2px">探索者</h2><p class="profile-id" id="drawerSessionId">会话加载中…</p><ul class="drawer-menu"><li data-go="roles">我的岗位</li><li data-go="growth">我的报告</li><li>我的收藏</li><li>设置</li><li>帮助与反馈</li><li class="logout">退出登录</li></ul></aside>
+  </main>
+  <script src="js/app.js"></script>
+  <script src="js/mvu-core.js"></script>
+  <script src="js/mvu-ui.js"></script>
+  <script src="js/ui.js"></script>
+</body>
+</html>
