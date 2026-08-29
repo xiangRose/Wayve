@@ -657,6 +657,14 @@
     document.getElementById('drawerClose').onclick = closeDrawer;
     shade.onclick = closeDrawer;
 
+    const homeScrollCue = document.getElementById('homeScrollCue');
+    if (homeScrollCue) {
+      homeScrollCue.addEventListener('click', () => {
+        const homeEntry = document.getElementById('homeEntry');
+        if (homeEntry) homeEntry.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    }
+
     const intro = document.getElementById('intro');
     let introDismissed = false;
     const dismissIntro = (withRoute) => {
