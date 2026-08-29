@@ -5,49 +5,39 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-final class MicrotaskStepView {
+public final class MicrotaskStepView {
 
     private MicrotaskStepView() {}
 
-    @SuppressWarnings("unchecked")
-    static Map<String, Object> publicStep(Map<String, Object> step, int stepNum, int totalSteps) {
-        Map<String, Object> view = new HashMap<>();
-        view.put("step", stepNum);
-        view.put("totalSteps", totalSteps);
-        view.put("stepTitle", step.get("stepTitle"));
-        view.put("stepType", step.get("stepType"));
-        view.put("time", step.get("time"));
-        view.put("speaker", step.get("speaker"));
-        view.put("speakerRole", step.get("speakerRole"));
-        view.put("message", step.get("message"));
-        view.put("prompt", step.get("prompt"));
-
-        List<Map<String, Object>> options = new ArrayList<>();
-        Object decision = step.get("decision");
-        if (decision instanceof Map<?, ?> decisionMap) {
-            Object rawOptions = decisionMap.get("options");
-            if (rawOptions instanceof List<?> list) {
-                for (Object item : list) {
-                    if (item instanceof Map<?, ?> option) {
-                        String id = String.valueOf(option.get("id"));
-                        String label = String.valueOf(option.get("label"));
-                        options.add(Map.of("id", id, "label", formatLabel(id, label)));
-                    }
-                }
-            }
-        }
-        view.put("options", options);
-        return view;
+  @SuppressWarnings("unchecked")
+    public static Map<String, Object> publicStep(Map<String, Object> step, int stepNum, int total) {
+        Map<String, Object> out = new HashMap<>();
+        out.put("step", stepNum);
+        out.put("totalSteps", total);
+        out.put("time", step.get("time"));
+        out.put("speaker", step.get("speaker"));
+        out.put("speakerRole", step.get("speakerRole"));
+        out.put("message", step.get("message"));
+        out.put("prompt", step.get("prompt"));
+        out.put("options", publicOptions(step));
+        return out;
     }
 
-    private static String formatLabel(String id, String label) {
-        if (label == null || label.isBlank()) {
-            return id;
+  @SuppressWarnings("unchecked")
+    private static List<Map<String, Object>> publicOptions(Map<String, Object> step) {
+        Object optionsObj = step.get("options");
+        if (optionsObj == null) {
+            return List.of();
         }
-        String trimmed = label.trim();
-        if (trimmed.startsWith(id + ".") || trimmed.startsWith(id + "．")) {
-            return trimmed;
+        List<Map<String, Object>> options = (List<Map<String, Object>>) optionsObj;
+        List<Map<String, Object>> publicList = new ArrayList<>();
+        for (Map<String, Object> option : options) {
+            Map<String, Object> pub = new HashMap<>();
+            pub.put("id", option.get("id"));
+            String label = String.valueOf(option.get("label"));
+            pub.put("label", label.startsWith(option.get("id") + ".") ? label : option.get("id") + ". " + label);
+            publicList.add(pub);
         }
-        return id + ". " + trimmed;
+        return publicList;
     }
 }

@@ -31,7 +31,8 @@
     currentJobId: 'ai_product',
     taskSessionId: null,
     microtaskStep: 1,
-    microtaskSetId: 'A',
+    microtaskSetId: 'MIXED',
+    microtaskQuestionPlan: [],
     microtaskSelectedOption: null,
     microtaskBank: null,
     microtaskScores: null,
@@ -474,8 +475,84 @@
       .join('');
   }
 
+  function shuffleArray(items) {
+    const list = items.slice();
+    for (let i = list.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      const tmp = list[i];
+      list[i] = list[j];
+      list[j] = tmp;
+    }
+    return list;
+  }
+
+  function getMicrotaskBackendId() {
+    return API_JOB_TO_BACKEND[state.currentJobId] || state.currentJobId;
+  }
+
+  function getMicrotaskPlanEntry(stepNum) {
+    return state.microtaskQuestionPlan[stepNum - 1] || null;
+  }
+
+  function getMicrotaskQuestionAtStep(stepNum) {
+    const entry = getMicrotaskPlanEntry(stepNum);
+    if (!entry) return null;
+    const backendId = getMicrotaskBackendId();
+    const questions = state.microtaskBank?.jobs?.[backendId]?.sets?.[entry.setId]?.questions;
+    return questions?.[entry.questionIndex] || null;
+  }
+
+  function getMicrotaskScoreDefAtStep(stepNum) {
+    const entry = getMicrotaskPlanEntry(stepNum);
+    if (!entry) return null;
+    const backendId = getMicrotaskBackendId();
+    const setScores = state.microtaskScores?.jobs?.[backendId]?.sets?.[entry.setId];
+    return setScores?.[entry.questionIndex] || null;
+  }
+
+  function getMicrotaskTotalSteps() {
+    return state.microtaskQuestionPlan.length || 6;
+  }
+
+  async function buildMicrotaskQuestionPlan(backendId) {
+    await loadMicrotaskBank();
+    await loadMicrotaskScores();
+    const plan = Array.from({ length: 6 }, (_, questionIndex) => ({
+      setId: MICROTASK_SET_IDS[Math.floor(Math.random() * MICROTASK_SET_IDS.length)],
+      questionIndex,
+    }));
+    state.microtaskQuestionPlan = shuffleArray(plan);
+    state.microtaskSetId = 'MIXED';
+  }
+
+  function buildLegacyMicrotaskPlan(backendId, setId) {
+    const questions = state.microtaskBank?.jobs?.[backendId]?.sets?.[setId]?.questions || [];
+    state.microtaskQuestionPlan = questions.map((_, questionIndex) => ({ setId, questionIndex }));
+    state.microtaskSetId = setId;
+  }
+
+  function applyMicrotaskQuestionPlanFromApi(plan) {
+    if (!Array.isArray(plan) || !plan.length) return false;
+    state.microtaskQuestionPlan = plan.map((entry) => ({
+      setId: entry.setId,
+      questionIndex: entry.questionIndex,
+    }));
+    state.microtaskSetId = 'MIXED';
+    return true;
+  }
+
+  async function ensureMicrotaskQuestionPlan(backendId) {
+    if (state.microtaskQuestionPlan.length) return;
+    if (state.microtaskSetId && state.microtaskSetId !== 'MIXED') {
+      await loadMicrotaskBank();
+      buildLegacyMicrotaskPlan(backendId, state.microtaskSetId);
+      return;
+    }
+    await buildMicrotaskQuestionPlan(backendId);
+  }
+
   function pickMicrotaskSetId() {
-    return MICROTASK_SET_IDS[Math.floor(Math.random() * MICROTASK_SET_IDS.length)];
+    return 'MIXED';
   }
 
   async function loadMicrotaskScores() {
@@ -491,16 +568,16 @@
   }
 
   function buildLocalRadar() {
-    const backendId = API_JOB_TO_BACKEND[state.currentJobId] || state.currentJobId;
+    const backendId = getMicrotaskBackendId();
     const scoresBank = state.microtaskScores;
     if (!scoresBank?.jobs?.[backendId]) return null;
-    const set = scoresBank.jobs[backendId].sets?.[state.microtaskSetId] || [];
-    const dimensions = state.localMicrotaskAnswers.map((answer, i) => {
-      const def = set[i] || {};
-      const option = (def.options || []).find((o) => o.id === answer.selectedOptionId);
+    const dimensions = state.localMicrotaskAnswers.map((answer) => {
+      const stepNum = answer.step;
+      const def = getMicrotaskScoreDefAtStep(stepNum);
+      const option = (def?.options || []).find((o) => o.id === answer.selectedOptionId);
       const raw = option ? option.score : 0;
       return {
-        name: def.dimension || '维度' + (i + 1),
+        name: def?.dimension || '维度' + stepNum,
         score: radarScore(raw),
         rawScore: raw,
       };
@@ -685,31 +762,26 @@
   }
 
   async function buildLocalJudgmentBasis() {
-    const bank = await loadMicrotaskBank();
-    const backendId = API_JOB_TO_BACKEND[state.currentJobId] || state.currentJobId;
-    const questions = bank.jobs?.[backendId]?.sets?.[state.microtaskSetId]?.questions || [];
-    if (!questions.length || !state.localMicrotaskAnswers.length) return [];
+    if (!state.localMicrotaskAnswers.length) return [];
     return state.localMicrotaskAnswers
-      .map((row, i) => {
-        const q = questions[i] || questions[row.step - 1];
+      .map((row) => {
+        const q = getMicrotaskQuestionAtStep(row.step);
         return q ? formatLocalJudgmentLine(q, row) : null;
       })
       .filter(Boolean);
   }
 
   async function buildMicrotaskChoiceSignalsForReport() {
-    const bank = await loadMicrotaskBank();
-    const backendId = API_JOB_TO_BACKEND[state.currentJobId] || state.currentJobId;
-    const questions = bank.jobs?.[backendId]?.sets?.[state.microtaskSetId]?.questions || [];
-    if (!questions.length || !state.localMicrotaskAnswers.length) return [];
-    return state.localMicrotaskAnswers.map((row, i) => {
-      const q = questions[i] || questions[row.step - 1];
+    if (!state.localMicrotaskAnswers.length) return [];
+    return state.localMicrotaskAnswers.map((row) => {
+      const q = getMicrotaskQuestionAtStep(row.step);
       if (!q) return null;
+      const scoreDef = getMicrotaskScoreDefAtStep(row.step);
       const selected = (q.options || []).find((o) => o.id === row.selectedOptionId);
       const others = (q.options || []).filter((o) => o.id !== row.selectedOptionId).map((o) => o.label);
       return {
-        step: row.step || i + 1,
-        dimension: q.dimension || (state.microtaskRadar?.labels?.[i] || state.microtaskRadar?.labels?.[row.step - 1]) || '',
+        step: row.step,
+        dimension: scoreDef?.dimension || '',
         time: q.time,
         speaker: q.speaker,
         speakerRole: q.speakerRole,
@@ -763,7 +835,7 @@
     restoreMicrotaskSelection(state.microtaskStep);
     const bank = await loadMicrotaskBank();
     const backendId = API_JOB_TO_BACKEND[state.currentJobId] || state.currentJobId;
-    const total = bank.jobs?.[backendId]?.sets?.[state.microtaskSetId]?.questions?.length || 6;
+    const total = getMicrotaskTotalSteps();
     updateMicrotaskNavButtons(state.microtaskStep, total, 'in_progress');
   }
 
@@ -825,15 +897,15 @@
   }
 
   async function renderMicrotaskFromLocal(jobId, stepNum) {
-    const bank = await loadMicrotaskBank();
     const backendId = API_JOB_TO_BACKEND[jobId] || jobId;
-    const questions = bank.jobs?.[backendId]?.sets?.[state.microtaskSetId]?.questions || [];
-    const q = questions[stepNum - 1];
+    await ensureMicrotaskQuestionPlan(backendId);
+    const q = getMicrotaskQuestionAtStep(stepNum);
     if (!q) return;
+    const total = getMicrotaskTotalSteps();
     renderMicrotaskStep(
       {
         step: stepNum,
-        totalSteps: questions.length,
+        totalSteps: total,
         time: q.time,
         speaker: q.speaker,
         speakerRole: q.speakerRole,
@@ -841,7 +913,7 @@
         prompt: q.prompt,
         options: q.options,
       },
-      stepNum >= questions.length ? 'completed' : 'in_progress'
+      stepNum >= total ? 'completed' : 'in_progress'
     );
   }
 
@@ -858,7 +930,7 @@
 
     const bank = await loadMicrotaskBank();
     const backendId = API_JOB_TO_BACKEND[state.currentJobId] || state.currentJobId;
-    const total = bank.jobs?.[backendId]?.sets?.[state.microtaskSetId]?.questions?.length || 6;
+    const total = getMicrotaskTotalSteps();
 
     state.microtaskStepAnswers[state.microtaskStep] = state.microtaskSelectedOption;
 
@@ -1088,7 +1160,8 @@
     state.currentJobId = jobId;
     state.microtaskStep = 1;
     state.microtaskSelectedOption = null;
-    state.microtaskSetId = pickMicrotaskSetId();
+    state.microtaskQuestionPlan = [];
+    state.microtaskSetId = 'MIXED';
     state.localMicrotaskAnswers = [];
     state.microtaskStepAnswers = {};
     state.microtaskMaxSubmittedStep = 0;
@@ -1107,7 +1180,11 @@
           body: JSON.stringify({ jobId, scaffoldType: 'career_changer' }),
         });
         state.taskSessionId = task.taskSessionId;
-        if (task.setId) state.microtaskSetId = task.setId;
+        if (task.questionPlan) {
+          applyMicrotaskQuestionPlanFromApi(task.questionPlan);
+        } else if (task.setId) {
+          state.microtaskSetId = task.setId;
+        }
       } catch (err) {
         console.warn('创建任务会话失败，使用本地题库', err);
         state.taskSessionId = null;
@@ -1384,9 +1461,9 @@
 
   async function goToMicrotaskLastQuestion() {
     saveSceneStepState();
-    const bank = await loadMicrotaskBank();
-    const backendId = API_JOB_TO_BACKEND[state.currentJobId] || state.currentJobId;
-    const total = bank.jobs?.[backendId]?.sets?.[state.microtaskSetId]?.questions?.length || 6;
+    const backendId = getMicrotaskBackendId();
+    await ensureMicrotaskQuestionPlan(backendId);
+    const total = getMicrotaskTotalSteps();
     state.microtaskStep = total;
     await renderMicrotaskFromLocal(state.currentJobId, total);
     restoreMicrotaskSelection(total);
@@ -1549,9 +1626,7 @@
         state.microtaskStepAnswers[state.microtaskStep] = state.microtaskSelectedOption;
         document.querySelectorAll('#microtaskOptions .option').forEach((x) => x.classList.remove('selected'));
         microOption.classList.add('selected');
-        const bank = state.microtaskBank;
-        const backendId = API_JOB_TO_BACKEND[state.currentJobId] || state.currentJobId;
-        const total = bank?.jobs?.[backendId]?.sets?.[state.microtaskSetId]?.questions?.length || 6;
+        const total = getMicrotaskTotalSteps();
         updateMicrotaskNavButtons(state.microtaskStep, total, 'in_progress');
       }
 
