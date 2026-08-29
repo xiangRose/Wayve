@@ -57,7 +57,7 @@
       "typicalWorkSnippet": "客户提出“用 AI 提高老师效率”的模糊目标时，澄清真实流程与限制，选择试点场景并形成六周内可验证方案。",
       "whyExperience": "体验如何把客户一句话需求转化为可落地的试点方案，并识别合规与部署约束。",
       "estimatedMinutes": 7,
-      "taskStatus": "preview_only",
+      "taskStatus": "interactive",
       "competencyRequirements": {
         "问题拆解": "高",
         "用户/客户理解": "高",
@@ -81,7 +81,7 @@
       "typicalWorkSnippet": "社交平台带来大量新用户但首次生成率低时，判断流失环节并设计一个优先验证的运营或产品联动实验。",
       "whyExperience": "体验如何建立可验证假设、选择相关数据并设计有指标的运营实验。",
       "estimatedMinutes": 7,
-      "taskStatus": "preview_only",
+      "taskStatus": "interactive",
       "competencyRequirements": {
         "问题拆解": "中高",
         "用户/客户理解": "高",
@@ -106,7 +106,7 @@
       "typicalWorkSnippet": "团队希望判断“用户是否愿意长期使用 AI 作为职业决策助手”时，将宽泛问题转化为可研究问题并设计可行研究流程。",
       "whyExperience": "体验如何区分自我报告与实际行为，并在样本与周期限制下设计研究方案。",
       "estimatedMinutes": 7,
-      "taskStatus": "preview_only",
+      "taskStatus": "interactive",
       "competencyRequirements": {
         "问题拆解": "高",
         "用户/客户理解": "高",

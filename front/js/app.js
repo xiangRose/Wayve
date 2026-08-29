@@ -6,6 +6,23 @@
 
   const REC_LABELS = ['优先推荐', '值得体验', '探索方向'];
 
+  const API_JOB_TO_BACKEND = {
+    ai_product: 'ai_pm',
+    ai_ui_design: 'ai_ux',
+    ai_ops: 'ai_operator',
+    ai_data_eval: 'ai_researcher',
+    ai_app_dev: 'ai_consultant',
+  };
+  const API_JOB_TO_FRONT = {
+    ai_pm: 'ai_product',
+    ai_ux: 'ai_ui_design',
+    ai_operator: 'ai_ops',
+    ai_researcher: 'ai_data_eval',
+    ai_consultant: 'ai_app_dev',
+  };
+  const MICROTASK_SET_IDS = ['A', 'B', 'C', 'D'];
+  const RADAR_SCORE_MAP = { 2: 40, 3: 60, 4: 80, 5: 100 };
+
   const state = {
     sessionId: null,
     useMock: false,
@@ -13,6 +30,13 @@
     recommendations: [],
     currentJobId: 'ai_product',
     taskSessionId: null,
+    microtaskStep: 1,
+    microtaskSetId: 'A',
+    microtaskSelectedOption: null,
+    microtaskBank: null,
+    microtaskScores: null,
+    microtaskRadar: null,
+    localMicrotaskAnswers: [],
     completedJobs: [],
     sceneStep: 0,
     sceneScripts: null,
@@ -261,7 +285,7 @@
     const h = { Accept: 'application/json' };
     if (json) h['Content-Type'] = 'application/json';
     if (state.sessionId) h['X-Session-Id'] = state.sessionId;
-    h['X-Demo-Mode'] = 'true';
+    if (state.useMock) h['X-Demo-Mode'] = 'true';
     return h;
   }
 
@@ -275,7 +299,7 @@
     screens.forEach((s) => s.classList.toggle('active', s.id === id));
     const navSection = {
       home: 'home',
-      roles: 'roles', recommend: 'roles', previewNotice: 'roles', profile1: 'roles', profile2: 'roles', profile3: 'roles', analyze1: 'roles', choice: 'roles', ranking: 'roles', category: 'roles', evidence: 'roles', open: 'roles', sceneSim: 'roles', analyze2: 'roles',
+      roles: 'roles', recommend: 'roles', previewNotice: 'roles', profile1: 'roles', profile2: 'roles', profile3: 'roles', analyze1: 'roles', choice: 'roles', sceneSim: 'roles', analyze2: 'roles',
       growth: 'growth', report: 'growth',
     }[id];
     document.querySelectorAll('[data-nav]').forEach((n) => {
@@ -308,7 +332,7 @@
 
   function normalizeJobs(raw) {
     return raw.map((j) => ({
-      jobId: j.jobId,
+      jobId: API_JOB_TO_FRONT[j.jobId] || j.jobId,
       name: j.name,
       desc: j.definition || '',
       highlights: (j.specificCompetencies || []).slice(0, 3),
@@ -319,9 +343,9 @@
   function fallbackJobs() {
     return [
       { jobId: 'ai_product', name: 'AI产品', desc: '定义 AI 产品问题与优先级。', highlights: ['产品规划', '用户研究', '数据分析'], taskStatus: 'interactive' },
-      { jobId: 'ai_ops', name: 'AI运营', desc: '围绕增长与留存设计运营实验。', highlights: ['数据分析', '用户洞察', '运营策略'], taskStatus: 'preview_only' },
+      { jobId: 'ai_ops', name: 'AI运营', desc: '围绕增长与留存设计运营实验。', highlights: ['数据分析', '用户洞察', '运营策略'], taskStatus: 'interactive' },
       { jobId: 'ai_data_eval', name: 'AI数据与评测', desc: '建立评测体系与数据标准。', highlights: ['评测设计', '数据分析', '标准制定'], taskStatus: 'interactive' },
-      { jobId: 'ai_app_dev', name: 'AI应用开发', desc: '将大模型能力集成进产品。', highlights: ['编程能力', '系统设计', '性能优化'], taskStatus: 'preview_only' },
+      { jobId: 'ai_app_dev', name: 'AI应用开发', desc: '将大模型能力集成进产品。', highlights: ['编程能力', '系统设计', '性能优化'], taskStatus: 'interactive' },
       { jobId: 'ai_ui_design', name: 'AIUI设计', desc: '把复杂 AI 能力做成可理解的界面体验。', highlights: ['交互设计', '信息架构', '用户研究'], taskStatus: 'interactive' },
     ];
   }
@@ -446,6 +470,412 @@
       .join('');
   }
 
+  function pickMicrotaskSetId() {
+    return MICROTASK_SET_IDS[Math.floor(Math.random() * MICROTASK_SET_IDS.length)];
+  }
+
+  async function loadMicrotaskScores() {
+    if (state.microtaskScores) return state.microtaskScores;
+    const res = await fetch('data/microtask-scores.json');
+    if (!res.ok) throw new Error('微任务评分表加载失败');
+    state.microtaskScores = await res.json();
+    return state.microtaskScores;
+  }
+
+  function radarScore(raw) {
+    return RADAR_SCORE_MAP[raw] || 0;
+  }
+
+  function buildLocalRadar() {
+    const backendId = API_JOB_TO_BACKEND[state.currentJobId] || state.currentJobId;
+    const scoresBank = state.microtaskScores;
+    if (!scoresBank?.jobs?.[backendId]) return null;
+    const set = scoresBank.jobs[backendId].sets?.[state.microtaskSetId] || [];
+    const dimensions = state.localMicrotaskAnswers.map((answer, i) => {
+      const def = set[i] || {};
+      const option = (def.options || []).find((o) => o.id === answer.selectedOptionId);
+      const raw = option ? option.score : 0;
+      return {
+        name: def.dimension || '维度' + (i + 1),
+        score: radarScore(raw),
+        rawScore: raw,
+      };
+    });
+    return {
+      jobId: backendId,
+      setId: state.microtaskSetId,
+      dimensions,
+      labels: dimensions.map((d) => d.name),
+      scores: dimensions.map((d) => d.score),
+    };
+  }
+
+  function renderReportRadar(taskRadar) {
+    const svg = document.getElementById('reportRadarSvg');
+    if (!svg || !taskRadar) return;
+    const labels = taskRadar.labels || [];
+    const scores = taskRadar.scores || [];
+    if (!labels.length) {
+      svg.replaceChildren();
+      return;
+    }
+
+    const cx = 185;
+    const cy = 168;
+    const maxR = 118;
+    const n = labels.length;
+    const angles = labels.map((_, i) => -Math.PI / 2 + (2 * Math.PI * i) / n);
+    const pointAt = (score, i) => {
+      const r = (Math.max(0, score) / 100) * maxR;
+      return { x: cx + r * Math.cos(angles[i]), y: cy + r * Math.sin(angles[i]) };
+    };
+    const gridLevels = [25, 50, 75, 100];
+    const ns = 'http://www.w3.org/2000/svg';
+
+    const mk = (tag, attrs) => {
+      const el = document.createElementNS(ns, tag);
+      Object.entries(attrs).forEach(([k, v]) => el.setAttribute(k, String(v)));
+      return el;
+    };
+
+    svg.replaceChildren();
+
+    gridLevels.forEach((level) => {
+      const pts = angles
+        .map((_, i) => {
+          const r = (level / 100) * maxR;
+          return cx + r * Math.cos(angles[i]) + ',' + (cy + r * Math.sin(angles[i]));
+        })
+        .join(' ');
+      svg.appendChild(
+        mk('polygon', {
+          points: pts,
+          fill: 'none',
+          stroke: '#c5d9b8',
+          'stroke-width': 1,
+        })
+      );
+    });
+
+    angles.forEach((a) => {
+      svg.appendChild(
+        mk('line', {
+          x1: cx,
+          y1: cy,
+          x2: cx + maxR * Math.cos(a),
+          y2: cy + maxR * Math.sin(a),
+          stroke: '#c5d9b8',
+          'stroke-width': 1,
+        })
+      );
+    });
+
+    const polyPts = scores.map((s, i) => {
+      const p = pointAt(s, i);
+      return p.x + ',' + p.y;
+    }).join(' ');
+    svg.appendChild(
+      mk('polygon', {
+        points: polyPts,
+        fill: 'rgba(170,195,147,0.35)',
+        stroke: '#779d56',
+        'stroke-width': 2.5,
+      })
+    );
+
+    labels.forEach((label, i) => {
+      const lr = maxR + 22;
+      const x = cx + lr * Math.cos(angles[i]);
+      const y = cy + lr * Math.sin(angles[i]);
+      const text = mk('text', {
+        x,
+        y,
+        fill: '#39571f',
+        'font-size': 11,
+        'font-family': 'PingFang SC, Microsoft YaHei, sans-serif',
+        'text-anchor': 'middle',
+        'dominant-baseline': 'middle',
+      });
+      text.textContent = label;
+      svg.appendChild(text);
+    });
+  }
+
+  function patchAdviceFromRadar(taskRadar) {
+    const dims = (taskRadar?.dimensions || []).slice();
+    if (dims.length < 2) return;
+    const cards = document.querySelectorAll('.figma-advice-card h3');
+    const texts = document.querySelectorAll('.figma-advice-card p');
+    const pick = (dim) =>
+      '在「' + dim.name + '」相关情境中，可多留意自己通常先确认哪类信息、再采取什么行动。';
+    const sorted = dims.slice().sort((a, b) => b.score - a.score);
+    const strengths = sorted.slice(0, 2);
+    const others = sorted.slice(-2).reverse();
+    if (cards[0] && strengths[0]) cards[0].textContent = strengths[0].name + '相关情境';
+    if (texts[0] && strengths[0]) texts[0].textContent = pick(strengths[0]);
+    if (cards[1] && strengths[1]) {
+      cards[1].textContent = strengths[1].name + '相关取舍';
+      if (texts[1]) texts[1].textContent = pick(strengths[1]);
+    }
+    if (cards[2] && others[0]) {
+      cards[2].textContent = others[0].name + '可继续观察';
+      if (texts[2]) texts[2].textContent = '遇到类似问题时，可尝试换一种信息收集或对齐方式，再对比结果。';
+    }
+    if (cards[3] && others[1]) {
+      cards[3].textContent = others[1].name + '值得多练';
+      if (texts[3]) texts[3].textContent = '用一个小案例复盘：当时还缺哪条事实，若补上会如何选择。';
+    }
+  }
+
+  function patchLearningAdvice(adviceList) {
+    if (!adviceList || !adviceList.length) return;
+    const cards = document.querySelectorAll('.figma-advice-card');
+    adviceList.slice(0, 4).forEach((item, i) => {
+      const card = cards[i];
+      if (!card) return;
+      const title = card.querySelector('h3');
+      const text = card.querySelector('p');
+      const tag = card.querySelector('span');
+      if (title && item.title) title.textContent = item.title;
+      if (text && item.description) text.textContent = item.description;
+      if (tag && item.type) {
+        tag.textContent = item.type === 'strength' ? '♥　你的优势' : '●　值得加强';
+      }
+    });
+  }
+
+  function clipText(text, max) {
+    if (!text) return '';
+    const t = String(text).trim();
+    return t.length <= max ? t : t.slice(0, max - 1) + '…';
+  }
+
+  function sanitizeJudgmentLine(line) {
+    if (!line) return '';
+    let t = String(line).trim();
+    t = t.replace(/^【undefined】/, '');
+    t = t.replace(/^undefined[｜|]?/, '');
+    t = t.replace(/【undefined】/g, '');
+    return t.trim();
+  }
+
+  function formatLocalJudgmentLine(q, row) {
+    const selected = (q.options || []).find((o) => o.id === row.selectedOptionId);
+    const label = selected?.label || row.selectedOptionId || '';
+    const others = (q.options || []).filter((o) => o.id !== row.selectedOptionId).map((o) => o.label);
+    const who = [q.speaker, q.speakerRole, q.time].filter(Boolean).join('｜');
+    let contrast = '这一选择体现了你在该题里优先关注的判断线索。';
+    if (others.length === 1) {
+      contrast = '相比「' + clipText(others[0], 40) + '」等方向，你更先把注意力放在当前选项所代表的路径上。';
+    } else if (others.length >= 2) {
+      contrast =
+        '相比「' + clipText(others[0], 40) + '」「' + clipText(others[1], 40) + '」等备选，你更先把注意力放在当前选项所代表的路径上。';
+    }
+    const tag = q.dimension ? '【' + q.dimension + '】' : '';
+    const whoPrefix = who ? who : '题目情境';
+    return (
+      tag + whoPrefix +
+      '在「' + clipText(q.message, 72) + '」的情境里，面对「' + clipText(q.prompt, 72) + '」，你选择了「' + clipText(label, 56) + '」。' +
+      contrast
+    );
+  }
+
+  async function buildLocalJudgmentBasis() {
+    const bank = await loadMicrotaskBank();
+    const backendId = API_JOB_TO_BACKEND[state.currentJobId] || state.currentJobId;
+    const questions = bank.jobs?.[backendId]?.sets?.[state.microtaskSetId]?.questions || [];
+    if (!questions.length || !state.localMicrotaskAnswers.length) return [];
+    return state.localMicrotaskAnswers
+      .map((row, i) => {
+        const q = questions[i] || questions[row.step - 1];
+        return q ? formatLocalJudgmentLine(q, row) : null;
+      })
+      .filter(Boolean);
+  }
+
+  async function buildMicrotaskChoiceSignalsForReport() {
+    const bank = await loadMicrotaskBank();
+    const backendId = API_JOB_TO_BACKEND[state.currentJobId] || state.currentJobId;
+    const questions = bank.jobs?.[backendId]?.sets?.[state.microtaskSetId]?.questions || [];
+    if (!questions.length || !state.localMicrotaskAnswers.length) return [];
+    return state.localMicrotaskAnswers.map((row, i) => {
+      const q = questions[i] || questions[row.step - 1];
+      if (!q) return null;
+      const selected = (q.options || []).find((o) => o.id === row.selectedOptionId);
+      const others = (q.options || []).filter((o) => o.id !== row.selectedOptionId).map((o) => o.label);
+      return {
+        step: row.step || i + 1,
+        dimension: q.dimension || (state.microtaskRadar?.labels?.[i] || state.microtaskRadar?.labels?.[row.step - 1]) || '',
+        time: q.time,
+        speaker: q.speaker,
+        speakerRole: q.speakerRole,
+        scenario: q.message,
+        prompt: q.prompt,
+        selectedOption: selected?.label || row.selectedOptionId,
+        otherOptions: others,
+      };
+    }).filter(Boolean);
+  }
+
+  function patchJudgmentBasis(items) {
+    const basis = document.getElementById('figmaReportBasis');
+    if (!basis || !items || !items.length) return;
+    basis.innerHTML = items
+      .map((line) => sanitizeJudgmentLine(line))
+      .filter((line) => line.length > 0)
+      .map((line) => '<li>' + esc(line) + '</li>')
+      .join('');
+  }
+
+  function formatMicrotaskMeta(stepContent) {
+    const parts = [stepContent.speaker];
+    if (stepContent.speakerRole) parts.push(stepContent.speakerRole);
+    if (stepContent.time) parts.push(stepContent.time);
+    return parts.join('｜');
+  }
+
+  function renderMicrotaskStep(stepContent, status) {
+    const step = stepContent.step || 1;
+    const total = stepContent.totalSteps || 6;
+    const pct = Math.min(100, Math.round((step / total) * 100));
+    state.microtaskStep = step;
+
+    const subtitle = document.getElementById('microtaskSubtitle');
+    if (subtitle) subtitle.textContent = '任务 ' + step + ' / ' + total + ' · 情境选择题';
+
+    const progress = document.getElementById('microtaskProgress');
+    const progressBar = document.getElementById('microtaskProgressBar');
+    if (progress && progress.firstChild) progress.firstChild.textContent = pct + '%';
+    if (progressBar) progressBar.style.width = pct + '%';
+
+    const meta = document.getElementById('microtaskMeta');
+    if (meta) meta.textContent = formatMicrotaskMeta(stepContent);
+
+    const message = document.getElementById('microtaskMessage');
+    if (message) message.textContent = stepContent.message || '';
+
+    const prompt = document.getElementById('microtaskPrompt');
+    if (prompt) prompt.textContent = stepContent.prompt || '';
+
+    const optionsHost = document.getElementById('microtaskOptions');
+    if (optionsHost) {
+      optionsHost.innerHTML = (stepContent.options || [])
+        .map(
+          (o) =>
+            '<button class="option" type="button" data-microtask-option="' +
+            esc(o.id) +
+            '">' +
+            esc(o.label) +
+            '</button>'
+        )
+        .join('');
+    }
+
+    state.microtaskSelectedOption = null;
+    const nextBtn = document.getElementById('microtaskNextBtn');
+    if (nextBtn) {
+      nextBtn.disabled = true;
+      if (status === 'completed') {
+        nextBtn.textContent = '进入情景模拟';
+      } else {
+        nextBtn.textContent = step >= total ? '完成微任务' : '下一题';
+      }
+    }
+  }
+
+  async function loadMicrotaskBank() {
+    if (state.microtaskBank) return state.microtaskBank;
+    const res = await fetch('data/microtask-bank.json');
+    if (!res.ok) throw new Error('本地微任务题库加载失败');
+    state.microtaskBank = await res.json();
+    return state.microtaskBank;
+  }
+
+  async function renderMicrotaskFromLocal(jobId, stepNum) {
+    const bank = await loadMicrotaskBank();
+    const backendId = API_JOB_TO_BACKEND[jobId] || jobId;
+    const questions = bank.jobs?.[backendId]?.sets?.[state.microtaskSetId]?.questions || [];
+    const q = questions[stepNum - 1];
+    if (!q) return;
+    renderMicrotaskStep(
+      {
+        step: stepNum,
+        totalSteps: questions.length,
+        time: q.time,
+        speaker: q.speaker,
+        speakerRole: q.speakerRole,
+        message: q.message,
+        prompt: q.prompt,
+        options: q.options,
+      },
+      stepNum >= questions.length ? 'completed' : 'in_progress'
+    );
+  }
+
+  async function finishMicrotasks() {
+    if (!state.completedJobs.includes(state.currentJobId)) {
+      state.completedJobs.push(state.currentJobId);
+      renderGrowth();
+    }
+    await startSceneFlow();
+  }
+
+  async function submitMicrotaskStep() {
+    if (!state.microtaskSelectedOption && state.microtaskStep < 6) return;
+
+    const answer = { selectedOptionId: state.microtaskSelectedOption };
+
+    if (!state.useMock && state.taskSessionId) {
+      try {
+        const res = await api('/tasks/' + state.taskSessionId + '/step', {
+          method: 'POST',
+          headers: apiHeaders(true),
+          body: JSON.stringify({ answer, events: [] }),
+        });
+        if (res.taskRadar) state.microtaskRadar = res.taskRadar;
+        state.localMicrotaskAnswers.push({
+          step: state.microtaskStep,
+          selectedOptionId: state.microtaskSelectedOption,
+        });
+        if (res.status === 'completed') {
+          if (!state.microtaskRadar && state.taskSessionId) {
+            try {
+              state.microtaskRadar = await api('/tasks/' + state.taskSessionId + '/radar', { headers: apiHeaders() });
+            } catch (e) {
+              console.warn('雷达数据获取失败', e);
+            }
+          }
+          await finishMicrotasks();
+          return;
+        }
+        renderMicrotaskStep(res.stepContent, res.status);
+        return;
+      } catch (err) {
+        console.warn('微任务提交失败，使用本地推进', err);
+      }
+    }
+
+    state.localMicrotaskAnswers.push({
+      step: state.microtaskStep,
+      selectedOptionId: state.microtaskSelectedOption,
+    });
+
+    const bank = await loadMicrotaskBank();
+    const backendId = API_JOB_TO_BACKEND[state.currentJobId] || state.currentJobId;
+    const total = bank.jobs?.[backendId]?.sets?.[state.microtaskSetId]?.questions?.length || 6;
+    if (state.microtaskStep >= total) {
+      try {
+        await loadMicrotaskScores();
+        state.microtaskRadar = buildLocalRadar();
+      } catch (err) {
+        console.warn('本地雷达计算失败', err);
+      }
+      await finishMicrotasks();
+      return;
+    }
+    await renderMicrotaskFromLocal(state.currentJobId, state.microtaskStep + 1);
+  }
+
   function updateTaskTitles(jobId) {
     const job = getJob(jobId);
     if (!job) return;
@@ -459,6 +889,29 @@
 
   function patchReport(report) {
     if (!report) return;
+    const taskRadar = report.taskRadar || state.microtaskRadar;
+    if (taskRadar) {
+      state.microtaskRadar = taskRadar;
+      renderReportRadar(taskRadar);
+    }
+
+    if (report.judgmentBasis && report.judgmentBasis.length) {
+      patchJudgmentBasis(report.judgmentBasis);
+    } else {
+      buildLocalJudgmentBasis().then((localBasis) => {
+        if (localBasis.length) patchJudgmentBasis(localBasis);
+        else {
+          const basis = document.getElementById('figmaReportBasis');
+          if (basis) basis.innerHTML = '<li>暂无判断依据，请完成微任务后重新生成报告。</li>';
+        }
+      });
+    }
+    if (report.learningAdvice && report.learningAdvice.length) {
+      patchLearningAdvice(report.learningAdvice);
+    } else if (taskRadar) {
+      patchAdviceFromRadar(taskRadar);
+    }
+
     const summary = document.getElementById('reportSummary');
     if (summary && report.comparisonSummary) summary.textContent = report.comparisonSummary;
     const figmaSummary = document.getElementById('figmaReportSummary');
@@ -486,14 +939,19 @@
               <div class="figma-report-return"><button class="figma-back" data-go="growth" type="button" aria-label="返回">‹</button><span>▮ 你的职业体验报告</span></div>
               <p class="figma-eyebrow">你的体验职业是：</p>
               <h1 id="figmaJobName">AI产品经理</h1>
-              <span class="figma-potential">适配潜力：<b>高</b></span>
-              <p id="figmaReportSummary">你在用户理解和问题拆解方面表现较好。较适合从产品视角进入 AI 行业，但在优先级判断上仍可进一步加强。</p>
+              <p class="figma-hero-lead" id="figmaReportHeadline">你在本轮微任务中完成了 6 道情境判断题。</p>
+              <p id="figmaReportSummary">本轮微任务与情景选择已记录，以下仅供继续探索参考。</p>
             </div>
             <img class="figma-hero-art" src="assets/report/hero-workspace.png" alt="AI 产品经理工作场景插画" />
           </section>
           <section class="figma-evidence-panel">
-            <h2>🌳 你的岗位能力对照：</h2>
-            <div class="figma-evidence-copy"><h3>AI判断依据</h3><ul id="figmaReportBasis"><li>你在排序题中优先选择了解决高频核心问题。</li><li>你能从访谈记录中提取关键用户痛点。</li><li>你的开放回答体现出一定的产品思路，但缺少更明确的优先级标准。</li></ul><p id="figmaReportNotice" class="figma-notice"></p></div>
+            <div class="figma-evidence-left">
+              <h2>🌳 你的岗位能力对照：</h2>
+              <div class="figma-radar-wrap">
+                <svg id="reportRadarSvg" viewBox="0 0 370 335" role="img" aria-label="岗位能力雷达图"></svg>
+              </div>
+            </div>
+            <div class="figma-evidence-copy"><h3>AI判断依据</h3><ul id="figmaReportBasis"><li class="figma-basis-pending">正在结合你的答题生成判断依据…</li></ul><p id="figmaReportNotice" class="figma-notice"></p></div>
           </section>
           <section class="figma-advice">
             <h2>💡 给你的「学习建议」💡</h2>
@@ -579,18 +1037,36 @@
     const job = getJob(jobId);
     if (!job) return;
     state.currentJobId = jobId;
+    state.microtaskStep = 1;
+    state.microtaskSelectedOption = null;
+    state.microtaskSetId = pickMicrotaskSetId();
+    state.localMicrotaskAnswers = [];
+    state.microtaskRadar = null;
     updateTaskTitles(jobId);
 
+    let task = null;
     if (!state.useMock && state.sessionId) {
       try {
-        const task = await api('/tasks', {
+        task = await api('/tasks', {
           method: 'POST',
           headers: apiHeaders(true),
           body: JSON.stringify({ jobId, scaffoldType: 'career_changer' }),
         });
         state.taskSessionId = task.taskSessionId;
+        if (task.setId) state.microtaskSetId = task.setId;
       } catch (err) {
-        console.warn('创建任务会话失败，继续演示流程', err);
+        console.warn('创建任务会话失败，使用本地题库', err);
+        state.taskSessionId = null;
+      }
+    }
+
+    if (task?.stepContent) {
+      renderMicrotaskStep(task.stepContent, task.status);
+    } else {
+      try {
+        await renderMicrotaskFromLocal(jobId, 1);
+      } catch (err) {
+        console.warn('本地微任务题库加载失败', err);
       }
     }
     go('choice');
@@ -836,38 +1312,31 @@
     go('sceneSim');
   }
 
-  async function submitTaskAndFinish() {
-    if (!state.useMock && state.taskSessionId) {
-      try {
-        const answer = { text: document.getElementById('openAnswer').value.trim(), demo: true };
-        await api('/tasks/' + state.taskSessionId + '/step', {
-          method: 'POST',
-          headers: apiHeaders(true),
-          body: JSON.stringify({ answer, events: [] }),
-        });
-      } catch (err) {
-        console.warn('任务提交失败', err);
-      }
-    }
-    if (!state.completedJobs.includes(state.currentJobId)) {
-      state.completedJobs.push(state.currentJobId);
-      renderGrowth();
-    }
-    await startSceneFlow();
-  }
-
   async function loadReport() {
     updateTaskTitles(state.currentJobId);
-    // The report screen should always open immediately. Remote report data is
-    // optional enhancement and must never block the local experience flow.
     go('report');
+    if (state.microtaskRadar) {
+      renderReportRadar(state.microtaskRadar);
+    }
     if (!state.useMock && state.sessionId) {
       try {
-        const report = await api('/reports/generate', { method: 'POST', headers: apiHeaders() });
+        const q = '?jobId=' + encodeURIComponent(state.currentJobId);
+        const signals = await buildMicrotaskChoiceSignalsForReport();
+        const payload = signals.length
+          ? { microtaskChoiceSignals: signals, setId: state.microtaskSetId }
+          : null;
+        const report = await api('/reports/generate' + q, {
+          method: 'POST',
+          headers: apiHeaders(payload != null),
+          body: payload ? JSON.stringify(payload) : undefined,
+        });
         patchReport(report);
       } catch (err) {
         console.warn('报告接口失败', err);
+        if (state.microtaskRadar) patchReport({ taskRadar: state.microtaskRadar });
       }
+    } else if (state.microtaskRadar) {
+      patchReport({ taskRadar: state.microtaskRadar, comparisonSummary: '', boundaryNotice: '' });
     }
   }
 
@@ -913,6 +1382,15 @@
       const sceneContinue = e.target.closest('[data-action="scene-continue"]');
       if (sceneContinue) submitSceneStep();
 
+      const microOption = e.target.closest('[data-microtask-option]');
+      if (microOption) {
+        state.microtaskSelectedOption = microOption.dataset.microtaskOption;
+        document.querySelectorAll('#microtaskOptions .option').forEach((x) => x.classList.remove('selected'));
+        microOption.classList.add('selected');
+        const nextBtn = document.getElementById('microtaskNextBtn');
+        if (nextBtn) nextBtn.disabled = false;
+      }
+
       const drawerGo = e.target.closest('#drawer [data-go]');
       if (drawerGo) {
         document.getElementById('drawer').classList.remove('show');
@@ -929,88 +1407,10 @@
       c.addEventListener('click', () => c.classList.toggle('selected'));
     });
 
-    document.querySelectorAll('.single-select .option').forEach((o) => {
-      o.addEventListener('click', () => {
-        o.parentElement.querySelectorAll('.option').forEach((x) => x.classList.remove('selected'));
-        o.classList.add('selected');
-      });
-    });
-
-    const rankingList = document.getElementById('rankingList');
-    let draggedItem = null;
-    rankingList.querySelectorAll('.sort-item').forEach((item) => {
-      item.addEventListener('dragstart', () => {
-        draggedItem = item;
-        requestAnimationFrame(() => item.classList.add('dragging'));
-      });
-      item.addEventListener('dragend', () => {
-        item.classList.remove('dragging');
-        rankingList.querySelectorAll('.sort-item').forEach((x) => x.classList.remove('drag-over'));
-        draggedItem = null;
-      });
-      item.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        if (item !== draggedItem) item.classList.add('drag-over');
-      });
-      item.addEventListener('dragleave', () => item.classList.remove('drag-over'));
-      item.addEventListener('drop', (e) => {
-        e.preventDefault();
-        if (!draggedItem || item === draggedItem) return;
-        const before = e.clientY < item.getBoundingClientRect().top + item.offsetHeight / 2;
-        rankingList.insertBefore(draggedItem, before ? item : item.nextSibling);
-        item.classList.remove('drag-over');
-      });
-    });
-
-    const matchingBoard = document.getElementById('matchingBoard');
-    const matchLines = document.getElementById('matchLines');
-    let selectedSource = null;
-    const connections = new Map();
-    const drawConnections = () => {
-      const boardRect = matchingBoard.getBoundingClientRect();
-      matchLines.replaceChildren();
-      connections.forEach((target, source) => {
-        const a = source.getBoundingClientRect();
-        const b = target.getBoundingClientRect();
-        const x1 = a.right - boardRect.left;
-        const y1 = a.top + a.height / 2 - boardRect.top - 36;
-        const x2 = b.left - boardRect.left;
-        const y2 = b.top + b.height / 2 - boardRect.top - 36;
-        const ns = 'http://www.w3.org/2000/svg';
-        const line = document.createElementNS(ns, 'line');
-        const c1 = document.createElementNS(ns, 'circle');
-        const c2 = document.createElementNS(ns, 'circle');
-        line.setAttribute('x1', x1);
-        line.setAttribute('y1', y1);
-        line.setAttribute('x2', x2);
-        line.setAttribute('y2', y2);
-        c1.setAttribute('cx', x1);
-        c1.setAttribute('cy', y1);
-        c1.setAttribute('r', 4);
-        c2.setAttribute('cx', x2);
-        c2.setAttribute('cy', y2);
-        c2.setAttribute('r', 4);
-        matchLines.append(line, c1, c2);
-      });
-    };
-    document.querySelectorAll('.match-item.source').forEach((source) => {
-      source.addEventListener('click', () => {
-        document.querySelectorAll('.match-item.source').forEach((x) => x.classList.remove('selected'));
-        selectedSource = source;
-        source.classList.add('selected');
-      });
-    });
-    document.querySelectorAll('.match-item.target').forEach((target) => {
-      target.addEventListener('click', () => {
-        if (!selectedSource) return;
-        connections.set(selectedSource, target);
-        selectedSource.classList.remove('selected');
-        selectedSource.classList.add('connected');
-        selectedSource = null;
-        drawConnections();
-      });
-    });
-    window.addEventListener('resize', drawConnections);
+    const microtaskNextBtn = document.getElementById('microtaskNextBtn');
+    if (microtaskNextBtn) {
+      microtaskNextBtn.addEventListener('click', submitMicrotaskStep);
+    }
 
     const drawer = document.getElementById('drawer');
     const shade = document.getElementById('drawerShade');
@@ -1083,7 +1483,6 @@
       go('recommend');
     });
 
-    document.getElementById('submitTaskBtn').addEventListener('click', submitTaskAndFinish);
     document.getElementById('viewReportBtn').addEventListener('click', loadReport);
   }
 

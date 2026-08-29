@@ -1,0 +1,127 @@
+{
+  "PRODUCT_S1": {
+    "sceneId": "PRODUCT_S1",
+    "roleId": "ai_pm",
+    "sceneType": "meeting",
+    "title": "发布评审",
+    "time": "15:10",
+    "context": "Nova V3 今天 16:00 原计划发布。长文档是这次更新的重要卖点，但昨晚测试里出现了几条高风险问题。如果直接缩掉长文档，版本还能上线，但用户对这次更新的感知会弱很多。",
+    "messages": [
+      { "speaker": "Nina｜运营", "text": "48小时后的活动就是围绕长文档做的，现在缩掉，宣传方案基本都得改。" },
+      { "speaker": "Kai｜开发", "text": "今天可以发，但长文档要么限制范围，要么接受更高的稳定性风险。" },
+      { "speaker": "Mia｜项目负责人", "text": "你负责这个版本。今天怎么定？" }
+    ],
+    "question": "你负责这个版本。今天怎么定？",
+    "options": [
+      {
+        "optionId": "PRODUCT_S1_A",
+        "text": "按时发，但先收窄长文档范围。核心能力保留，风险高的部分暂时不开放。"
+      },
+      {
+        "optionId": "PRODUCT_S1_B",
+        "text": "我会推迟发布。长文档是这版最重要的价值，砍到用户感受不到升级，就没必要为了守时间硬发。"
+      }
+    ],
+    "customPrompt": "我会这样处理："
+  },
+  "UI_S1": {
+    "sceneId": "UI_S1",
+    "roleId": "ai_ux",
+    "sceneType": "meeting",
+    "title": "发布评审",
+    "time": "15:10",
+    "context": "为了降低长文档风险，开发提出：超过一定长度的文档暂时不支持。目前最快的处理方式，是用户上传完成后再告诉他「文档过长，请重新上传」。",
+    "messages": [
+      { "speaker": "Kai｜开发", "text": "这样改动最小，今天肯定来得及。" },
+      { "speaker": "Nina｜运营", "text": "活动已经开始预热了，最好别为了一个提示流程影响发布。" },
+      { "speaker": "Mia｜项目负责人", "text": "设计这边，你怎么处理？" }
+    ],
+    "question": "设计这边，你怎么处理？",
+    "options": [
+      {
+        "optionId": "UI_S1_A",
+        "text": "我不能接受上传完才告诉用户失败。要限制长度，就应该在用户上传前说清楚。"
+      },
+      {
+        "optionId": "UI_S1_B",
+        "text": "今天先用现有方案上线，但我会把失败提示和返回操作做好，至少别让用户卡在这里。"
+      }
+    ],
+    "customPrompt": "我会这样处理："
+  },
+  "OPS_S1": {
+    "sceneId": "OPS_S1",
+    "roleId": "ai_operator",
+    "sceneType": "meeting",
+    "title": "发布评审",
+    "time": "15:10",
+    "context": "48小时后的推广活动已经锁定资源。但长文档目前只能小范围开放，如果按现在的限制上线，这次活动能覆盖的目标用户会明显减少。",
+    "messages": [
+      { "speaker": "Kai｜开发", "text": "第一批最好只开给一小部分用户，先看稳定性。" },
+      { "speaker": "Mia｜评测", "text": "还有几类长文档没测够，我也不建议现在直接扩大。" },
+      { "speaker": "Nina｜运营负责人", "text": "如果这轮活动由你负责，你准备怎么跑？" }
+    ],
+    "question": "如果这轮活动由你负责，你准备怎么跑？",
+    "options": [
+      {
+        "optionId": "OPS_S1_A",
+        "text": "活动继续，但第一波只推给需求最明确的一批用户，用真实反馈决定后面要不要扩大。"
+      },
+      {
+        "optionId": "OPS_S1_B",
+        "text": "我会重新调整活动重点。既然现在覆盖不了足够多用户，就先不把长文档当这次活动的主卖点。"
+      }
+    ],
+    "customPrompt": "我会这样处理："
+  },
+  "DATA_S1": {
+    "sceneId": "DATA_S1",
+    "roleId": "ai_researcher",
+    "sceneType": "meeting",
+    "title": "发布评审",
+    "time": "15:10",
+    "context": "Nova V3 的总体评测已经达到上线标准。但昨晚新增的长文档测试里，40 个 case 出现了 3 个高风险问题，其中一个漏掉了合同里的限制条件。",
+    "messages": [
+      { "speaker": "Nina｜运营", "text": "总体分已经过线了，48小时后的活动也不能一直等。" },
+      { "speaker": "Kai｜开发", "text": "如果问题只集中在少数文档类型，我们可以先限制那部分。" },
+      { "speaker": "Mia｜项目负责人", "text": "评测这边，你建议今天怎么定？" }
+    ],
+    "question": "评测这边，你建议今天怎么定？",
+    "options": [
+      {
+        "optionId": "DATA_S1_A",
+        "text": "先暂停高风险文档类型，把这批 case 补测清楚；其他已经验证过的范围可以继续发。"
+      },
+      {
+        "optionId": "DATA_S1_B",
+        "text": "按现有标准整体已经达标，可以上线；但这 3 个问题要单独记录，并马上补进专项评测。"
+      }
+    ],
+    "customPrompt": "我会这样处理："
+  },
+  "DEV_S1": {
+    "sceneId": "DEV_S1",
+    "roleId": "ai_consultant",
+    "sceneType": "meeting",
+    "title": "发布评审",
+    "time": "15:10",
+    "context": "团队希望给长文档总结增加更完整的原文引用。测试下来，完整引用会让响应更慢，而发布前再改生成逻辑，也会增加新的稳定性风险。",
+    "messages": [
+      { "speaker": "Yuki｜UI", "text": "如果没有来源，用户还是会反复回原文确认。" },
+      { "speaker": "Nina｜运营", "text": "活动已经定了，今天最好别再砍核心功能。" },
+      { "speaker": "Mia｜项目负责人", "text": "技术上你建议今天做到什么程度？" }
+    ],
+    "question": "技术上你建议今天做到什么程度？",
+    "options": [
+      {
+        "optionId": "DEV_S1_A",
+        "text": "先做轻量版，只给关键结论加来源。把改动控制在最小范围，先保证今天能稳定交付。"
+      },
+      {
+        "optionId": "DEV_S1_B",
+        "text": "今天不再改这部分。当前版本已经稳定，先上线，再根据真实使用情况做完整方案。"
+      }
+    ],
+    "customPrompt": "我会这样处理："
+  }
+}

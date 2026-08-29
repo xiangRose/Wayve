@@ -27,9 +27,11 @@ public class ReportController {
     @PostMapping("/generate")
     public Map<String, Object> generate(
             @RequestHeader(value = AppConstants.HEADER_SESSION_ID, required = false) String sessionId,
-            @RequestHeader(value = AppConstants.HEADER_DEMO_MODE, required = false) String demoMode) {
+            @RequestHeader(value = AppConstants.HEADER_DEMO_MODE, required = false) String demoMode,
+            @org.springframework.web.bind.annotation.RequestParam(required = false) String jobId,
+            @org.springframework.web.bind.annotation.RequestBody(required = false) ReportGenerateRequest body) {
         boolean isDemo = "true".equalsIgnoreCase(demoMode) || demoSessionId.equals(sessionId);
-        return reportService.generate(sessionId, isDemo);
+        return reportService.generate(sessionId, isDemo, jobId, body);
     }
 
     @GetMapping("/{reportId}")

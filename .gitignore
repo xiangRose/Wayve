@@ -8,6 +8,20 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+# Cursor IDE
+.cursor/
+
+# Accidental duplicate project tree (real code is under src/)
+JobSearch/
+
+# Local scratch / export
+tmp-*.txt
+
+# Product docs & Office files (keep locally, not in git)
+*.docx
+/*PRD*.md
+/WAYVE*
+
 ### STS ###
 .apt_generated
 .classpath

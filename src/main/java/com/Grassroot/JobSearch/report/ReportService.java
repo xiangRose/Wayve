@@ -1,11 +1,14 @@
 package com.Grassroot.JobSearch.report;
 
+import com.Grassroot.JobSearch.common.JobIdMapper;
 import com.Grassroot.JobSearch.ai.AiOrchestrator;
 import com.Grassroot.JobSearch.ai.DemoDataService;
+import com.Grassroot.JobSearch.ai.JudgmentBasisComposer;
 import com.Grassroot.JobSearch.ai.ReportContextBuilder;
 import com.Grassroot.JobSearch.common.ApiException;
 import com.Grassroot.JobSearch.session.SessionService;
 import com.Grassroot.JobSearch.session.UserSession;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,22 +27,26 @@ public class ReportService {
     private final SessionService sessionService;
     private final ReportContextBuilder reportContextBuilder;
     private final AiOrchestrator aiOrchestrator;
+    private final JudgmentBasisComposer judgmentBasisComposer;
 
     public ReportService(
             ReportRepository reportRepository,
             DemoDataService demoDataService,
             SessionService sessionService,
             ReportContextBuilder reportContextBuilder,
-            AiOrchestrator aiOrchestrator) {
+            AiOrchestrator aiOrchestrator,
+            JudgmentBasisComposer judgmentBasisComposer) {
         this.reportRepository = reportRepository;
         this.demoDataService = demoDataService;
         this.sessionService = sessionService;
         this.reportContextBuilder = reportContextBuilder;
         this.aiOrchestrator = aiOrchestrator;
+        this.judgmentBasisComposer = judgmentBasisComposer;
     }
 
     @Transactional
-    public Map<String, Object> generate(String sessionId, boolean demoMode) {
+    public Map<String, Object> generate(
+            String sessionId, boolean demoMode, String frontendJobId, ReportGenerateRequest body) {
         if (demoMode) {
             return demoResponse(sessionId);
         }
@@ -48,7 +55,20 @@ public class ReportService {
         }
         UserSession session = sessionService.find(sessionId);
         Map<String, Object> ctx = reportContextBuilder.build(sessionId, session);
+        String backendJobId = null;
+        if (frontendJobId != null && !frontendJobId.isBlank()) {
+            backendJobId = JobIdMapper.toBackend(frontendJobId);
+            ctx.put("selected_target_job", backendJobId);
+        }
+        List<Map<String, Object>> choiceSignals = mergeChoiceSignals(
+                sessionId, backendJobId, body == null ? null : body.microtaskChoiceSignals());
+        ctx.put("microtask_choice_signals", choiceSignals);
+
+        Map<String, Object> taskRadar = reportContextBuilder.buildTaskRadar(sessionId, stringVal(ctx.get("selected_target_job")));
         Map<String, Object> aiResult = aiOrchestrator.generateReport(ctx);
+
+        List<String> aiBasis = aiOrchestrator.generateJudgmentBasis(ctx);
+        List<String> composedBasis = judgmentBasisComposer.compose(sessionId, stringVal(ctx.get("selected_target_job")));
 
         ExplorationReport report = new ExplorationReport();
         report.setSessionId(sessionId);
@@ -56,11 +76,13 @@ public class ReportService {
         report.setTaskEvidenceSummary(reportContextBuilder.buildTaskEvidenceByJob(sessionId));
         report.setInterestSignals(castList(ctx.get("interest_signals")));
         report.setComparisonSummary(stringVal(aiResult.get("comparisonSummary")));
+        report.setJudgmentBasis(sanitizeJudgmentBasis(resolveJudgmentBasis(aiBasis, composedBasis)));
+        report.setLearningAdvice(castList(aiResult.get("learningAdvice")));
         report.setGapAnalysis(castMap(aiResult.get("gapAnalysis")));
         report.setActionTasks(castList(aiResult.get("actionTasks")));
         report.setBoundaryNotice(stringVal(aiResult.getOrDefault("boundaryNotice", DEFAULT_BOUNDARY)));
         report.setSelectedTargetJob(stringVal(ctx.get("selected_target_job")));
-        return toMap(reportRepository.save(report));
+        return toMap(reportRepository.save(report), taskRadar);
     }
 
     public Map<String, Object> get(String reportId) {
@@ -95,10 +117,13 @@ public class ReportService {
         m.put("actionTasks", demo.get("actionTasks"));
         m.put("boundaryNotice", demo.get("boundaryNotice"));
         m.put("selectedTargetJob", demoDataService.selectedTargetJob());
+        m.put("taskRadar", demo.get("taskRadar"));
+        m.put("judgmentBasis", castStringList(demo.get("judgmentBasis")));
+        m.put("learningAdvice", castList(demo.get("learningAdvice")));
         return m;
     }
 
-    private Map<String, Object> toMap(ExplorationReport r) {
+    private Map<String, Object> toMap(ExplorationReport r, Map<String, Object> taskRadar) {
         Map<String, Object> m = new HashMap<>();
         m.put("reportId", r.getId());
         m.put("sessionId", r.getSessionId());
@@ -110,7 +135,14 @@ public class ReportService {
         m.put("actionTasks", r.getActionTasks());
         m.put("boundaryNotice", r.getBoundaryNotice());
         m.put("selectedTargetJob", r.getSelectedTargetJob());
+        m.put("judgmentBasis", r.getJudgmentBasis() == null ? List.of() : r.getJudgmentBasis());
+        m.put("learningAdvice", r.getLearningAdvice() == null ? List.of() : r.getLearningAdvice());
+        m.put("taskRadar", taskRadar == null ? Map.of() : taskRadar);
         return m;
+    }
+
+    private Map<String, Object> toMap(ExplorationReport r) {
+        return toMap(r, Map.of());
     }
 
     private static String stringVal(Object v) {
@@ -120,6 +152,80 @@ public class ReportService {
     @SuppressWarnings("unchecked")
     private Map<String, Object> castMap(Object v) {
         return v instanceof Map<?, ?> m ? (Map<String, Object>) m : Map.of();
+    }
+
+    private List<Map<String, Object>> mergeChoiceSignals(
+            String sessionId,
+            String backendJobId,
+            List<Map<String, Object>> clientSignals) {
+        List<Map<String, Object>> fromDb = backendJobId == null || backendJobId.isBlank()
+                ? List.of()
+                : reportContextBuilder.buildMicrotaskChoiceSignals(sessionId, backendJobId);
+        if (!fromDb.isEmpty()) {
+            return fromDb;
+        }
+        return clientSignals == null ? List.of() : clientSignals;
+    }
+
+    private List<String> sanitizeJudgmentBasis(List<String> basis) {
+        if (basis == null || basis.isEmpty()) {
+            return List.of();
+        }
+        List<String> out = new ArrayList<>();
+        for (String line : basis) {
+            String cleaned = sanitizeJudgmentLine(line);
+            if (!cleaned.isBlank()) {
+                out.add(cleaned);
+            }
+        }
+        return out;
+    }
+
+    private String sanitizeJudgmentLine(String line) {
+        if (line == null) {
+            return "";
+        }
+        String t = line.trim();
+        t = t.replaceFirst("^【undefined】", "");
+        t = t.replaceFirst("^undefined[｜|]?", "");
+        t = t.replace("【undefined】", "");
+        return t.trim();
+    }
+
+    private List<String> resolveJudgmentBasis(List<String> aiBasis, List<String> composedBasis) {
+        if (isRichBasis(aiBasis)) {
+            return aiBasis;
+        }
+        if (isRichBasis(composedBasis)) {
+            return composedBasis;
+        }
+        return !aiBasis.isEmpty() ? aiBasis : composedBasis;
+    }
+
+    private boolean isRichBasis(List<String> basis) {
+        if (basis == null || basis.size() < 3) {
+            return false;
+        }
+        for (String line : basis) {
+            if (line.contains("已完整记录") || line.contains("只描述行为倾向") || line.length() < 36) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @SuppressWarnings("unchecked")
+    private List<String> castStringList(Object v) {
+        if (v instanceof List<?> list) {
+            List<String> out = new ArrayList<>();
+            for (Object item : list) {
+                if (item != null) {
+                    out.add(String.valueOf(item));
+                }
+            }
+            return out;
+        }
+        return List.of();
     }
 
     @SuppressWarnings("unchecked")

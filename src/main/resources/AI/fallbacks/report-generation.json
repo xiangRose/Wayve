@@ -1,6 +1,32 @@
 {
   "status": "fallback",
-  "comparisonSummary": "本轮任务证据暂时无法生成文字总结，请先查看结构化证据卡。",
+  "comparisonSummary": "本轮微任务与情景模拟已记录。以下依据来自你在题目中的具体选择，仅供继续探索参考。",
+  "judgmentBasis": [
+    "本轮情境题中，你的选择已完整记录，可回看每道题的情境与选项。",
+    "报告文字只描述行为倾向，不对长期能力下结论。"
+  ],
+  "learningAdvice": [
+    {
+      "type": "strength",
+      "title": "继续观察你的判断路径",
+      "description": "回顾本轮每道题，想想你更常先确认哪类信息，再决定下一步。"
+    },
+    {
+      "type": "strength",
+      "title": "记录一次真实取舍",
+      "description": "用工作中的小案例对照本轮选择，看哪些习惯与任务情境一致。"
+    },
+    {
+      "type": "improve",
+      "title": "练习多方对齐",
+      "description": "在资源有限或意见分歧时，尝试用同一份事实清单推动讨论。"
+    },
+    {
+      "type": "improve",
+      "title": "补充验证动作",
+      "description": "对还不确定的方向，设计一个可在一周内完成的小验证，而不是直接定论。"
+    }
+  ],
   "gapAnalysis": {
     "existingEvidence": [],
     "transferableCapabilities": [],

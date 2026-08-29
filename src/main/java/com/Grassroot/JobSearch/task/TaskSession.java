@@ -15,6 +15,7 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -52,6 +53,10 @@ public class TaskSession {
     @Column(name = "completed_at")
     private Instant completedAt;
 
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(name = "task_meta")
+    private Map<String, Object> taskMeta = new HashMap<>();
+
     @PrePersist
     void prePersist() { startedAt = Instant.now(); }
 
@@ -66,6 +71,8 @@ public class TaskSession {
     public void setCurrentStep(int currentStep) { this.currentStep = currentStep; }
     public List<Map<String, Object>> getStepsData() { return stepsData; }
     public void setStepsData(List<Map<String, Object>> stepsData) { this.stepsData = stepsData; }
+    public Map<String, Object> getTaskMeta() { return taskMeta; }
+    public void setTaskMeta(Map<String, Object> taskMeta) { this.taskMeta = taskMeta; }
     public TaskSessionStatus getStatus() { return status; }
     public void setStatus(TaskSessionStatus status) { this.status = status; }
     public Instant getCompletedAt() { return completedAt; }

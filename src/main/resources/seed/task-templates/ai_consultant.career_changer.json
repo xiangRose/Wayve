@@ -1,0 +1,364 @@
+{
+  "jobId": "ai_consultant",
+  "scaffoldType": "career_changer",
+  "title": "下午智能总结能跑，但又慢又贵",
+  "scenario": "下午智能总结能跑，但又慢又贵",
+  "setId": "A",
+  "estimatedMinutes": 7,
+  "steps": [
+    {
+      "stepNumber": 1,
+      "stepTitle": "微任务 1",
+      "stepType": "microtask_choice",
+      "time": "13:40",
+      "speaker": "Kai",
+      "speakerRole": "技术负责人",
+      "message": "总结功能已经能用了，但长文档响应会突然变慢。",
+      "prompt": "你会先看什么？",
+      "dimension": "Debug定位",
+      "options": [
+        {
+          "id": "A",
+          "label": "哪个处理环节耗时最高",
+          "score": 5
+        },
+        {
+          "id": "B",
+          "label": "用户最常上传什么文件",
+          "score": 3
+        },
+        {
+          "id": "C",
+          "label": "总体平均响应时间",
+          "score": 4
+        },
+        {
+          "id": "D",
+          "label": "模型输出质量评分",
+          "score": 2
+        }
+      ],
+      "decision": {
+        "type": "single_choice",
+        "prompt": "你会先看什么？",
+        "options": [
+          {
+            "id": "A",
+            "label": "哪个处理环节耗时最高",
+            "score": 5
+          },
+          {
+            "id": "B",
+            "label": "用户最常上传什么文件",
+            "score": 3
+          },
+          {
+            "id": "C",
+            "label": "总体平均响应时间",
+            "score": 4
+          },
+          {
+            "id": "D",
+            "label": "模型输出质量评分",
+            "score": 2
+          }
+        ]
+      }
+    },
+    {
+      "stepNumber": 2,
+      "stepTitle": "微任务 2",
+      "stepType": "microtask_choice",
+      "time": "14:00",
+      "speaker": "Kai",
+      "speakerRole": "技术负责人",
+      "message": "系统会先找资料，再选相关内容，最后交给AI生成回答。",
+      "prompt": "现在AI经常引用无关资料，你先查哪里？",
+      "dimension": "系统理解",
+      "options": [
+        {
+          "id": "A",
+          "label": "送给AI的内容是不是选错了",
+          "score": 5
+        },
+        {
+          "id": "B",
+          "label": "AI回答是不是写得太长",
+          "score": 4
+        },
+        {
+          "id": "C",
+          "label": "用户的文件是不是上传成功",
+          "score": 3
+        },
+        {
+          "id": "D",
+          "label": "页面有没有把引用显示完整",
+          "score": 2
+        }
+      ],
+      "decision": {
+        "type": "single_choice",
+        "prompt": "现在AI经常引用无关资料，你先查哪里？",
+        "options": [
+          {
+            "id": "A",
+            "label": "送给AI的内容是不是选错了",
+            "score": 5
+          },
+          {
+            "id": "B",
+            "label": "AI回答是不是写得太长",
+            "score": 4
+          },
+          {
+            "id": "C",
+            "label": "用户的文件是不是上传成功",
+            "score": 3
+          },
+          {
+            "id": "D",
+            "label": "页面有没有把引用显示完整",
+            "score": 2
+          }
+        ]
+      }
+    },
+    {
+      "stepNumber": 3,
+      "stepTitle": "微任务 3",
+      "stepType": "microtask_choice",
+      "time": "14:20",
+      "speaker": "Mia",
+      "speakerRole": "产品负责人",
+      "message": "让AI一次读更多内容，答案可能更完整，但也会更慢、更贵。",
+      "prompt": "你怎么处理？",
+      "dimension": "AI技术理解",
+      "options": [
+        {
+          "id": "A",
+          "label": "所有任务都尽量多读内容",
+          "score": 3
+        },
+        {
+          "id": "B",
+          "label": "简单任务少读，复杂任务再增加",
+          "score": 5
+        },
+        {
+          "id": "C",
+          "label": "统一换成更便宜的模型",
+          "score": 4
+        },
+        {
+          "id": "D",
+          "label": "暂时保持现在的设置",
+          "score": 2
+        }
+      ],
+      "decision": {
+        "type": "single_choice",
+        "prompt": "你怎么处理？",
+        "options": [
+          {
+            "id": "A",
+            "label": "所有任务都尽量多读内容",
+            "score": 3
+          },
+          {
+            "id": "B",
+            "label": "简单任务少读，复杂任务再增加",
+            "score": 5
+          },
+          {
+            "id": "C",
+            "label": "统一换成更便宜的模型",
+            "score": 4
+          },
+          {
+            "id": "D",
+            "label": "暂时保持现在的设置",
+            "score": 2
+          }
+        ]
+      }
+    },
+    {
+      "stepNumber": 4,
+      "stepTitle": "微任务 4",
+      "stepType": "microtask_choice",
+      "time": "14:40",
+      "speaker": "Kai",
+      "speakerRole": "技术负责人",
+      "message": "长文档总结经常漏掉重要段落。",
+      "prompt": "你更倾向先怎么解决？",
+      "dimension": "工程方案设计",
+      "options": [
+        {
+          "id": "A",
+          "label": "先优化文档处理和信息筛选流程",
+          "score": 5
+        },
+        {
+          "id": "B",
+          "label": "直接换更强的模型",
+          "score": 4
+        },
+        {
+          "id": "C",
+          "label": "让AI输出得更长",
+          "score": 3
+        },
+        {
+          "id": "D",
+          "label": "把全文一次性交给模型",
+          "score": 2
+        }
+      ],
+      "decision": {
+        "type": "single_choice",
+        "prompt": "你更倾向先怎么解决？",
+        "options": [
+          {
+            "id": "A",
+            "label": "先优化文档处理和信息筛选流程",
+            "score": 5
+          },
+          {
+            "id": "B",
+            "label": "直接换更强的模型",
+            "score": 4
+          },
+          {
+            "id": "C",
+            "label": "让AI输出得更长",
+            "score": 3
+          },
+          {
+            "id": "D",
+            "label": "把全文一次性交给模型",
+            "score": 2
+          }
+        ]
+      }
+    },
+    {
+      "stepNumber": 5,
+      "stepTitle": "微任务 5",
+      "stepType": "microtask_choice",
+      "time": "15:00",
+      "speaker": "Mia",
+      "speakerRole": "产品负责人",
+      "message": "现在效果够好，但每次请求成本偏高，速度也只能勉强达标。",
+      "prompt": "你会优先怎么调？",
+      "dimension": "性能与成本取舍",
+      "options": [
+        {
+          "id": "A",
+          "label": "继续提升质量",
+          "score": 3
+        },
+        {
+          "id": "B",
+          "label": "在满足质量门槛下优先降成本和延迟",
+          "score": 5
+        },
+        {
+          "id": "C",
+          "label": "只先降低成本",
+          "score": 4
+        },
+        {
+          "id": "D",
+          "label": "暂时保持不动",
+          "score": 2
+        }
+      ],
+      "decision": {
+        "type": "single_choice",
+        "prompt": "你会优先怎么调？",
+        "options": [
+          {
+            "id": "A",
+            "label": "继续提升质量",
+            "score": 3
+          },
+          {
+            "id": "B",
+            "label": "在满足质量门槛下优先降成本和延迟",
+            "score": 5
+          },
+          {
+            "id": "C",
+            "label": "只先降低成本",
+            "score": 4
+          },
+          {
+            "id": "D",
+            "label": "暂时保持不动",
+            "score": 2
+          }
+        ]
+      }
+    },
+    {
+      "stepNumber": 6,
+      "stepTitle": "微任务 6",
+      "stepType": "microtask_choice",
+      "time": "15:20",
+      "speaker": "Mia",
+      "speakerRole": "产品负责人",
+      "message": "企业客户突然要求：引用准确率必须达到90%，但今晚要发版。",
+      "prompt": "你会怎么处理？",
+      "dimension": "交付与适应",
+      "options": [
+        {
+          "id": "A",
+          "label": "延期整个版本",
+          "score": 4
+        },
+        {
+          "id": "B",
+          "label": "保留核心功能，先缩小到能满足要求的场景",
+          "score": 5
+        },
+        {
+          "id": "C",
+          "label": "按原计划上线，之后再补",
+          "score": 2
+        },
+        {
+          "id": "D",
+          "label": "先把引用功能隐藏掉",
+          "score": 3
+        }
+      ],
+      "decision": {
+        "type": "single_choice",
+        "prompt": "你会怎么处理？",
+        "options": [
+          {
+            "id": "A",
+            "label": "延期整个版本",
+            "score": 4
+          },
+          {
+            "id": "B",
+            "label": "保留核心功能，先缩小到能满足要求的场景",
+            "score": 5
+          },
+          {
+            "id": "C",
+            "label": "按原计划上线，之后再补",
+            "score": 2
+          },
+          {
+            "id": "D",
+            "label": "先把引用功能隐藏掉",
+            "score": 3
+          }
+        ]
+      }
+    }
+  ]
+}
