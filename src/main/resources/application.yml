@@ -1,5 +1,5 @@
 server:
-  port: 3001
+  port: 3000
 
 spring:
   application:
@@ -28,7 +28,7 @@ app:
   cors-origins: http://localhost:5173,http://127.0.0.1:5173,http://localhost:3001,http://127.0.0.1:3001
   prompts-dir: AI/prompts
   ai:
-    enabled: false
+    enabled: ${AI_ENABLED:false}
     api-key: ${AI_API_KEY:}
     base-url: ${AI_BASE_URL:https://api.openai.com/v1}
     model-pro: ${AI_MODEL_PRO:gpt-4o}

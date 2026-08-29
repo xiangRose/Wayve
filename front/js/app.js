@@ -14,7 +14,163 @@
     currentJobId: 'ai_product',
     taskSessionId: null,
     completedJobs: [],
+    sceneStep: 0,
+    sceneScripts: null,
+    scenePanelPhase: 0,
+    scenePanelMaxPhase: 0,
+    sceneDraft: { selectedOptionId: null, customText: '' },
   };
+
+  const ROLE_DESK_ITEMS = [
+    {
+      src: 'desk-base.png',
+      left: 50,
+      top: 25.77,
+      width: 77.65,
+      height: 108.03,
+      transform: 'translateX(-50%) rotate(0.87deg)',
+      z: 1,
+    },
+    {
+      src: 'item-03.png',
+      left: 51.04,
+      top: 33.88,
+      width: 25.63,
+      height: 40.59,
+      transform: 'rotate(180deg) scaleY(-1)',
+      z: 2,
+    },
+    {
+      src: 'item-06.png',
+      left: 41.18,
+      top: 48.29,
+      width: 10.63,
+      height: 16.83,
+      z: 3,
+    },
+    {
+      src: 'item-02.png',
+      left: 69.79,
+      top: 60.29,
+      width: 8.96,
+      height: 14.2,
+      z: 4,
+    },
+    {
+      src: 'item-04.png',
+      left: 46.94,
+      top: 58.64,
+      width: 14.85,
+      height: 21.99,
+      transform: 'rotate(164.43deg) scaleY(-1)',
+      z: 5,
+    },
+    {
+      src: 'item-07.png',
+      left: 30.9,
+      top: 64.91,
+      width: 19.08,
+      height: 27.55,
+      transform: 'rotate(6.8deg)',
+      z: 6,
+    },
+    {
+      src: 'item-08.png',
+      left: 19.79,
+      top: 45.82,
+      width: 24.07,
+      height: 38.13,
+      transform: 'rotate(-152.44deg)',
+      z: 7,
+    },
+  ];
+
+  const ROLE_EXPLORE_NODES = [
+    {
+      jobId: 'ai_ui_design',
+      prompt: '你想体验UI设计吗？',
+      avatar: 'avatar-ui.png',
+      bubble: 'left',
+      left: 17.15,
+      top: 23.55,
+      bubbleClass: 'roles-explore-bubble--ui',
+    },
+    {
+      jobId: 'ai_product',
+      prompt: '你想体验产品经理吗？',
+      avatar: 'avatar-pm.png',
+      bubble: 'left',
+      left: 37.99,
+      top: 33.88,
+      bubbleClass: 'roles-explore-bubble--pm',
+    },
+    {
+      jobId: 'ai_app_dev',
+      prompt: '你想体验应用开发吗？',
+      avatar: 'avatar-dev.png',
+      bubble: 'left',
+      left: 59.44,
+      top: 22.77,
+      bubbleClass: 'roles-explore-bubble--dev',
+    },
+    {
+      jobId: 'ai_data_eval',
+      prompt: '你想体验AI数据评测吗？',
+      avatar: 'avatar-data.png',
+      bubble: 'right',
+      left: 79.24,
+      top: 37.73,
+      bubbleClass: 'roles-explore-bubble--data',
+    },
+    {
+      jobId: 'ai_ops',
+      prompt: '你想体验AI产品运营吗？',
+      avatar: 'avatar-ops.png',
+      bubble: 'right',
+      left: 7.85,
+      top: 49.61,
+      bubbleClass: 'roles-explore-bubble--ops',
+    },
+  ];
+
+  const SCENE_PANEL_PHASES = [
+    { id: 'context', label: '情境' },
+    { id: 'question', label: '问题' },
+    { id: 'answer', label: '判断' },
+  ];
+  const SCENE_S1_IDS = {
+    ai_product: 'PRODUCT_S1',
+    ai_ui_design: 'UI_S1',
+    ai_ops: 'OPS_S1',
+    ai_data_eval: 'DATA_S1',
+    ai_app_dev: 'DEV_S1',
+  };
+
+  const SCENE_STEPS = [
+    {
+      badge: '项目会议室',
+      theme: 'green',
+      art: 'assets/scenes/scene-meeting.png',
+      scripted: true,
+      sceneIdForJob: (jobId) => SCENE_S1_IDS[jobId],
+    },
+    {
+      badge: '发布现场',
+      theme: 'orange',
+      art: 'assets/scenes/scene-release.png',
+      scripted: false,
+      placeholderTitle: '发布现场',
+      placeholderDesc: '团队正在对齐发布目标、风险与依赖。完整情景剧本筹备中，可先继续体验流程。',
+    },
+    {
+      badge: '客户沟通',
+      theme: 'purple',
+      art: 'assets/scenes/scene-client.png',
+      scripted: false,
+      placeholderTitle: '客户沟通',
+      placeholderDesc: '与客户确认需求要点与交付边界。完整情景剧本筹备中，可先继续体验流程。',
+    },
+  ];
 
   const screens = document.querySelectorAll('.screen');
   const analysisProgress = {};
@@ -107,7 +263,7 @@
     screens.forEach((s) => s.classList.toggle('active', s.id === id));
     const navSection = {
       home: 'home',
-      roles: 'roles', recommend: 'roles', previewNotice: 'roles', profile1: 'roles', profile2: 'roles', profile3: 'roles', analyze1: 'roles', choice: 'roles', ranking: 'roles', category: 'roles', evidence: 'roles', open: 'roles', analyze2: 'roles',
+      roles: 'roles', recommend: 'roles', previewNotice: 'roles', profile1: 'roles', profile2: 'roles', profile3: 'roles', analyze1: 'roles', choice: 'roles', ranking: 'roles', category: 'roles', evidence: 'roles', open: 'roles', sceneSim: 'roles', analyze2: 'roles',
       growth: 'growth', report: 'growth',
     }[id];
     document.querySelectorAll('[data-nav]').forEach((n) => {
@@ -117,6 +273,8 @@
     if (active) active.scrollTop = 0;
     window.scrollTo(0, 0);
     if (id === 'growth') renderGrowth();
+    if (id === 'roles') renderRoles();
+    if (id === 'sceneSim') renderSceneSim();
     if (id === 'analyze1') startAnalysisProgress('profile');
     if (id === 'analyze2') startAnalysisProgress('task');
   }
@@ -156,22 +314,45 @@
     ];
   }
 
+  function renderRolesDeskItem(item) {
+    const parts = [
+      'left:' + item.left + '%',
+      'top:' + item.top + '%',
+      'width:' + item.width + '%',
+    ];
+    if (item.height) parts.push('height:' + item.height + '%');
+    if (item.z) parts.push('z-index:' + item.z);
+    if (item.transform) parts.push('transform:' + item.transform);
+    return (
+      '<img class="roles-explore-desk-item" src="assets/roles/' + item.src + '" alt="" style="' +
+      parts.join(';') + '" />'
+    );
+  }
+
   function renderRoles() {
     const list = document.getElementById('rolesList');
     if (!list) return;
-    list.innerHTML = state.jobs
-      .map((job, i) => {
-        return (
-          '<article class="fan-card">' +
-          '<span class="fan-number">' + String(i + 1).padStart(2, '0') + '</span>' +
-          '<h2>' + esc(job.name) + '</h2>' +
-          '<p>' + esc(job.desc) + '</p>' +
-          '<ul class="fan-list">' + job.highlights.map((t) => '<li>' + esc(t) + '</li>').join('') + '</ul>' +
-          '<button class="btn" type="button" data-action="start-job" data-job-id="' + esc(job.jobId) + '">' +
-          '开始体验 →</button></article>'
-        );
-      })
-      .join('');
+
+    const nodesHtml = ROLE_EXPLORE_NODES.map((node) => {
+      const bubbleSvg = node.bubble === 'right' ? 'bubble-right.svg' : 'bubble-left.svg';
+      return (
+        '<button class="roles-explore-node" type="button" data-action="start-job" data-job-id="' +
+        esc(node.jobId) + '" style="left:' + node.left + '%;top:' + node.top + '%" aria-label="' +
+        esc(node.prompt) + '">' +
+        '<span class="roles-explore-bubble ' + esc(node.bubbleClass) + '">' +
+        '<img class="roles-explore-bubble-bg" src="assets/roles/' + bubbleSvg + '" alt="" />' +
+        '<span class="roles-explore-bubble-text">' + esc(node.prompt) + '</span></span>' +
+        '<span class="roles-explore-avatar"><img src="assets/roles/' + node.avatar + '" alt="" /></span></button>'
+      );
+    }).join('');
+
+    const deskHtml = ROLE_DESK_ITEMS.map(renderRolesDeskItem).join('');
+
+    list.innerHTML =
+      '<div class="roles-explore-floor-wrap" aria-hidden="true">' +
+      '<img class="roles-explore-floor" src="assets/roles/floor.png" alt="" /></div>' +
+      '<div class="roles-explore-desk-stage" aria-hidden="true">' + deskHtml + '</div>' +
+      nodesHtml;
   }
 
   function renderRecommendations() {
@@ -403,6 +584,236 @@
     go('choice');
   }
 
+  async function loadSceneScripts() {
+    if (state.sceneScripts) return state.sceneScripts;
+    const loadLocal = async () => {
+      try {
+        const res = await fetch('data/s1-meeting.json');
+        if (!res.ok) return null;
+        return await res.json();
+      } catch (err) {
+        console.warn('本地情景剧本加载失败', err);
+        return null;
+      }
+    };
+    const sceneId = SCENE_S1_IDS[state.currentJobId];
+    if (!state.useMock && state.sessionId && sceneId) {
+      try {
+        const scene = await api('/scenes/' + sceneId, { headers: apiHeaders() });
+        state.sceneScripts = { [sceneId]: scene };
+        return state.sceneScripts;
+      } catch (err) {
+        console.warn('情景剧本接口失败，回退本地数据', err);
+      }
+    }
+    state.sceneScripts = await loadLocal();
+    return state.sceneScripts;
+  }
+
+  function resetScenePanelState() {
+    state.scenePanelPhase = 0;
+    state.scenePanelMaxPhase = 0;
+    state.sceneDraft = { selectedOptionId: null, customText: '' };
+  }
+
+  function getCurrentSceneScript() {
+    const step = SCENE_STEPS[state.sceneStep];
+    if (!step || !step.scripted) return null;
+    const sceneId = step.sceneIdForJob(state.currentJobId);
+    const scripts = state.sceneScripts || {};
+    return scripts[sceneId] || null;
+  }
+
+  function renderScenePhaseNav() {
+    return SCENE_PANEL_PHASES.map((phase, i) => {
+      const done = i < state.scenePanelPhase;
+      const active = i === state.scenePanelPhase;
+      const clickable = i <= state.scenePanelMaxPhase;
+      return (
+        '<button class="scene-sim-phase-tab' + (active ? ' active' : '') + (done ? ' done' : '') +
+        (clickable ? '' : ' locked') + '" type="button" data-scene-phase="' + i + '"' +
+        (clickable ? '' : ' disabled') + '>' +
+        '<span class="scene-sim-phase-num">' + (i + 1) + '</span>' + esc(phase.label) + '</button>'
+      );
+    }).join('');
+  }
+
+  function renderScenePanelPhase(scene, step) {
+    const phase = state.scenePanelPhase;
+    const draft = state.sceneDraft;
+    const head =
+      '<div class="scene-sim-head"><span class="scene-sim-time">' + esc(scene.time || '') + '</span>' +
+      '<span class="scene-sim-title">' + esc(scene.title || step.badge) + '</span></div>';
+
+    if (phase === 0) {
+      const messages = (scene.messages || [])
+        .map((m) => '<div class="scene-sim-message"><b>' + esc(m.speaker) + '</b>' + esc(m.text) + '</div>')
+        .join('');
+      return (
+        '<div class="scene-sim-phase scene-sim-phase--active">' +
+        '<p class="scene-sim-phase-label">情境说明</p>' + head +
+        '<p class="scene-sim-context">' + esc(scene.context || '') + '</p>' +
+        (messages ? '<div class="scene-sim-messages">' + messages + '</div>' : '') +
+        '</div>'
+      );
+    }
+
+    if (phase === 1) {
+      return (
+        '<div class="scene-sim-phase scene-sim-phase--active">' +
+        '<p class="scene-sim-phase-label">需要你判断</p>' +
+        '<p class="scene-sim-question scene-sim-question--solo">' + esc(scene.question || '') + '</p>' +
+        '</div>'
+      );
+    }
+
+    const options = (scene.options || [])
+      .map((opt, i) => {
+        const selected = draft.selectedOptionId === opt.optionId;
+        return (
+          '<button class="scene-sim-option' + (selected ? ' selected' : '') + '" type="button" data-scene-option="' +
+          esc(opt.optionId) + '">' + String.fromCharCode(65 + i) + '. ' + esc(opt.text) + '</button>'
+        );
+      })
+      .join('');
+
+    return (
+      '<div class="scene-sim-phase scene-sim-phase--active">' +
+      '<p class="scene-sim-phase-label">选择你的处理方式</p>' +
+      '<div class="scene-sim-options" id="sceneSimOptions">' + options + '</div>' +
+      '<div class="scene-sim-custom">' +
+      '<label for="sceneCustomAnswer">' + esc(scene.customPrompt || '我会这样处理：') + '</label>' +
+      '<textarea id="sceneCustomAnswer" placeholder="也可以用自己的方式回答…" maxlength="500">' +
+      esc(draft.customText) + '</textarea></div></div>'
+    );
+  }
+
+  function renderScenePanelActions(step) {
+    const phase = state.scenePanelPhase;
+    const lastPhase = SCENE_PANEL_PHASES.length - 1;
+    const back =
+      phase > 0
+        ? '<button class="scene-sim-ghost" type="button" data-action="scene-phase-prev">上一步</button>'
+        : '';
+    const nextLabel = phase === lastPhase ? '确认并继续 →' : '下一步 →';
+    const nextAction = phase === lastPhase ? 'scene-submit' : 'scene-phase-next';
+    return '<div class="scene-sim-actions">' + back +
+      '<button class="btn" type="button" data-action="' + nextAction + '">' + nextLabel + '</button></div>';
+  }
+
+  function renderSceneSim() {
+    const step = SCENE_STEPS[state.sceneStep];
+    const badge = document.getElementById('sceneSimBadge');
+    const art = document.getElementById('sceneSimArt');
+    const panel = document.getElementById('sceneSimPanel');
+    if (!step || !badge || !art || !panel) return;
+
+    badge.textContent = step.badge;
+    badge.className = 'scene-sim-badge scene-sim-badge--' + step.theme;
+    art.src = step.art;
+    art.alt = step.badge + '情景插画';
+
+    if (!step.scripted) {
+      panel.innerHTML =
+        '<div class="scene-sim-panel-inner scene-sim-placeholder">' +
+        '<p class="scene-sim-step">情景 ' + (state.sceneStep + 1) + ' / ' + SCENE_STEPS.length + '</p>' +
+        '<h3>' + esc(step.placeholderTitle) + '</h3>' +
+        '<p>' + esc(step.placeholderDesc) + '</p>' +
+        '<div class="scene-sim-actions"><button class="btn" type="button" data-action="scene-continue">继续 →</button></div></div>';
+      return;
+    }
+
+    const scene = getCurrentSceneScript();
+    if (!scene) {
+      panel.innerHTML =
+        '<div class="scene-sim-panel-inner scene-sim-placeholder"><p>情景剧本加载中…</p></div>';
+      loadSceneScripts().then(() => renderSceneSim());
+      return;
+    }
+
+    panel.innerHTML =
+      '<div class="scene-sim-panel-inner scene-sim-panel-inner--phased">' +
+      '<p class="scene-sim-step">情景 ' + (state.sceneStep + 1) + ' / ' + SCENE_STEPS.length + '</p>' +
+      '<nav class="scene-sim-phase-nav" aria-label="情景步骤">' + renderScenePhaseNav() + '</nav>' +
+      '<div class="scene-sim-phase-body">' + renderScenePanelPhase(scene, step) + '</div>' +
+      renderScenePanelActions(step) + '</div>';
+  }
+
+  function syncSceneDraftFromDom() {
+    const customEl = document.getElementById('sceneCustomAnswer');
+    if (customEl) state.sceneDraft.customText = customEl.value;
+  }
+
+  function goScenePanelPhase(target) {
+    const max = SCENE_PANEL_PHASES.length - 1;
+    const next = Math.max(0, Math.min(max, target));
+    if (next > state.scenePanelMaxPhase) return;
+    syncSceneDraftFromDom();
+    state.scenePanelPhase = next;
+    renderSceneSim();
+  }
+
+  function advanceScenePanelPhase() {
+    syncSceneDraftFromDom();
+    if (state.scenePanelPhase >= SCENE_PANEL_PHASES.length - 1) {
+      submitSceneStep();
+      return;
+    }
+    state.scenePanelPhase += 1;
+    if (state.scenePanelPhase > state.scenePanelMaxPhase) {
+      state.scenePanelMaxPhase = state.scenePanelPhase;
+    }
+    renderSceneSim();
+  }
+
+  async function submitSceneStep() {
+    const step = SCENE_STEPS[state.sceneStep];
+    if (!step) return;
+
+    if (step.scripted) {
+      syncSceneDraftFromDom();
+      const draft = state.sceneDraft;
+      const sceneId = step.sceneIdForJob(state.currentJobId);
+      if (!draft.selectedOptionId && !draft.customText.trim()) {
+        window.alert('请选择一项方案，或填写你的处理方式。');
+        state.scenePanelPhase = SCENE_PANEL_PHASES.length - 1;
+        state.scenePanelMaxPhase = SCENE_PANEL_PHASES.length - 1;
+        renderSceneSim();
+        return;
+      }
+      const body = draft.selectedOptionId
+        ? { roleId: state.currentJobId, answerType: 'preset', selectedOptionId: draft.selectedOptionId, rawAnswer: null }
+        : { roleId: state.currentJobId, answerType: 'custom', selectedOptionId: null, rawAnswer: draft.customText.trim() };
+      if (!state.useMock && state.sessionId && sceneId) {
+        try {
+          await api('/scenes/' + sceneId + '/answers', {
+            method: 'POST',
+            headers: apiHeaders(true),
+            body: JSON.stringify(body),
+          });
+        } catch (err) {
+          console.warn('情景回答提交失败，继续流程', err);
+        }
+      }
+    }
+
+    if (state.sceneStep >= SCENE_STEPS.length - 1) {
+      go('analyze2');
+      window.setTimeout(() => finishAnalysisProgress('task'), 1500);
+      return;
+    }
+    state.sceneStep += 1;
+    resetScenePanelState();
+    renderSceneSim();
+  }
+
+  async function startSceneFlow() {
+    state.sceneStep = 0;
+    resetScenePanelState();
+    await loadSceneScripts();
+    go('sceneSim');
+  }
+
   async function submitTaskAndFinish() {
     if (!state.useMock && state.taskSessionId) {
       try {
@@ -420,8 +831,7 @@
       state.completedJobs.push(state.currentJobId);
       renderGrowth();
     }
-    go('analyze2');
-    window.setTimeout(() => finishAnalysisProgress('task'), 1500);
+    await startSceneFlow();
   }
 
   async function loadReport() {
@@ -440,6 +850,15 @@
   }
 
   function bindUi() {
+    document.addEventListener('input', (e) => {
+      if (e.target.id !== 'sceneCustomAnswer') return;
+      state.sceneDraft.customText = e.target.value;
+      if (state.sceneDraft.selectedOptionId) {
+        state.sceneDraft.selectedOptionId = null;
+        document.querySelectorAll('.scene-sim-option.selected').forEach((o) => o.classList.remove('selected'));
+      }
+    });
+
     document.addEventListener('click', (e) => {
       const nav = e.target.closest('[data-go]');
       if (nav && !nav.closest('#drawer')) go(nav.dataset.go);
@@ -452,6 +871,30 @@
         state.currentJobId = reportBtn.dataset.jobId;
         loadReport();
       }
+
+      const sceneOption = e.target.closest('[data-scene-option]');
+      if (sceneOption) {
+        state.sceneDraft.selectedOptionId = sceneOption.dataset.sceneOption;
+        state.sceneDraft.customText = '';
+        renderSceneSim();
+      }
+
+      const scenePhaseTab = e.target.closest('[data-scene-phase]');
+      if (scenePhaseTab && !scenePhaseTab.disabled) {
+        goScenePanelPhase(Number(scenePhaseTab.dataset.scenePhase));
+      }
+
+      if (e.target.closest('[data-action="scene-phase-next"]')) advanceScenePanelPhase();
+
+      if (e.target.closest('[data-action="scene-phase-prev"]')) {
+        goScenePanelPhase(state.scenePanelPhase - 1);
+      }
+
+      const sceneSubmit = e.target.closest('[data-action="scene-submit"]');
+      if (sceneSubmit) submitSceneStep();
+
+      const sceneContinue = e.target.closest('[data-action="scene-continue"]');
+      if (sceneContinue) submitSceneStep();
 
       const drawerGo = e.target.closest('#drawer [data-go]');
       if (drawerGo) {

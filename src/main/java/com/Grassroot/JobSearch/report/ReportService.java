@@ -1,7 +1,11 @@
 package com.Grassroot.JobSearch.report;
 
+import com.Grassroot.JobSearch.ai.AiOrchestrator;
 import com.Grassroot.JobSearch.ai.DemoDataService;
+import com.Grassroot.JobSearch.ai.ReportContextBuilder;
 import com.Grassroot.JobSearch.common.ApiException;
+import com.Grassroot.JobSearch.session.SessionService;
+import com.Grassroot.JobSearch.session.UserSession;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,12 +16,26 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class ReportService {
 
+    private static final String DEFAULT_BOUNDARY =
+            "本报告依据你主动提供的经历和本轮任务中的可观察行为生成，用于职业探索，不是招聘结论或永久能力评价。";
+
     private final ReportRepository reportRepository;
     private final DemoDataService demoDataService;
+    private final SessionService sessionService;
+    private final ReportContextBuilder reportContextBuilder;
+    private final AiOrchestrator aiOrchestrator;
 
-    public ReportService(ReportRepository reportRepository, DemoDataService demoDataService) {
+    public ReportService(
+            ReportRepository reportRepository,
+            DemoDataService demoDataService,
+            SessionService sessionService,
+            ReportContextBuilder reportContextBuilder,
+            AiOrchestrator aiOrchestrator) {
         this.reportRepository = reportRepository;
         this.demoDataService = demoDataService;
+        this.sessionService = sessionService;
+        this.reportContextBuilder = reportContextBuilder;
+        this.aiOrchestrator = aiOrchestrator;
     }
 
     @Transactional
@@ -25,9 +43,24 @@ public class ReportService {
         if (demoMode) {
             return demoResponse(sessionId);
         }
-        return reportRepository.findFirstBySessionIdOrderByGeneratedAtDesc(sessionId)
-                .map(this::toMap)
-                .orElseGet(() -> toMap(createFromDemo(sessionId)));
+        if (sessionId == null || sessionId.isBlank()) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, "SESSION_REQUIRED", "需要 X-Session-Id");
+        }
+        UserSession session = sessionService.find(sessionId);
+        Map<String, Object> ctx = reportContextBuilder.build(sessionId, session);
+        Map<String, Object> aiResult = aiOrchestrator.generateReport(ctx);
+
+        ExplorationReport report = new ExplorationReport();
+        report.setSessionId(sessionId);
+        report.setResumeRadarData(buildResumeRadar(session.getResumeEvidenceData()));
+        report.setTaskEvidenceSummary(reportContextBuilder.buildTaskEvidenceByJob(sessionId));
+        report.setInterestSignals(castList(ctx.get("interest_signals")));
+        report.setComparisonSummary(stringVal(aiResult.get("comparisonSummary")));
+        report.setGapAnalysis(castMap(aiResult.get("gapAnalysis")));
+        report.setActionTasks(castList(aiResult.get("actionTasks")));
+        report.setBoundaryNotice(stringVal(aiResult.getOrDefault("boundaryNotice", DEFAULT_BOUNDARY)));
+        report.setSelectedTargetJob(stringVal(ctx.get("selected_target_job")));
+        return toMap(reportRepository.save(report));
     }
 
     public Map<String, Object> get(String reportId) {
@@ -42,19 +75,11 @@ public class ReportService {
         return toMap(reportRepository.save(report));
     }
 
-    private ExplorationReport createFromDemo(String sessionId) {
-        Map<String, Object> demo = demoDataService.report();
-        ExplorationReport r = new ExplorationReport();
-        r.setSessionId(sessionId);
-        r.setResumeRadarData(castMap(demo.get("resumeRadar")));
-        r.setTaskEvidenceSummary(castMap(demo.get("taskEvidenceByJob")));
-        r.setInterestSignals(demoDataService.interestSignals());
-        r.setGapAnalysis(castMap(demo.get("gapAnalysis")));
-        r.setActionTasks(castList(demo.get("actionTasks")));
-        r.setComparisonSummary((String) demo.get("comparisonSummary"));
-        r.setBoundaryNotice((String) demo.get("boundaryNotice"));
-        r.setSelectedTargetJob(demoDataService.selectedTargetJob());
-        return reportRepository.save(r);
+    private Map<String, Object> buildResumeRadar(Map<String, Object> evidence) {
+        if (evidence == null || evidence.isEmpty()) {
+            return Map.of("status", "empty", "message", "尚未提取履历证据，请先完善探索资料。");
+        }
+        return new HashMap<>(evidence);
     }
 
     private Map<String, Object> demoResponse(String sessionId) {
@@ -88,9 +113,17 @@ public class ReportService {
         return m;
     }
 
-    @SuppressWarnings("unchecked")
-    private Map<String, Object> castMap(Object v) { return (Map<String, Object>) v; }
+    private static String stringVal(Object v) {
+        return v == null ? "" : String.valueOf(v);
+    }
 
     @SuppressWarnings("unchecked")
-    private List<Map<String, Object>> castList(Object v) { return (List<Map<String, Object>>) v; }
+    private Map<String, Object> castMap(Object v) {
+        return v instanceof Map<?, ?> m ? (Map<String, Object>) m : Map.of();
+    }
+
+    @SuppressWarnings("unchecked")
+    private List<Map<String, Object>> castList(Object v) {
+        return v instanceof List<?> list ? (List<Map<String, Object>>) list : List.of();
+    }
 }

@@ -101,9 +101,166 @@
     .tags { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:18px; }
     .tag { padding:4px 7px; border:1px solid #777; color:#555; font-size:12px; }
     .center-link { display:block; background:none; border:0; margin:30px auto 0; border-bottom:1px solid; padding:5px; }
-    #roles { text-align:center; }
-    #roles > h1 { margin-bottom:6px; }
-    .roles { min-height:clamp(340px,50vh,460px); max-width:1180px; margin:24px auto 0; display:flex; align-items:center; justify-content:center; padding:22px 38px 38px; overflow:visible; }
+    /* Figma node 280:233 — 探索岗位选择 */
+    #roles {
+      padding:0;
+      text-align:left;
+      overflow:hidden;
+      background:#fff;
+      background-image:none;
+    }
+    #roles.active { display:block; }
+    .roles-explore {
+      position:relative;
+      width:100%;
+      height:100%;
+      min-height:calc(100dvh - 96px);
+      background:#fff;
+    }
+    .roles-explore-scene {
+      position:relative;
+      width:100%;
+      max-width:1440px;
+      margin:0 auto;
+      height:100%;
+      min-height:calc(100dvh - 96px);
+      aspect-ratio:1440 / 909;
+    }
+    .roles-explore-floor-wrap {
+      position:absolute;
+      left:0;
+      bottom:0;
+      width:100%;
+      height:47.74%;
+      overflow:hidden;
+      pointer-events:none;
+      z-index:0;
+    }
+    .roles-explore-floor {
+      position:absolute;
+      left:0;
+      top:-166.05%;
+      width:100%;
+      height:266.05%;
+      max-width:none;
+      object-fit:cover;
+      object-position:center bottom;
+      pointer-events:none;
+    }
+    .roles-explore-desk-stage {
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      z-index:1;
+    }
+    .roles-explore-desk-item {
+      position:absolute;
+      object-fit:contain;
+      pointer-events:none;
+      transform-origin:center center;
+    }
+    .roles-explore-node {
+      position:absolute;
+      width:9%;
+      min-width:88px;
+      max-width:130px;
+      padding:0;
+      border:0;
+      background:transparent;
+      cursor:pointer;
+      z-index:8;
+      transition:z-index 0s;
+    }
+    .roles-explore-node:hover,
+    .roles-explore-node:focus-visible {
+      z-index:10;
+      outline:none;
+    }
+    .roles-explore-avatar {
+      display:block;
+      width:100%;
+      aspect-ratio:1;
+      transition:transform .28s cubic-bezier(.34,1.4,.64,1);
+      transform-origin:center center;
+    }
+    .roles-explore-avatar img {
+      width:100%;
+      height:100%;
+      display:block;
+      object-fit:contain;
+    }
+    .roles-explore-node:hover .roles-explore-avatar,
+    .roles-explore-node:focus-visible .roles-explore-avatar {
+      transform:scale(1.18);
+    }
+    .roles-explore-bubble {
+      position:absolute;
+      display:block;
+      pointer-events:none;
+    }
+    .roles-explore-bubble-bg {
+      width:100%;
+      height:auto;
+      display:block;
+    }
+    .roles-explore-bubble-text {
+      position:absolute;
+      left:10%;
+      right:8%;
+      top:20%;
+      font-size:clamp(11px,1.15vw,16px);
+      line-height:1.35;
+      color:#494949;
+      font-family:"Microsoft YaHei","SimHei",sans-serif;
+      text-align:center;
+    }
+    .roles-explore-bubble--ui {
+      left:-42%;
+      bottom:88%;
+      width:min(210px,22vw);
+    }
+    .roles-explore-bubble--pm {
+      left:-8%;
+      bottom:92%;
+      width:min(210px,22vw);
+    }
+    .roles-explore-bubble--dev {
+      left:-12%;
+      bottom:86%;
+      width:min(210px,22vw);
+    }
+    .roles-explore-bubble--data {
+      right:-28%;
+      left:auto;
+      bottom:90%;
+      width:min(230px,24vw);
+    }
+    .roles-explore-bubble--ops {
+      left:-8%;
+      bottom:92%;
+      width:min(240px,25vw);
+    }
+    .roles-explore-bubble--data .roles-explore-bubble-text {
+      left:8%;
+      right:10%;
+    }
+    @media (max-width:900px) {
+      #roles { padding:0; }
+      .roles-explore,
+      .roles-explore-scene {
+        min-height:calc(100dvh - 70px);
+      }
+      .roles-explore-node {
+        min-width:64px;
+        max-width:96px;
+      }
+      .roles-explore-bubble-text { font-size:10px; }
+    }
+    @media (prefers-reduced-motion:reduce) {
+      .roles-explore-avatar { transition:none; }
+      .roles-explore-node:hover .roles-explore-avatar,
+      .roles-explore-node:focus-visible .roles-explore-avatar { transform:none; }
+    }
     .fan-card { --r:0deg; --y:0px; position:relative; z-index:1; flex:0 0 clamp(210px,17vw,270px); height:clamp(310px,42vh,390px); margin-left:clamp(-58px,-3vw,-35px); padding:24px 22px 20px; border:2px solid var(--ink); background:#eee; box-shadow:7px 8px 0 rgba(0,0,0,.16); text-align:left; display:flex; flex-direction:column; transform:translateY(var(--y)) rotate(var(--r)); transform-origin:50% 90%; transition:transform .2s ease,box-shadow .2s ease,z-index 0s; }
     .fan-card:first-child { margin-left:0; --r:-7deg; --y:15px; background:#d9d9d9; }
     .fan-card:nth-child(2) { --r:-3deg; --y:4px; background:#f5f5f5; z-index:2; }
@@ -807,4 +964,304 @@
       .growth-roadmap-inner { grid-template-columns:1fr; }
       .growth-sketch { height:180px; }
       .growth-record-card { padding-right:100px; }
+    }
+
+    /* Figma nodes 354:503 / 354:517 / 354:532 — 情景模拟 */
+    #sceneSim {
+      padding:0;
+      background:#fff;
+      background-image:none;
+    }
+    #sceneSim.active {
+      display:block;
+      overflow:hidden;
+    }
+    .scene-sim {
+      position:relative;
+      width:100%;
+      height:100%;
+      min-height:calc(100dvh - 96px);
+      background:#fff;
+      overflow:hidden;
+    }
+    .scene-sim-badge {
+      position:absolute;
+      z-index:3;
+      top:clamp(18px,3vh,32px);
+      left:clamp(24px,6vw,107px);
+      padding:6px 22px;
+      border-radius:70px;
+      color:#fff;
+      font-size:clamp(16px,1.6vw,24px);
+      font-weight:600;
+      line-height:1.35;
+    }
+    .scene-sim-badge--green { background:#c1d8b0; }
+    .scene-sim-badge--orange { background:#fecd86; }
+    .scene-sim-badge--purple { background:#bdb0d8; }
+    .scene-sim-art {
+      position:absolute;
+      inset:clamp(70px,10vh,113px) clamp(16px,4vw,80px) clamp(150px,18vh,200px);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      pointer-events:none;
+    }
+    .scene-sim-art img {
+      max-width:100%;
+      max-height:100%;
+      object-fit:contain;
+      object-position:center bottom;
+    }
+    .scene-sim-panel {
+      position:absolute;
+      z-index:4;
+      left:50%;
+      bottom:clamp(16px,3vh,36px);
+      width:min(1298px,calc(100% - 48px));
+      min-height:130px;
+      max-height:min(42vh,320px);
+      padding:20px clamp(20px,3vw,36px) 18px;
+      border-radius:158px;
+      background:rgba(255,255,255,.72);
+      box-shadow:0 4px 4px rgba(188,188,188,.25), inset 0 4px 4px rgba(206,206,206,.25);
+      overflow-y:auto;
+      transform:translateX(-50%);
+    }
+    .scene-sim-panel-inner {
+      max-width:920px;
+      margin:0 auto;
+    }
+    .scene-sim-head {
+      display:flex;
+      align-items:center;
+      gap:12px;
+      margin-bottom:10px;
+      color:#2e2d2b;
+      font-weight:700;
+    }
+    .scene-sim-time {
+      padding:4px 10px;
+      border-radius:8px;
+      background:#f3f2f7;
+      font-size:13px;
+      color:#7a7873;
+    }
+    .scene-sim-title {
+      font-size:clamp(16px,1.4vw,20px);
+    }
+    .scene-sim-context {
+      margin:0 0 12px;
+      color:#5a5752;
+      font-size:14px;
+      line-height:1.55;
+    }
+    .scene-sim-messages {
+      display:grid;
+      gap:8px;
+      margin:0 0 14px;
+    }
+    .scene-sim-message {
+      padding:10px 14px;
+      border-radius:14px;
+      background:#f6fff6;
+      border:1px solid #e5f2e8;
+      font-size:14px;
+      line-height:1.45;
+      color:#2e2d2b;
+    }
+    .scene-sim-message b {
+      display:block;
+      margin-bottom:4px;
+      font-size:12px;
+      color:#779d56;
+    }
+    .scene-sim-question {
+      margin:0 0 12px;
+      font-size:15px;
+      font-weight:700;
+      color:#2e2d2b;
+    }
+    .scene-sim-options {
+      display:grid;
+      gap:8px;
+      margin-bottom:12px;
+    }
+    .scene-sim-option {
+      border:1.5px solid #e5f2e8;
+      border-radius:12px;
+      background:#fff;
+      padding:12px 14px;
+      text-align:left;
+      font-size:14px;
+      line-height:1.45;
+      color:#2e2d2b;
+      cursor:pointer;
+      transition:background .15s ease, border-color .15s ease;
+    }
+    .scene-sim-option:hover { background:#f6fff6; }
+    .scene-sim-option.selected {
+      background:#e7f2dc;
+      border-color:#aac393;
+      font-weight:600;
+    }
+    .scene-sim-custom label {
+      display:block;
+      margin-bottom:6px;
+      font-size:13px;
+      font-weight:700;
+      color:#5a5752;
+    }
+    .scene-sim-custom textarea {
+      width:100%;
+      min-height:64px;
+      max-height:100px;
+      padding:10px 12px;
+      border:1.5px solid #e5f2e8;
+      border-radius:12px;
+      background:#fff;
+      resize:vertical;
+      font-size:14px;
+      line-height:1.45;
+    }
+    .scene-sim-actions {
+      display:flex;
+      justify-content:flex-end;
+      gap:10px;
+      margin-top:14px;
+    }
+    .scene-sim-actions .btn {
+      min-width:140px;
+      border-radius:999px;
+      background:#aac393;
+      border-color:#aac393;
+      color:#fff;
+      font-weight:700;
+    }
+    .scene-sim-placeholder h3 {
+      margin:0 0 8px;
+      font-size:18px;
+      color:#2e2d2b;
+    }
+    .scene-sim-placeholder p {
+      margin:0;
+      color:#7a7873;
+      font-size:14px;
+      line-height:1.55;
+    }
+    .scene-sim-step {
+      margin:0 0 10px;
+      font-size:12px;
+      font-weight:700;
+      color:#aac393;
+      letter-spacing:.04em;
+    }
+    .scene-sim-panel-inner--phased {
+      display:flex;
+      flex-direction:column;
+      min-height:0;
+    }
+    .scene-sim-phase-nav {
+      display:flex;
+      gap:8px;
+      margin-bottom:14px;
+      flex-wrap:wrap;
+    }
+    .scene-sim-phase-tab {
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:6px 14px;
+      border:1.5px solid #e8e6e1;
+      border-radius:999px;
+      background:#fff;
+      color:#7a7873;
+      font-size:13px;
+      font-weight:600;
+      cursor:pointer;
+      transition:background .15s ease, border-color .15s ease, color .15s ease;
+    }
+    .scene-sim-phase-tab.done:not(.active) {
+      color:#5a5752;
+      border-color:#d8e8cc;
+      background:#f6fff6;
+    }
+    .scene-sim-phase-tab.active {
+      color:#2e2d2b;
+      border-color:#aac393;
+      background:#e7f2dc;
+    }
+    .scene-sim-phase-tab.locked {
+      opacity:.45;
+      cursor:not-allowed;
+    }
+    .scene-sim-phase-num {
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:20px;
+      height:20px;
+      border-radius:50%;
+      background:#f3f2f7;
+      font-size:11px;
+      font-weight:700;
+      color:#7a7873;
+    }
+    .scene-sim-phase-tab.active .scene-sim-phase-num {
+      background:#aac393;
+      color:#fff;
+    }
+    .scene-sim-phase-body {
+      flex:1;
+      min-height:0;
+      overflow-y:auto;
+      padding-right:4px;
+    }
+    .scene-sim-phase-label {
+      margin:0 0 8px;
+      font-size:12px;
+      font-weight:700;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      color:#aac393;
+    }
+    .scene-sim-question--solo {
+      margin:4px 0 0;
+      font-size:clamp(16px,1.5vw,18px);
+      line-height:1.55;
+    }
+    .scene-sim-ghost {
+      border:1.5px solid #e5f2e8;
+      border-radius:999px;
+      background:#fff;
+      padding:10px 18px;
+      color:#5a5752;
+      font-size:14px;
+      font-weight:600;
+      cursor:pointer;
+    }
+    .scene-sim-ghost:hover { background:#f6fff6; }
+    @media (max-width:900px) {
+      .scene-sim-panel {
+        border-radius:24px;
+        max-height:min(48vh,360px);
+      }
+      .scene-sim-art {
+        inset:64px 12px 180px;
+      }
+    }
+    @media (max-width:700px) {
+      .scene-sim {
+        min-height:calc(100dvh - 70px);
+      }
+      .scene-sim-badge {
+        left:16px;
+        font-size:15px;
+        padding:5px 14px;
+      }
+      .scene-sim-panel {
+        width:calc(100% - 24px);
+        border-radius:20px;
+        padding:16px 14px 14px;
+      }
     }

@@ -5,6 +5,7 @@ import com.Grassroot.JobSearch.common.ApiException;
 import com.Grassroot.JobSearch.common.enums.ClarityLevel;
 import com.Grassroot.JobSearch.common.enums.CurrentStatus;
 import com.Grassroot.JobSearch.common.enums.UserStage;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.springframework.http.HttpStatus;
@@ -38,9 +39,15 @@ public class SessionService {
         session.setTeamRoleDescription(req.teamRoleDescription());
         session.setWorkPreference(req.workPreference());
         session.setResumeText(req.resumeText());
+        session.setResumeEvidenceStatus("processing");
         repository.save(session);
-        aiOrchestrator.extractResumeEvidenceAsync(sessionId, req.backgroundText(), req.userStage());
-        return Map.of("ok", true, "message", "资料已保存，履历证据提取异步进行中");
+
+        Map<String, Object> evidence = aiOrchestrator.extractResumeEvidence(req.backgroundText(), req.userStage());
+        session.setResumeEvidenceData(evidence);
+        session.setResumeEvidenceStatus("fallback".equals(evidence.get("status")) ? "fallback" : "ready");
+        repository.save(session);
+
+        return Map.of("ok", true, "message", "资料已保存，履历证据已生成", "resumeEvidenceStatus", session.getResumeEvidenceStatus());
     }
 
     @Transactional
@@ -54,6 +61,14 @@ public class SessionService {
     }
 
     public Map<String, Object> resumeEvidence(String sessionId) {
-        return Map.of("status", "pending", "evidences", List.of());
+        if (sessionId == null || sessionId.isBlank()) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, "SESSION_REQUIRED", "需要 X-Session-Id");
+        }
+        UserSession session = find(sessionId);
+        Map<String, Object> res = new HashMap<>();
+        String status = session.getResumeEvidenceStatus();
+        res.put("status", status == null || status.isBlank() ? "pending" : status);
+        res.put("evidences", session.getResumeEvidenceData() == null ? Map.of() : session.getResumeEvidenceData());
+        return res;
     }
 }
