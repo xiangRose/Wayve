@@ -1,6 +1,6 @@
-# AI UI Design Role Work Sample
+# Future / Post-MVP — AI UI Design Role Work Sample
 
-状态：FROZEN / PASS — Canonical Role Work Sample
+状态：FUTURE / POST-MVP — FROZEN REFERENCE ARCHITECTURE（NOT MVP）
 
 ## 工作样本契约
 

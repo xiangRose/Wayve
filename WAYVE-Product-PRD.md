@@ -5,6 +5,10 @@
 状态：**CURRENT PRODUCT PRD — APPROVED FOR FEISHU SOT**
 更新时间：2026-08-29
 
+## MVP Scope Cut Override（Current）
+
+Hard Skill MVP = **Scenario-based Hard Skill Assessment**（5 个岗位、每岗 4 套连续情境、每套 6 道单选题；后台评分，前端不展示单题分值）。Persistent Work Sample、Hard Skill Behavior Event chain、consequence/revision/deliverable、Hard Skill Evidence Replay runtime、Work Sample-based Hard Skill Judge 均为 **Future / Post-MVP**。
+
 ## 1. 产品定义（Product Definition）
 
 WAYVE 帮助用户在承诺某个职业方向之前，先体验 AI 时代的真实工作。产品结合：
@@ -54,7 +58,7 @@ WAYVE 不是心理测评、简历匹配器、招聘测试，也不是职业结�
 
 五个岗位都是平等的探索选项。
 
-AI Operations 的当前第一批 Work Sample 主要聚焦产品增长、激活、留存和反馈闭环运营。canonical role family 仍然是 AI Operations；未来经过验证的场景可以覆盖其他产品运营语境，而不改变 active role ID。
+AI Operations 的 MVP Scenario Quiz 主要聚焦产品增长、激活、留存和反馈闭环运营；未来 Work Sample 场景可以覆盖其他产品运营语境，而不改变 active role ID。
 
 ## 6. 端到端用户旅程（End-to-end Journey）
 
@@ -63,7 +67,7 @@ Entry
 → 可选 Profile
 → 岗位导航
 → Role Preview
-→ Role Work Sample
+→ Hard Skill Scenario Quiz
 → Collaboration Sprint（Standard 默认包含，可 Skip for now）
 → Reflection
 → Integrated Report
@@ -205,7 +209,7 @@ LLM 不得：
 
 ## 11. Collaboration Simulation
 
-第一版共享场景候选为 **Launch War Room**。
+第一版 MVP shared world 为 **Nova V3 / AI Product Launch Review**；Launch War Room 为 legacy label。
 
 Standard Experience 默认包含 Collaboration Sprint，并提供 `Skip for now`。
 
@@ -409,7 +413,7 @@ Current MVP 可以把刚生成的 Next Mission 记录为 `pending`，直到用�
 Demo、Standard、Extended 是用于探索不同体验深度和认知负担的产品层级假设，不是硬性时长 SLA。
 
 - Demo Mode：可使用 shortened Collaboration path；
-- Standard Experience：默认包含 Role Work Sample、Collaboration Sprint、Reflection，同时支持 `Skip for now`；
+- Standard Experience：默认包含 Hard Skill Scenario Quiz、Collaboration Sprint、Reflection，同时支持 `Skip for now`；
 - Extended Experience：未来可加入更丰富的多轮协作和多次实验。
 
 ## 19. MVP / Standard Scope
@@ -417,7 +421,7 @@ Demo、Standard、Extended 是用于探索不同体验深度和认知负担的�
 MVP 应保留：
 
 - 五种 role grammar；
-- 每个岗位一条完整 Work Sample path；
+- 每个岗位四套 Scenario Quiz path；
 - replayable evidence；
 - bounded assessment；
 - optional Reflection；
@@ -458,7 +462,7 @@ Standard 默认包含 shared Collaboration Sprint，并允许 `Skip for now`。R
 - 每个岗位都有独立 interaction grammar、consequence、revision 和 replay 的真实 Work Sample。
 - Role Requirement Catalog 与 Session Observation Coverage 分离。
 - `not_observed` 永远没有 performance score，也不能渲染为 level 0。
-- Hard Skill Readiness 来自真实 Work Sample、rubric 和 Evidence Replay。
+- Hard Skill MVP 来自 Scenario Quiz；Work Sample rubric、consequence、revision、deliverable、replay runtime 与 Judge 均为 Future。
 - Standard 默认包含 Collaboration，并提供 `Skip for now`；跳过不产生 performance penalty，且限制 Working Portrait claim。
 - Collaboration Evidence 有独立 claim target，且不发生 double counting。
 - Working Portrait 是 bounded narrative，不是 trait 或 badge。

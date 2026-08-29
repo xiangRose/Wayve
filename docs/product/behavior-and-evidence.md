@@ -2,6 +2,10 @@
 
 状态：CURRENT PRODUCT SOT — APPROVED FOR FEISHU SOT
 
+## MVP Scope Cut Override
+
+Hard Skill MVP = Scenario-based Hard Skill Assessment。Work-sample-based Hard Skill assessment、persistent work object、Behavior Event chain 与 Hard Skill Replay runtime 均为 Future / Post-MVP。
+
 ## 来源边界
 
 | 来源 | 可以支持 | 不得做 |

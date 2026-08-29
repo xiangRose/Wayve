@@ -16,11 +16,11 @@
 ## 迁移顺序
 
 1. promotion canonical role、requirement、event 和 content IDs；
-2. 建立 registry-driven Role Work Sample 与 deterministic consequence；
+2. Future only：建立 registry-driven Hard Skill Work Sample 与 deterministic consequence；MVP 使用 Scenario Quiz；
 3. 持久化 immutable Behavior Events 和 Replay links；
 4. 增加分离的 Evidence、Hard Skill Assessment、Collaboration Evidence、Reflection 和 Working Portrait；
 5. 将 report 迁移到当前信息架构；
-6. 在 shared state engine 稳定后加入 Launch War Room；
+6. 在 shared state engine 稳定后加入 Nova V3 / AI Product Launch Review Collaboration Sprint；
 7. 清理 active API / seed 中的 legacy names，同时保留 migration metadata。
 
 本文件不授权 backend、frontend、schema migration、seed、OpenAPI、prompt deployment 或 remote Git 操作。

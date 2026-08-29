@@ -20,7 +20,7 @@ Profile 是 optional。用户可以直接进入任意岗位。Profile 可生成�
 
 Recommendation 只回答“哪个岗位值得先体验”。它使用偏好、意图和有来源的经验标签，不进入 Evidence、Hard Skill Assessment、Working Portrait 或 Next Mission gap scoring。五岗始终都可选择。
 
-AI Operations 的当前 Work Sample 主要聚焦 product growth、activation、retention、feedback-loop operations；canonical role family 仍是 AI Operations，未来验证过的场景可覆盖其他 product-operations 语境，不改变 active role ID。
+AI Operations 的 MVP Scenario Quiz 主要聚焦 product growth、activation、retention、feedback-loop operations；未来 Work Sample 场景可覆盖其他 product-operations 语境，不改变 active role ID。
 
 ## 数据隔离
 

@@ -2,6 +2,10 @@
 
 状态：CURRENT PRODUCT SOT — APPROVED FOR FEISHU SOT
 
+## MVP Scope Cut Override
+
+当前 Hard Skill 仅使用 Scenario-based Hard Skill Assessment；Role Work Sample 机制为 Future / Post-MVP。Collaboration MVP shared world 为 Nova V3 / AI Product Launch Review。
+
 ## Role Work Sample 契约
 
 原 Career Trial 现在统一称为 Role Work Sample：一个有边界的真实岗位工作片段。共享内部语义主轴为：

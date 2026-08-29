@@ -8,4 +8,4 @@
 - [TaskTemplate](task-template.md)
 - [AnalysisReport](analysis-report.md)
 
-Schemas 描述数据形状，不重新定义产品范围、推荐逻辑、Work Sample 语义、Evidence 语言、Report 阅读顺序或 Growth Track 行为。
+Schemas 描述数据形状，不重新定义产品范围、Scenario Quiz / Future Work Sample 语义、Evidence 语言、Report 阅读顺序或 Growth Track 行为。

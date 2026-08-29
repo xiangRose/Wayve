@@ -35,7 +35,7 @@ AnalysisReport 是对多个来源进行分层呈现的容器，永远不包含 U
 - `observed` 或 `partially_observed` 且 session 提供有效评估机会时，才可有 0–4；
 - Level 0 表示有效机会存在但未展示可用 requirement-level performance 或明显 off-task；
 - `not_observed` 没有 performanceLevel 或 numeric value，不等于 Level 0；
-- assessment 只针对当前 Role Work Sample。
+- MVP assessment 只针对当前 Scenario-based Hard Skill Assessment；Future Work Sample assessment 必须单独标记，不能混入 MVP 结果。
 
 ## Presentation Boundary
 

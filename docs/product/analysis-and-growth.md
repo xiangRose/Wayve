@@ -2,6 +2,10 @@
 
 状态：CURRENT PRODUCT SOT — APPROVED FOR FEISHU SOT
 
+## MVP Scope Cut Override
+
+Report Part 1 = Professional Skill Snapshot（Scenario Quiz）；Part 2 = Working Portrait（Collaboration Behavior Evidence）；Reflection 保持 user-authored、source-separated。不得生成 Unified Job Fit、Career Fit、Personality Type 或 Soft Skill Score。
+
 ## Report Presentation Principles
 
 报告必须同时满足：
