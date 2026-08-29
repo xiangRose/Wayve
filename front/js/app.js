@@ -116,6 +116,7 @@
     const active = document.getElementById(id);
     if (active) active.scrollTop = 0;
     window.scrollTo(0, 0);
+    if (id === 'growth') renderGrowth();
     if (id === 'analyze1') startAnalysisProgress('profile');
     if (id === 'analyze2') startAnalysisProgress('task');
   }
@@ -199,19 +200,54 @@
       .join('');
   }
 
+  const GROWTH_RECORDS = [
+    {
+      jobId: 'ai_product',
+      displayName: 'AI产品经理',
+      theme: 'purple',
+      desc: '擅长拆解问题，喜欢把想法变成可用产品。',
+    },
+    {
+      jobId: 'ai_ops',
+      displayName: 'AI产品运营',
+      theme: 'green',
+      desc: '对内容与用户增长保持敏锐，持续积累方法。',
+    },
+    {
+      jobId: 'ai_app_dev',
+      displayName: 'AI解决方案顾问',
+      theme: 'coral',
+      desc: '期待连接业务与技术，找到更大的影响力。',
+    },
+  ];
+
+  function growthRecordStatus(done, slot) {
+    if (done) return '已完成体验';
+    if (slot === 'exploring') return '探索中';
+    return '下一站';
+  }
+
   function renderGrowth() {
     const list = document.getElementById('growthList');
     if (!list) return;
-    list.innerHTML = state.jobs
-      .map((job) => {
-        const done = state.completedJobs.includes(job.jobId);
+    const firstIncomplete = GROWTH_RECORDS.find((r) => !state.completedJobs.includes(r.jobId));
+    list.innerHTML = GROWTH_RECORDS
+      .map((record) => {
+        const job = getJob(record.jobId);
+        const jobId = job ? record.jobId : state.jobs[0]?.jobId || record.jobId;
+        const done = state.completedJobs.includes(jobId);
+        const slot = done ? 'done' : firstIncomplete?.jobId === record.jobId ? 'exploring' : 'next';
+        const status = growthRecordStatus(done, slot);
+        const action = done ? 'view-report' : 'start-job';
+        const actionLabel = done ? '查看报告' : '开始体验';
         return (
-          '<article class="track-item"><div><b>' + esc(job.name) + '</b><br>' +
-          '<span class="status' + (done ? ' completed' : '') + '">' + (done ? '已完成' : '未体验') + '</span></div>' +
-          '<div>' + (done ? '本轮已完成微任务体验' : '尚未开始') + '</div>' +
-          '<div>' + (done ? '表现良好' : '等待体验') + '</div>' +
-          '<button class="btn small" type="button" data-action="' + (done ? 'view-report' : 'start-job') + '" data-job-id="' + esc(job.jobId) + '">' +
-          (done ? '查看报告' : '开始体验') + '</button></article>'
+          '<article class="growth-record-card growth-record-card--' + record.theme + '">' +
+          '<span class="growth-record-accent" aria-hidden="true"></span>' +
+          '<h3>' + esc(record.displayName) + '</h3>' +
+          '<span class="growth-record-status">' + esc(status) + '</span>' +
+          '<p class="growth-record-desc">' + esc(record.desc) + '</p>' +
+          '<button class="growth-record-action" type="button" data-action="' + action + '" data-job-id="' + esc(jobId) + '">' +
+          esc(actionLabel) + '</button></article>'
         );
       })
       .join('');
@@ -554,6 +590,12 @@
     });
     document.addEventListener('keydown', (e) => {
       if (!introDismissed && (e.key === 'Enter' || e.key === ' ')) dismissIntro(true);
+    });
+
+    document.querySelectorAll('.question-dropdown__head').forEach((head) => {
+      head.addEventListener('click', () => {
+        head.closest('.question-dropdown')?.classList.toggle('is-collapsed');
+      });
     });
 
     document.getElementById('submitProfileBtn').addEventListener('click', async () => {

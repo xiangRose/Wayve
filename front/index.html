@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>AI 职业方向探索</title>
-  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/styles.css?v=growth-fix2" />
 </head>
 <body>
   <main class="shell">
@@ -79,17 +79,107 @@
 
     <section class="screen" id="previewNotice"><div class="form" style="max-width:640px;margin:80px auto 0;text-align:center"><h1 id="previewJobName">岗位预览</h1><p class="subtitle" id="previewJobDesc"></p><p style="margin:24px 0">该岗位微任务仍在完善中，可先浏览岗位介绍或体验已开放岗位。</p><div class="report-actions"><button class="btn ghost" data-go="roles" type="button">返回岗位列表</button></div></div></section>
 
-    <section class="screen" id="choice"><div class="task-top"><div><h3 class="task-job-title">AI产品 · 微任务体验</h3><p class="subtitle">任务 1 / 5 · 选择题</p></div><div class="task-progress">25%<div class="bar"><span style="width:25%"></span></div></div></div><div class="question"><div class="scenario"><b>情境说明</b><br>你正在负责一款 AI 办公产品，近期团队收到了多条用户反馈，请根据这些信息做出判断。</div><h2>基于以上信息，你认为当前最值得优先解决的问题是什么？</h2><div class="options single-select"><button class="option" type="button">A. 新用户注册流程复杂</button><button class="option" type="button">B. AI 回答不准确</button><button class="option" type="button">C. 文件导入功能不稳定</button><button class="option" type="button">D. 页面加载速度较慢</button></div><div class="task-actions"><button class="btn" data-go="ranking" type="button">下一题</button></div></div></section>
-    <section class="screen" id="ranking"><div class="task-top"><div><h3 class="task-job-title">AI产品 · 微任务体验</h3><p class="subtitle">任务 2 / 5 · 排序题</p></div><div class="task-progress">50%<div class="bar"><span style="width:50%"></span></div></div></div><div class="question"><h2>请按照你认为的优先级重新排序</h2><p class="subtitle">请将卡片拖动到合适的位置，最优先处理的问题放在最上方。</p><div class="ranking" id="rankingList"><div class="sort-item" draggable="true"><span class="handle">⠿</span><span>用户无法完成注册</span></div><div class="sort-item" draggable="true"><span class="handle">⠿</span><span>AI 回答不准确</span></div><div class="sort-item" draggable="true"><span class="handle">⠿</span><span>文件导入失败率高</span></div><div class="sort-item" draggable="true"><span class="handle">⠿</span><span>页面加载时间过长</span></div></div><p class="drag-tip">⠿ 按住卡片并上下拖动以调整优先级</p><div class="task-actions"><button class="btn" data-go="category" type="button">确认顺序</button></div></div></section>
-    <section class="screen" id="category"><div class="task-top"><div><h3 class="task-job-title">AI产品 · 微任务体验</h3><p class="subtitle">任务 3 / 5 · 连线匹配题</p></div><div class="task-progress">75%<div class="bar"><span style="width:75%"></span></div></div></div><div class="question"><h2>请将以下用户反馈与对应的问题类别连线</h2><p class="subtitle">先点击左侧一条反馈，再点击右侧最匹配的类别。</p><div class="matching-board" id="matchingBoard"><svg class="match-lines" id="matchLines" aria-hidden="true"></svg><div class="match-column"><h3>用户反馈</h3><button class="match-item source" type="button" data-source="导入文件"><span>不知道如何导入文件</span></button><button class="match-item source" type="button" data-source="速度"><span>感觉输出结果偏慢</span></button><button class="match-item source" type="button" data-source="准确性"><span>AI 回答有时不准确</span></button><button class="match-item source" type="button" data-source="限制"><span>上传文件大小有限制</span></button><button class="match-item source" type="button" data-source="建议"><span>希望增加自动总结</span></button><button class="match-item source" type="button" data-source="记录"><span>打不开聊天记录</span></button></div><div class="match-column"><h3>问题类别</h3><button class="match-item target" type="button" data-target="功能问题">功能问题</button><button class="match-item target" type="button" data-target="体验问题">体验问题</button><button class="match-item target" type="button" data-target="新需求 / 建议">新需求 / 建议</button></div></div><p class="match-tip">已连线的反馈可再次点击，重新选择匹配类别。</p><div class="task-actions"><button class="btn" data-go="evidence" type="button">提交匹配</button></div></div></section>
-    <section class="screen" id="evidence"><div class="task-top"><div><h3 class="task-job-title">AI产品 · 微任务体验</h3><p class="subtitle">任务 4 / 5 · 信息分析题</p></div><div class="task-progress">100%<div class="bar"><span style="width:100%"></span></div></div></div><div class="question"><h2>请阅读以下用户访谈记录，选择你认为最值得关注的 3 条信息。</h2><div class="evidence-grid"><article class="material"><b>访谈记录（节选）</b><ul><li>用户 A：我第一次打开产品时，不知道文件应该从哪里导入……</li><li>用户 B：AI 回答有时很慢，而且我已经上传了文档，它还是继续问我问题……</li><li>用户 C：我最想要的是能够记住历史聊天记录……</li><li>用户 D：整体体验不错，但我比较在意稳定性……</li></ul></article><div><label class="check-option"><input type="checkbox" /> 用户不知道如何导入文件</label><label class="check-option"><input type="checkbox" /> AI 回答有时不准确</label><label class="check-option"><input type="checkbox" /> 用户希望历史记录可被保存</label><label class="check-option"><input type="checkbox" /> 页面加载速度较慢</label><label class="check-option"><input type="checkbox" /> 历史记录不容易找到</label></div></div><div class="task-actions"><button class="btn" data-go="open" type="button">提交选择</button></div></div></section>
-    <section class="screen" id="open"><div class="task-top"><div><h3 class="task-job-title">AI产品 · 微任务体验</h3><p class="subtitle">最后一步 · 补充你的思考</p></div><div class="task-progress">100%<div class="bar"><span style="width:100%"></span></div></div></div><div class="question"><h2>如果你是产品经理，接下来你会采取什么行动？</h2><p class="subtitle">请用 1–3 句话说明你的想法。可以从验证问题、制定方案、优先级调整等角度思考。</p><textarea id="openAnswer" placeholder="输入你的回答……" style="height:190px;margin:20px 0 28px"></textarea><div class="task-actions"><button class="btn" id="submitTaskBtn" type="button">提交回答</button></div></div></section>
+    <section class="screen" id="choice"><div class="task-top"><div><h3 class="task-job-title">AI产品 · 微任务体验</h3><p class="subtitle">任务 1 / 5 · 选择题</p></div><div class="task-progress">25%<div class="bar"><span style="width:25%"></span></div></div></div><div class="question"><div class="question-dropdown question-dropdown--chat"><div class="question-dropdown__head"><span class="question-dropdown__meta">Mia｜产品负责人  09:30</span><span class="question-dropdown__hint">下滑查看更多</span></div><div class="question-dropdown__body" tabindex="0"><div class="scenario"><b>情境说明</b><br>你正在负责一款 AI 办公产品，近期团队收到了多条用户反馈，请根据这些信息做出判断。</div><h2>基于以上信息，你认为当前最值得优先解决的问题是什么？</h2></div></div><div class="options single-select"><button class="option" type="button">A. 新用户注册流程复杂</button><button class="option" type="button">B. AI 回答不准确</button><button class="option" type="button">C. 文件导入功能不稳定</button><button class="option" type="button">D. 页面加载速度较慢</button></div><div class="task-actions"><button class="btn" data-go="ranking" type="button">下一题</button></div></div></section>
+    <section class="screen" id="ranking"><div class="task-top"><div><h3 class="task-job-title">AI产品 · 微任务体验</h3><p class="subtitle">任务 2 / 5 · 排序题</p></div><div class="task-progress">50%<div class="bar"><span style="width:50%"></span></div></div></div><div class="question"><div class="question-dropdown"><div class="question-dropdown__head"><span class="question-dropdown__meta">题目说明</span><span class="question-dropdown__hint">下滑查看更多</span></div><div class="question-dropdown__body" tabindex="0"><h2>请按照你认为的优先级重新排序</h2><p class="subtitle">请将卡片拖动到合适的位置，最优先处理的问题放在最上方。</p></div></div><div class="ranking" id="rankingList"><div class="sort-item" draggable="true"><span class="handle">⠿</span><span>用户无法完成注册</span></div><div class="sort-item" draggable="true"><span class="handle">⠿</span><span>AI 回答不准确</span></div><div class="sort-item" draggable="true"><span class="handle">⠿</span><span>文件导入失败率高</span></div><div class="sort-item" draggable="true"><span class="handle">⠿</span><span>页面加载时间过长</span></div></div><p class="drag-tip">⠿ 按住卡片并上下拖动以调整优先级</p><div class="task-actions"><button class="btn" data-go="category" type="button">确认顺序</button></div></div></section>
+    <section class="screen" id="category"><div class="task-top"><div><h3 class="task-job-title">AI产品 · 微任务体验</h3><p class="subtitle">任务 3 / 5 · 连线匹配题</p></div><div class="task-progress">75%<div class="bar"><span style="width:75%"></span></div></div></div><div class="question"><div class="question-dropdown"><div class="question-dropdown__head"><span class="question-dropdown__meta">题目说明</span><span class="question-dropdown__hint">下滑查看更多</span></div><div class="question-dropdown__body" tabindex="0"><h2>请将以下用户反馈与对应的问题类别连线</h2><p class="subtitle">先点击左侧一条反馈，再点击右侧最匹配的类别。</p></div></div><div class="matching-board" id="matchingBoard"><svg class="match-lines" id="matchLines" aria-hidden="true"></svg><div class="match-column"><h3>用户反馈</h3><button class="match-item source" type="button" data-source="导入文件"><span>不知道如何导入文件</span></button><button class="match-item source" type="button" data-source="速度"><span>感觉输出结果偏慢</span></button><button class="match-item source" type="button" data-source="准确性"><span>AI 回答有时不准确</span></button><button class="match-item source" type="button" data-source="限制"><span>上传文件大小有限制</span></button><button class="match-item source" type="button" data-source="建议"><span>希望增加自动总结</span></button><button class="match-item source" type="button" data-source="记录"><span>打不开聊天记录</span></button></div><div class="match-column"><h3>问题类别</h3><button class="match-item target" type="button" data-target="功能问题">功能问题</button><button class="match-item target" type="button" data-target="体验问题">体验问题</button><button class="match-item target" type="button" data-target="新需求 / 建议">新需求 / 建议</button></div></div><p class="match-tip">已连线的反馈可再次点击，重新选择匹配类别。</p><div class="task-actions"><button class="btn" data-go="evidence" type="button">提交匹配</button></div></div></section>
+    <section class="screen" id="evidence"><div class="task-top"><div><h3 class="task-job-title">AI产品 · 微任务体验</h3><p class="subtitle">任务 4 / 5 · 信息分析题</p></div><div class="task-progress">100%<div class="bar"><span style="width:100%"></span></div></div></div><div class="question"><div class="question-dropdown"><div class="question-dropdown__head"><span class="question-dropdown__meta">阅读材料</span><span class="question-dropdown__hint">下滑查看更多</span></div><div class="question-dropdown__body" tabindex="0"><h2>请阅读以下用户访谈记录，选择你认为最值得关注的 3 条信息。</h2><article class="material"><b>访谈记录（节选）</b><ul><li>用户 A：我第一次打开产品时，不知道文件应该从哪里导入……</li><li>用户 B：AI 回答有时很慢，而且我已经上传了文档，它还是继续问我问题……</li><li>用户 C：我最想要的是能够记住历史聊天记录……</li><li>用户 D：整体体验不错，但我比较在意稳定性……</li></ul></article></div></div><div class="evidence-grid"><div><label class="check-option"><input type="checkbox" /> 用户不知道如何导入文件</label><label class="check-option"><input type="checkbox" /> AI 回答有时不准确</label><label class="check-option"><input type="checkbox" /> 用户希望历史记录可被保存</label><label class="check-option"><input type="checkbox" /> 页面加载速度较慢</label><label class="check-option"><input type="checkbox" /> 历史记录不容易找到</label></div></div><div class="task-actions"><button class="btn" data-go="open" type="button">提交选择</button></div></div></section>
+    <section class="screen" id="open"><div class="task-top"><div><h3 class="task-job-title">AI产品 · 微任务体验</h3><p class="subtitle">最后一步 · 补充你的思考</p></div><div class="task-progress">100%<div class="bar"><span style="width:100%"></span></div></div></div><div class="question"><div class="question-dropdown"><div class="question-dropdown__head"><span class="question-dropdown__meta">开放题</span><span class="question-dropdown__hint">下滑查看更多</span></div><div class="question-dropdown__body" tabindex="0"><h2>如果你是产品经理，接下来你会采取什么行动？</h2><p class="subtitle">请用 1–3 句话说明你的想法。可以从验证问题、制定方案、优先级调整等角度思考。</p></div></div><textarea id="openAnswer" placeholder="输入你的回答……" maxlength="500"></textarea><div class="task-actions"><button class="btn" id="submitTaskBtn" type="button">提交回答</button></div></div></section>
     <section class="screen" id="analyze2"><div class="loading"><div class="loading-icon">✦</div><h1>AI 正在分析你的任务表现</h1><p class="subtitle">正在基于你的回答，评估岗位匹配与能力表现。</p><div class="bar"><span id="analyze2Bar" style="width:0"></span></div><b id="analyze2Pct">0%</b><div class="loading-list"><div class="done">理解你的题目内容</div><div class="done">评估你的判断方式</div><div id="analyze2Step3">○ 生成个性化反馈报告</div></div><button class="btn" id="viewReportBtn" style="margin:32px auto 0" type="button" disabled>正在生成报告…</button></div></section>
     <section class="screen" id="report"><div class="report"><div class="report-header"><div><button class="back" data-go="growth" type="button">← 返回</button><h1 id="reportJobTitle">AI产品 · 职业体验报告</h1></div><button class="btn ghost" type="button">导出报告</button></div><article class="summary"><div class="score">本轮证据较充分<small>综合判断</small></div><div><h2>你在用户理解和问题拆解方面表现较好</h2><p class="subtitle" id="reportSummary">较适合从产品视角进入 AI 行业。你的表现说明你具备一定的岗位适配潜力，但在优先级判断上仍可进一步加强。</p></div></article><div class="report-grid"><section class="section"><h3>岗位能力对照</h3><div class="radar-wrap"><div class="radar"><svg viewBox="0 0 260 245" aria-label="叠加双雷达图"><g fill="none" stroke="#aaa" stroke-width="1"><polygon points="130,18 235,93 195,215 65,215 25,93"/><polygon points="130,51 202,103 177,186 83,186 58,103"/><polygon points="130,84 170,113 159,157 101,157 90,113"/><line x1="130" y1="18" x2="130" y2="215"/><line x1="25" y1="93" x2="195" y2="215"/><line x1="235" y1="93" x2="65" y2="215"/></g><polygon points="130,30 220,97 180,204 70,204 37,98" fill="rgba(30,30,30,.12)" stroke="#1e1e1e" stroke-width="3"/><polygon points="130,56 190,112 164,177 86,184 70,112" fill="rgba(130,130,130,.18)" stroke="#777" stroke-width="3"/><g font-size="11" fill="#222"><text x="104" y="12">问题拆解</text><text x="215" y="91">用户理解</text><text x="180" y="231">证据判断</text><text x="15" y="231">优先级决策</text><text x="-2" y="91">沟通表达</text></g></svg></div><div class="legend"><span><i></i>岗位要求</span><span><i class="mine"></i>我的情况</span><p>我的情况由个人信息 + 任务表现综合生成</p></div></div></section><section class="section"><h3>你的优势</h3><div class="insight"><b>用户理解较强</b><br>你能从任务中准确识别出用户真正遇到的问题。</div><div class="insight"><b>沟通表达较清晰</b><br>你的回答结构较明确，能够解释判断依据。</div><h3 style="margin-top:22px">值得加强</h3><div class="insight"><b>优先级决策</b><br>在资源有限时的取舍逻辑仍可加强。</div><div class="insight"><b>证据判断</b><br>建议练习基于信息证据做决策。</div></section></div><div class="report-grid"><section class="section"><h3>AI 判断依据</h3><ul class="basis" id="reportBasis"><li>你在排序题中优先选择了解决高频核心问题。</li><li>你能从访谈记录中提取关键用户痛点。</li><li>你的开放回答体现出一定的产品思路，但缺少更明确的优先级标准。</li></ul></section><section class="section"><h3>下一步建议</h3><p id="reportNextStep"><b>继续探索：</b>继续体验其他 AI 岗位，比较你在不同岗位中的表现差异。</p></section></div><div class="report-actions"><button class="btn ghost" data-go="roles" type="button">体验其他岗位</button><button class="btn" data-go="growth" type="button">查看成长轨迹</button></div></div></section>
-    <section class="screen" id="growth"><h1>我的职业探索轨迹</h1><p class="subtitle">记录你的每一次岗位体验与能力成长。</p><div class="tabs"><button class="tab active" type="button">全部岗位</button><button class="tab" type="button">已完成</button><button class="tab" type="button">未体验</button></div><div class="track-list" id="growthList"></div><section class="trend"><h2>能力变化趋势</h2><div class="trend-box"><svg viewBox="0 0 800 190" preserveAspectRatio="none"><polyline points="20,155 210,125 400,138 590,78 780,52" fill="none" stroke="#222" stroke-width="4"/><g fill="#222"><circle cx="20" cy="155" r="5"/><circle cx="210" cy="125" r="5"/><circle cx="400" cy="138" r="5"/><circle cx="590" cy="78" r="5"/><circle cx="780" cy="52" r="5"/></g></svg></div><div class="ability"><span>问题拆解：明显提升</span><span>用户理解：持续提升</span><span>证据判断：稳步提升</span><span>优先级决策：明显提升</span><span>沟通表达：持续提升</span></div></section><div class="report-actions"><button class="btn ghost" data-go="choice" type="button">重新挑战已完成岗位</button><button class="btn" data-go="roles" type="button">继续体验未完成岗位</button></div></section>
+    <section class="screen" id="growth">
+      <article class="growth-page" aria-label="我的职业探索轨迹">
+        <header class="growth-hero">
+          <div class="growth-title-row">
+            <img class="growth-sparkle growth-sparkle--left" src="assets/growth/sparkle-left.svg" alt="" width="24" height="24" />
+            <h1>我的职业探索轨迹</h1>
+            <img class="growth-sparkle growth-sparkle--right" src="assets/growth/sparkle-right.svg" alt="" width="24" height="24" />
+          </div>
+          <p class="growth-subtitle">每一步探索，都是通往理想职业的成长印记</p>
+        </header>
+
+        <div class="growth-roadmap">
+          <div class="growth-roadmap-inner">
+            <div class="growth-path" aria-hidden="true">
+              <img src="assets/growth/line-primary.png" alt="" />
+              <img class="growth-path-secondary" src="assets/growth/line-secondary.png" alt="" />
+            </div>
+
+            <article class="growth-milestone">
+              <div class="growth-sketch growth-sketch--start">
+                <img src="assets/growth/sketch-start.png" alt="起点站插画：背包与指南针" />
+              </div>
+              <div class="growth-pin"><img src="assets/growth/pin-purple.svg" alt="" width="32" height="32" /></div>
+              <div class="growth-card">
+                <div class="growth-card-head">
+                  <span class="growth-card-icon growth-card-icon--gray"><img src="assets/growth/icon-flag.svg" alt="" width="20" height="20" /></span>
+                  <span class="growth-badge growth-badge--gray">初登仕途</span>
+                </div>
+                <p class="growth-card-meta">2020.09.01 · 起点站</p>
+                <h3 class="growth-card-title">清华大学</h3>
+                <p class="growth-card-desc">进入清华大学美术学院，开始探索艺术与技术间的融合</p>
+              </div>
+            </article>
+
+            <article class="growth-milestone">
+              <div class="growth-sketch growth-sketch--station1">
+                <img src="assets/growth/sketch-station1.png" alt="第一站插画：绘图桌" />
+              </div>
+              <div class="growth-pin"><img src="assets/growth/pin-green.svg" alt="" width="32" height="32" /></div>
+              <div class="growth-card">
+                <div class="growth-card-head">
+                  <span class="growth-card-icon growth-card-icon--green"><img src="assets/growth/icon-clipboard.svg" alt="" width="20" height="20" /></span>
+                  <span class="growth-badge growth-badge--green">适配潜力高</span>
+                </div>
+                <p class="growth-card-meta">第一站 · 已完成</p>
+                <h3 class="growth-card-title">AI 产品经理</h3>
+                <p class="growth-card-desc">挑战用户需求模型拆解微任务，展现逻辑与产品思维</p>
+              </div>
+            </article>
+
+            <article class="growth-milestone">
+              <div class="growth-sketch growth-sketch--station2">
+                <img src="assets/growth/sketch-station2.png" alt="第二站插画：笔记本与咖啡" />
+              </div>
+              <div class="growth-pin"><img src="assets/growth/pin-yellow.svg" alt="" width="32" height="32" /></div>
+              <div class="growth-card">
+                <div class="growth-card-head">
+                  <span class="growth-card-icon growth-card-icon--yellow"><img src="assets/growth/icon-trending.svg" alt="" width="20" height="20" /></span>
+                  <span class="growth-badge growth-badge--yellow">值得继续探索</span>
+                </div>
+                <p class="growth-card-meta">第二站 · 已完成</p>
+                <h3 class="growth-card-title">AI 产品运营</h3>
+                <p class="growth-card-desc">分析裂变传播与数据流失微任务，掌握精细化用户策略</p>
+              </div>
+            </article>
+
+            <article class="growth-milestone">
+              <div class="growth-sketch growth-sketch--station3">
+                <img src="assets/growth/sketch-station3.png" alt="第三站插画：笔记本电脑" />
+              </div>
+              <div class="growth-pin"><img src="assets/growth/pin-blue.svg" alt="" width="32" height="32" /></div>
+              <div class="growth-card">
+                <div class="growth-card-head">
+                  <span class="growth-card-icon growth-card-icon--blue"><img src="assets/growth/icon-compass.svg" alt="" width="20" height="20" /></span>
+                  <span class="growth-badge growth-badge--blue">继续探索</span>
+                </div>
+                <p class="growth-card-meta">第三站 · 现在</p>
+                <h3 class="growth-card-title">未来规划中</h3>
+                <p class="growth-card-desc">发现兴趣锚点，锁定 AI 时代最适合你的独创职业方向</p>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <section class="growth-records">
+          <h2>AI 岗位探索记录</h2>
+          <p class="growth-records-sub">把好奇心变成下一步行动</p>
+          <div class="growth-record-grid" id="growthList"></div>
+        </section>
+      </article>
+    </section>
 
     <div class="drawer-shade" id="drawerShade"></div><aside class="drawer" id="drawer"><div class="drawer-head"><b>我的</b><button class="close" id="drawerClose" type="button">×</button></div><div class="avatar"><img src="assets/profile-avatar.jpg" alt="小途头像" /></div><h2 style="margin-bottom:2px">探索者</h2><p class="profile-id" id="drawerSessionId">会话加载中…</p><ul class="drawer-menu"><li data-go="roles">我的岗位</li><li data-go="growth">我的报告</li><li>我的收藏</li><li>设置</li><li>帮助与反馈</li><li class="logout">退出登录</li></ul></aside>
   </main>
-  <script src="js/app.js"></script>
+  <script src="js/app.js?v=growth-fix2"></script>
 </body>
 </html>

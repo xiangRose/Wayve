@@ -24,7 +24,8 @@ spring:
 
 app:
   demo-session-id: 00000000-0000-4000-8000-000000000001
-  cors-origins: http://localhost:5173,http://127.0.0.1:5173
+  front-dir: front
+  cors-origins: http://localhost:5173,http://127.0.0.1:5173,http://localhost:3001,http://127.0.0.1:3001
   prompts-dir: AI/prompts
   ai:
     enabled: false

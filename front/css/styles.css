@@ -119,11 +119,11 @@
     .fan-card .btn { width:100%; margin-top:auto; padding:10px 8px; }
     .task-top { display:flex; justify-content:space-between; align-items:flex-start; border-bottom:2px solid var(--ink); padding-bottom:22px; margin-bottom:26px; }
     .task-top h3 { font-size:18px; }
-    .task-progress { width:230px; text-align:right; }
+    .task-progress { width:230px; text-align:center; }
     .task-progress .bar { width:230px; height:10px; margin:7px 0 0 auto; }
     .scenario { background:var(--soft); border:1.5px solid var(--ink); padding:14px; margin:15px 0 28px; }
     .question { max-width:800px; margin:auto; }
-    .options { display:grid; gap:10px; margin:22px 0 30px; }
+    .options { display:grid; gap:10px; margin:30px 0 30px; }
     .option { border:2px solid var(--ink); padding:14px; background:#fff; text-align:left; }
     .option.selected { background:var(--ink); color:white; }
     .task-actions { display:flex; justify-content:flex-end; }
@@ -349,7 +349,7 @@
     .nav .links button.active::after { content:""; position:absolute; left:50%; bottom:-5px; width:34px; height:5px; border-radius:99px; background:#aac393; transform:translateX(-50%); }
     .nav .links button[data-nav="home"].active::after { background:#aac393; }
     .nav .links button[data-nav="roles"].active::after { background:#ed9ab8; }
-    .nav .links button[data-nav="growth"].active::after { background:#78c8d0; }
+    .nav .links button[data-nav="growth"].active::after { background:#aac393; }
     .figma-report-return { transform:translateY(-24px); margin-bottom:1px; }
     .profile-trigger img,.figma-user img { border-radius:47% 53% 45% 55% / 52% 45% 55% 48%; object-fit:cover; object-position:center 30%; }
     .avatar { overflow:hidden; padding:0; background:#f7c8d9; border-radius:47% 53% 45% 55% / 52% 45% 55% 48%; }
@@ -448,6 +448,7 @@
     @media (prefers-reduced-motion:reduce) { .intro-wayve * { animation:none !important; opacity:1; }.intro-wayve-main-path,.intro-wayve-tail-path { stroke-dashoffset:0; } }
 
     /* Microtask workspace: adapted from Figma node 132:878. */
+    :is(#choice,#ranking,#category,#evidence,#open) { --microtask-shift-x:clamp(40px,5vw,80px); }
     :is(#previewNotice,#choice,#ranking,#category,#evidence,#open,#analyze2) { position:relative; isolation:isolate; padding:0 clamp(28px,6vw,90px) 40px; overflow-y:auto; background:#fff; }
     :is(#previewNotice,#choice,#ranking,#category,#evidence,#open,#analyze2)::before { content:""; position:absolute; z-index:-1; top:50%; left:50%; width:min(1380px,100vw); aspect-ratio:1280 / 679; transform:translate(-50%,-46%); background:url("../assets/microtask-laptop-clean.jpg") center / contain no-repeat; pointer-events:none; }
     :is(#previewNotice,#choice,#ranking,#category,#evidence,#open,#analyze2) > * { position:relative; z-index:1; }
@@ -468,9 +469,9 @@
     #analyze2 .loading { width:min(620px,55vw); min-height:0; margin:clamp(154px,21vh,208px) auto 0; padding:36px; border:1.5px solid #e5f2e8; border-radius:16px; background:rgba(255,255,255,.88); }
     #analyze2 .loading-icon { background:#d8f1e8; border-color:#20232a; }
     /* Keep the analysis result state calm and free of the laptop backdrop. */
-    #analyze2 { display:grid; place-items:center; padding:40px 28px; background-color:#fff; background-image:radial-gradient(circle at 1px 1px,rgba(32,35,42,.075) 1px,transparent 1.1px); background-size:22px 22px; }
+    #analyze2.active { display:grid; place-items:center; padding:40px 28px; background-color:#fff; background-image:radial-gradient(circle at 1px 1px,rgba(32,35,42,.075) 1px,transparent 1.1px); background-size:22px 22px; }
     #analyze2::before { content:none; }
-    #analyze2 .loading { width:min(620px,100%); margin:0; padding:0; border:0; border-radius:0; background:transparent; }
+    #analyze2.active .loading { width:min(620px,100%); margin:0; padding:0; border:0; border-radius:0; background:transparent; }
 
     @media (max-width:850px) {
       :is(#previewNotice,#choice,#ranking,#category,#evidence,#open,#analyze2) { padding:118px 18px 34px; }
@@ -485,12 +486,10 @@
     /* Desktop task content sits inside the laptop screen rather than on top of it. */
     @media (min-width:851px) {
       :is(#previewNotice,#choice,#ranking,#category,#evidence,#open)::before { top:-58px; width:min(1560px,104vw); transform:translateX(-50%); }
-      :is(#choice,#ranking,#category,#evidence,#open) .task-top { width:min(740px,52vw); margin:clamp(84px,11vh,112px) auto 10px; padding:0 0 8px; border-bottom:1px solid rgba(32,35,42,.15); background:transparent; }
-      :is(#choice,#ranking,#category,#evidence,#open) .question,#category .question { width:min(740px,52vw); margin:0 auto 28px; }
-      #choice .scenario { margin:0 0 12px; padding:0; border:0; border-radius:0; background:transparent; color:#343238; line-height:1.55; }
-      #choice .scenario b { display:none; }
-      #choice .question::before { content:"Mia｜产品负责人  09:30"; display:block; margin:0 0 10px; color:#20232a; font-size:16px; font-weight:800; }
-      #choice .question h2 { margin-bottom:16px; font-size:20px; line-height:1.45; }
+      :is(#choice,#ranking,#category,#evidence,#open) .task-top { width:min(740px,52vw); margin:clamp(84px,11vh,112px) auto 10px; margin-left:calc(50% - min(370px,26vw) + var(--microtask-shift-x,0px)); margin-right:auto; padding:0 0 8px; border-bottom:1px solid rgba(32,35,42,.15); background:transparent; }
+      :is(#choice,#ranking,#category,#evidence,#open) .question,#category .question { width:min(740px,52vw); margin:0 auto 28px; margin-left:calc(50% - min(370px,26vw) + var(--microtask-shift-x,0px)); margin-right:auto; }
+      #choice .question-dropdown--chat .question-dropdown__meta { font-size:16px; }
+      :is(#choice,#ranking,#category,#evidence,#open) .question-dropdown { border-color:#e5f2e8; }
       :is(#choice,#ranking,#category,#evidence,#open) .options { margin:16px 0 20px; }
       :is(#choice,#ranking,#category,#evidence,#open) .option,:is(#choice,#ranking,#category,#evidence,#open) .sort-item,:is(#choice,#ranking,#category,#evidence,#open) .match-item { min-height:48px; padding:10px 14px; }
       :is(#choice,#ranking,#category,#evidence,#open) .task-actions { margin-top:12px; }
@@ -550,12 +549,262 @@
       #profile1 .form,#profile2 .form,#profile3 .form { width:100%; height:calc(100dvh - 100px); padding:68px 24px 26px; }
     }
 
-    /* Temporary full-page growth-journey visual. */
-    #growth.active {
-      height:100dvh;
+    /* Figma node 108:561 — 轨迹页 */
+    #growth {
       padding:0;
-      overflow:hidden;
-      background:#fff url("../assets/growth-page-placeholder.png") center / contain no-repeat;
+      background:#fff;
+      background-image:none;
     }
-    #growth.active > * { display:none; }
-    .shell:has(#growth.active) > .nav { display:none; }
+    #growth.active {
+      display:block;
+      overflow-y:auto;
+    }
+    .growth-page {
+      width:min(1280px,calc(100% - 48px));
+      margin:0 auto;
+      padding:8px 0 72px;
+      color:#2e2d2b;
+    }
+    .growth-hero {
+      text-align:center;
+      padding:0 0 28px;
+    }
+    .growth-title-row {
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:18px;
+    }
+    .growth-title-row h1 {
+      margin:0;
+      font-size:clamp(32px,3.4vw,48px);
+      font-weight:900;
+      letter-spacing:-.02em;
+      color:#2e2d2b;
+    }
+    .growth-sparkle {
+      flex:0 0 auto;
+      width:24px;
+      height:24px;
+      object-fit:contain;
+    }
+    .growth-subtitle {
+      margin:18px auto 0;
+      max-width:600px;
+      color:#7a7873;
+      font-size:16px;
+      line-height:1.5;
+    }
+    .growth-roadmap {
+      padding:12px 0 48px;
+    }
+    .growth-roadmap-inner {
+      position:relative;
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:24px;
+      align-items:start;
+    }
+    .growth-path {
+      position:absolute;
+      left:12%;
+      right:12%;
+      top:234px;
+      height:4px;
+      pointer-events:none;
+    }
+    .growth-path img {
+      position:absolute;
+      left:0;
+      top:0;
+      width:100%;
+      height:4px;
+      object-fit:fill;
+    }
+    .growth-path-secondary {
+      opacity:.3;
+    }
+    .growth-milestone {
+      display:grid;
+      grid-template-rows:auto auto 1fr;
+      align-items:start;
+      min-height:472px;
+    }
+    .growth-sketch {
+      height:220px;
+      display:flex;
+      align-items:flex-end;
+      justify-content:center;
+      overflow:hidden;
+    }
+    .growth-sketch img {
+      max-width:100%;
+      height:auto;
+      object-fit:contain;
+      pointer-events:none;
+    }
+    .growth-sketch--start img { max-height:204px; }
+    .growth-sketch--station1 img { max-height:176px; }
+    .growth-sketch--station2 img { max-height:194px; }
+    .growth-sketch--station3 img { max-height:227px; }
+    .growth-pin {
+      display:flex;
+      justify-content:center;
+      padding:8px 0 16px;
+    }
+    .growth-pin img {
+      width:32px;
+      height:32px;
+      object-fit:contain;
+    }
+    .growth-card {
+      margin:0 auto;
+      width:min(260px,100%);
+      padding:18px;
+      border:1.5px solid #e5e1d8;
+      border-radius:20px;
+      background:#fff;
+      box-shadow:0 8px 8px rgba(0,0,0,.02);
+    }
+    .growth-card-head {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:8px;
+      margin-bottom:12px;
+    }
+    .growth-card-icon {
+      display:grid;
+      place-items:center;
+      width:40px;
+      height:40px;
+      border-radius:12px;
+    }
+    .growth-card-icon img {
+      width:20px;
+      height:20px;
+      object-fit:contain;
+    }
+    .growth-card-icon--gray { background:#f3f2f7; }
+    .growth-card-icon--green { background:#ebf3e6; }
+    .growth-card-icon--yellow { background:#fdf7e7; }
+    .growth-card-icon--blue { background:#eef5fa; }
+    .growth-badge {
+      padding:4px 10px;
+      border-radius:6px;
+      font-size:11px;
+      font-weight:700;
+      line-height:1.2;
+    }
+    .growth-badge--gray { background:#f3f2f7; color:#8f89a5; }
+    .growth-badge--green { background:#ebf3e6; color:#5b9a6f; }
+    .growth-badge--yellow { background:#fdf7e7; color:#e5b25d; }
+    .growth-badge--blue { background:#eef5fa; color:#5d8ead; }
+    .growth-card-meta {
+      margin:0;
+      color:#7a7873;
+      font-size:12px;
+      font-weight:700;
+    }
+    .growth-card-title {
+      margin:4px 0 10px;
+      font-size:18px;
+      font-weight:900;
+      color:#2e2d2b;
+    }
+    .growth-card-desc {
+      margin:0;
+      color:#7a7873;
+      font-size:13px;
+      line-height:1.4;
+    }
+    .growth-records {
+      padding-top:8px;
+    }
+    .growth-records h2 {
+      margin:0;
+      font-size:clamp(28px,2.6vw,36px);
+      font-weight:900;
+      color:#2e2d2b;
+    }
+    .growth-records-sub {
+      margin:12px 0 28px;
+      color:#8b857d;
+      font-size:13px;
+    }
+    .growth-record-grid {
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:20px;
+    }
+    .growth-record-card {
+      position:relative;
+      min-height:142px;
+      padding:20px 20px 16px 36px;
+      border:1px solid #e7dfd5;
+      border-radius:18px;
+      background:#fff;
+    }
+    .growth-record-accent {
+      position:absolute;
+      left:20px;
+      top:20px;
+      width:12px;
+      height:58px;
+      border-radius:6px;
+    }
+    .growth-record-card--purple .growth-record-accent { background:#b996d9; }
+    .growth-record-card--green .growth-record-accent { background:#72b48c; }
+    .growth-record-card--coral .growth-record-accent { background:#e99772; }
+    .growth-record-card h3 {
+      margin:0 0 8px;
+      font-size:18px;
+      font-weight:700;
+      color:#2e2d2b;
+    }
+    .growth-record-status {
+      display:inline-block;
+      margin-bottom:12px;
+      padding:6px 14px;
+      border-radius:14px;
+      font-size:12px;
+      font-weight:700;
+    }
+    .growth-record-card--purple .growth-record-status { background:#f1e8f8; color:#b996d9; }
+    .growth-record-card--green .growth-record-status { background:#e8f3eb; color:#72b48c; }
+    .growth-record-card--coral .growth-record-status { background:#fbece5; color:#e99772; }
+    .growth-record-desc {
+      margin:0;
+      color:#7a7873;
+      font-size:13px;
+      line-height:1.45;
+    }
+    .growth-record-action {
+      position:absolute;
+      right:20px;
+      bottom:16px;
+      padding:6px 16px;
+      border:0;
+      border-radius:13px;
+      background:#2e2d2b;
+      color:#fff;
+      font-size:12px;
+      font-weight:700;
+      cursor:pointer;
+    }
+    .growth-record-action:hover { opacity:.88; }
+    @media (max-width:1100px) {
+      .growth-roadmap-inner { grid-template-columns:repeat(2,minmax(0,1fr)); gap:32px 20px; }
+      .growth-path { display:none; }
+      .growth-milestone { min-height:0; }
+      .growth-record-grid { grid-template-columns:1fr; }
+    }
+    @media (max-width:700px) {
+      .growth-page { width:min(100% - 32px,1280px); padding-bottom:48px; }
+      .growth-title-row { gap:10px; }
+      .growth-title-row h1 { font-size:30px; }
+      .growth-sparkle { width:20px; height:20px; }
+      .growth-roadmap-inner { grid-template-columns:1fr; }
+      .growth-sketch { height:180px; }
+      .growth-record-card { padding-right:100px; }
+    }
