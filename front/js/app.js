@@ -1,34 +1,10 @@
-/**
- * app.js — 数据层 + 后端 API（请勿修改，交互逻辑请写在 ui.js）
- */
 (function () {
   'use strict';
 
   const API_BASE =
-    window.location.port === '3000' ? window.location.origin + '/api/v1' : 'http://localhost:3000/api/v1';
+    window.location.port === '3001' ? window.location.origin + '/api/v1' : 'http://localhost:3001/api/v1';
 
   const REC_LABELS = ['优先推荐', '值得体验', '探索方向'];
-
-  const REPORT_CARD_THEMES = [
-    { theme: 'pink', tag: '你的优势', icon: 'hearts.svg' },
-    { theme: 'yellow', tag: '你的优势', icon: 'stairs.svg' },
-    { theme: 'blue', tag: '值得加强', icon: 'seedling.svg' },
-    { theme: 'green', tag: '值得加强', icon: 'diamonds.svg' },
-  ];
-
-  const REPORT_EMPTY = {
-    fitLevel: '待补充',
-    headline: '完成微任务后将生成岗位体验结论。',
-    summary: '暂无报告摘要，请先完成该岗位的微任务体验。',
-    basis: ['暂无判断依据，完成体验后由后端生成。'],
-    boundary: '本报告依据你主动提供的经历和本轮任务中的可观察行为生成，用于职业探索，不是招聘结论或永久能力评价。',
-    cards: [
-      { title: '暂无优势项', desc: '完成体验后展示。' },
-      { title: '暂无优势项', desc: '完成体验后展示。' },
-      { title: '暂无待加强项', desc: '完成体验后展示。' },
-      { title: '暂无待加强项', desc: '完成体验后展示。' },
-    ],
-  };
 
   const state = {
     sessionId: null,
@@ -38,10 +14,68 @@
     currentJobId: 'ai_product',
     taskSessionId: null,
     completedJobs: [],
-    lastReport: null,
   };
 
   const screens = document.querySelectorAll('.screen');
+  const analysisProgress = {};
+
+  const analysisConfig = {
+    profile: {
+      barId: 'analyze1Bar', pctId: 'analyze1Pct', stepId: 'analyze1Step3', buttonId: 'viewRecommendBtn',
+      pendingLabel: '正在生成结果…', doneLabel: '查看分析结果', doneStep: '匹配适合的岗位方向',
+    },
+    task: {
+      barId: 'analyze2Bar', pctId: 'analyze2Pct', stepId: 'analyze2Step3', buttonId: 'viewReportBtn',
+      pendingLabel: '正在生成报告…', doneLabel: '查看体验报告', doneStep: '生成个性化反馈报告',
+    },
+  };
+
+  function setAnalysisProgress(key, value) {
+    const config = analysisConfig[key];
+    const bar = document.getElementById(config.barId);
+    const pct = document.getElementById(config.pctId);
+    if (bar) bar.style.width = value + '%';
+    if (pct) pct.textContent = value + '%';
+    analysisProgress[key] = { ...(analysisProgress[key] || {}), value };
+  }
+
+  function startAnalysisProgress(key) {
+    const config = analysisConfig[key];
+    const previous = analysisProgress[key];
+    if (previous?.timer) window.clearInterval(previous.timer);
+    const button = document.getElementById(config.buttonId);
+    const step = document.getElementById(config.stepId);
+    if (button) { button.disabled = true; button.textContent = config.pendingLabel; }
+    if (step) { step.classList.remove('done'); step.textContent = '○ ' + config.doneStep; }
+    setAnalysisProgress(key, 0);
+    const timer = window.setInterval(() => {
+      const current = analysisProgress[key]?.value || 0;
+      if (current >= 92) return;
+      const next = Math.min(92, current + (current < 60 ? 4 : 2));
+      setAnalysisProgress(key, next);
+    }, 110);
+    analysisProgress[key] = { value: 0, timer };
+  }
+
+  function finishAnalysisProgress(key) {
+    const config = analysisConfig[key];
+    const currentState = analysisProgress[key];
+    if (!currentState) return;
+    if (currentState.timer) window.clearInterval(currentState.timer);
+    const timer = window.setInterval(() => {
+      const current = analysisProgress[key]?.value || 0;
+      const next = Math.min(100, current + Math.max(1, Math.ceil((100 - current) / 5)));
+      setAnalysisProgress(key, next);
+      if (next < 100) return;
+      window.clearInterval(timer);
+      const step = document.getElementById(config.stepId);
+      const button = document.getElementById(config.buttonId);
+      if (step) { step.classList.add('done'); step.textContent = config.doneStep; }
+      if (button) { button.disabled = false; button.textContent = config.doneLabel; }
+      analysisProgress[key] = { value: 100, timer: null };
+    }, 70);
+    analysisProgress[key] = { ...(analysisProgress[key] || {}), timer };
+  }
 
   function esc(s) {
     return String(s ?? '')
@@ -71,12 +105,19 @@
 
   function go(id) {
     screens.forEach((s) => s.classList.toggle('active', s.id === id));
+    const navSection = {
+      home: 'home',
+      roles: 'roles', recommend: 'roles', previewNotice: 'roles', profile1: 'roles', profile2: 'roles', profile3: 'roles', analyze1: 'roles', choice: 'roles', ranking: 'roles', category: 'roles', evidence: 'roles', open: 'roles', analyze2: 'roles',
+      growth: 'growth', report: 'growth',
+    }[id];
     document.querySelectorAll('[data-nav]').forEach((n) => {
-      n.classList.toggle('active', n.dataset.nav === id || (id === 'recommend' && n.dataset.nav === 'roles'));
+      n.classList.toggle('active', n.dataset.nav === navSection);
     });
     const active = document.getElementById(id);
     if (active) active.scrollTop = 0;
     window.scrollTo(0, 0);
+    if (id === 'analyze1') startAnalysisProgress('profile');
+    if (id === 'analyze2') startAnalysisProgress('task');
   }
 
   function mapCurrentStatus(label) {
@@ -100,17 +141,17 @@
       name: j.name,
       desc: j.definition || '',
       highlights: (j.specificCompetencies || []).slice(0, 3),
-      taskStatus: j.taskStatus || 'interactive',
+      taskStatus: j.taskStatus || 'preview_only',
     }));
   }
 
   function fallbackJobs() {
     return [
       { jobId: 'ai_product', name: 'AI产品', desc: '定义 AI 产品问题与优先级。', highlights: ['产品规划', '用户研究', '数据分析'], taskStatus: 'interactive' },
-      { jobId: 'ai_ops', name: 'AI运营', desc: '围绕增长与留存设计运营实验。', highlights: ['数据分析', '用户洞察', '运营策略'], taskStatus: 'interactive' },
+      { jobId: 'ai_ops', name: 'AI运营', desc: '围绕增长与留存设计运营实验。', highlights: ['数据分析', '用户洞察', '运营策略'], taskStatus: 'preview_only' },
       { jobId: 'ai_data_eval', name: 'AI数据与评测', desc: '建立评测体系与数据标准。', highlights: ['评测设计', '数据分析', '标准制定'], taskStatus: 'interactive' },
-      { jobId: 'ai_app_dev', name: 'AI应用开发', desc: '将大模型能力集成进产品。', highlights: ['编程能力', '系统设计', '性能优化'], taskStatus: 'interactive' },
-      { jobId: 'ai_ui_design', name: 'UI设计', desc: '把复杂 AI 能力做成可理解的界面体验。', highlights: ['交互设计', '信息架构', '用户研究'], taskStatus: 'interactive' },
+      { jobId: 'ai_app_dev', name: 'AI应用开发', desc: '将大模型能力集成进产品。', highlights: ['编程能力', '系统设计', '性能优化'], taskStatus: 'preview_only' },
+      { jobId: 'ai_ui_design', name: 'AIUI设计', desc: '把复杂 AI 能力做成可理解的界面体验。', highlights: ['交互设计', '信息架构', '用户研究'], taskStatus: 'interactive' },
     ];
   }
 
@@ -118,7 +159,8 @@
     const list = document.getElementById('rolesList');
     if (!list) return;
     list.innerHTML = state.jobs
-      .map((job, i) => (
+      .map((job, i) => {
+        return (
           '<article class="fan-card">' +
           '<span class="fan-number">' + String(i + 1).padStart(2, '0') + '</span>' +
           '<h2>' + esc(job.name) + '</h2>' +
@@ -126,7 +168,8 @@
           '<ul class="fan-list">' + job.highlights.map((t) => '<li>' + esc(t) + '</li>').join('') + '</ul>' +
           '<button class="btn" type="button" data-action="start-job" data-job-id="' + esc(job.jobId) + '">' +
           '开始体验 →</button></article>'
-        ))
+        );
+      })
       .join('');
   }
 
@@ -179,127 +222,62 @@
     if (!job) return;
     const label = job.name + ' · 微任务体验';
     document.querySelectorAll('.task-job-title').forEach((el) => { el.textContent = label; });
-  }
-
-  function splitInsight(text) {
-    const idx = text.indexOf('：');
-    if (idx === -1) return { title: text.slice(0, 12), desc: text };
-    return { title: text.slice(0, idx), desc: text.slice(idx + 1) };
-  }
-
-  function getJobReport(report, jobId) {
-    const jobEvidence = report?.taskEvidenceByJob?.[jobId] || {};
-    const globalGap = report?.gapAnalysis || {};
-    const isTargetJob = globalGap.targetJobId === jobId;
-    return {
-      jobName: jobEvidence.jobName,
-      headline: jobEvidence.headline,
-      comparisonSummary: jobEvidence.comparisonSummary || (isTargetJob ? report?.comparisonSummary : null),
-      fitLevel: jobEvidence.fitLevel,
-      behaviors: jobEvidence.observedBehaviors || [],
-      transferableCapabilities: jobEvidence.transferableCapabilities
-        || (isTargetJob ? globalGap.transferableCapabilities : null)
-        || [],
-      gapsToBuild: jobEvidence.gapsToBuild
-        || (isTargetJob ? globalGap.gapsToBuild : null)
-        || [],
-      boundary: report?.boundaryNotice,
-    };
-  }
-
-  function deriveFitLevel(behaviors, explicit) {
-    if (explicit) return explicit;
-    const strong = behaviors.filter((b) => b.judgment === '充分支持').length;
-    if (strong >= 2) return '高';
-    if (strong >= 1 || behaviors.length >= 2) return '中';
-    return behaviors.length ? '中' : '待补充';
-  }
-
-  function deriveHeadline(jobReport) {
-    if (jobReport.headline) return jobReport.headline;
-    const behaviors = jobReport.behaviors;
-    if (!behaviors.length) return REPORT_EMPTY.headline;
-    const comps = [...new Set(behaviors.map((b) => b.competency).filter(Boolean))].slice(0, 2);
-    return comps.length ? '你在' + comps.join('和') + '方面表现较好。' : REPORT_EMPTY.headline;
-  }
-
-  function buildInsightCards(jobReport) {
-    const strengths = [];
-    const gaps = [];
-    const behaviors = jobReport.behaviors || [];
-
-    behaviors.forEach((b) => {
-      const item = { title: b.competency || '能力表现', desc: b.behavior || b.note || '' };
-      if (b.judgment === '充分支持') strengths.push(item);
-      else gaps.push(item);
-    });
-
-    (jobReport.transferableCapabilities || []).forEach((t) => strengths.push(splitInsight(t)));
-    (jobReport.gapsToBuild || []).forEach((t) => gaps.push(splitInsight(t)));
-
-    const cards = [];
-    for (let i = 0; i < 2; i += 1) {
-      cards.push(strengths[i] || REPORT_EMPTY.cards[i]);
-    }
-    for (let i = 0; i < 2; i += 1) {
-      cards.push(gaps[i] || REPORT_EMPTY.cards[i + 2]);
-    }
-    return cards;
-  }
-
-  function renderReport(report) {
-    const jobId = state.currentJobId;
-    const job = getJob(jobId);
-    const jobReport = report ? getJobReport(report, jobId) : null;
-    const jobName = job?.name || jobReport?.jobName || '未知岗位';
-    const behaviors = jobReport?.behaviors || [];
-    const basis = behaviors.length
-      ? behaviors.map((b) => b.behavior).filter(Boolean)
-      : REPORT_EMPTY.basis;
-    const cards = jobReport ? buildInsightCards(jobReport) : REPORT_EMPTY.cards;
-
-    const setText = (id, text) => {
-      const el = document.getElementById(id);
-      if (el) el.textContent = text || '';
-    };
-
-    setText('reportJobName', jobName);
-    setText('reportFitLevel', jobReport ? deriveFitLevel(behaviors, jobReport.fitLevel) : REPORT_EMPTY.fitLevel);
-    setText('reportHeadline', jobReport ? deriveHeadline(jobReport) : REPORT_EMPTY.headline);
-    setText('reportSummary', jobReport?.comparisonSummary || REPORT_EMPTY.summary);
-    setText('reportBoundary', jobReport?.boundary || REPORT_EMPTY.boundary);
-
-    const heroPlaceholder = document.getElementById('reportHeroPlaceholder');
-    if (heroPlaceholder) heroPlaceholder.textContent = jobName + ' · 报告插图占位';
-
-    const basisEl = document.getElementById('reportBasis');
-    if (basisEl) {
-      basisEl.innerHTML = basis.map((item) => '<li>' + esc(item) + '</li>').join('');
-    }
-
-    const cardsEl = document.getElementById('reportCards');
-    if (!cardsEl) return;
-    cardsEl.innerHTML = cards
-      .map((card, i) => {
-        const theme = REPORT_CARD_THEMES[i];
-        const tag = i < 2 ? '你的优势' : '值得加强';
-        return (
-          '<article class="report-v2-card report-v2-card--' + theme.theme + '">' +
-          '<span class="report-v2-card-tag"><img src="assets/report/' + theme.icon + '" width="22" height="22" alt="" />' +
-          esc(tag) + '</span>' +
-          '<h3>' + esc(card.title) + '</h3>' +
-          '<p>' + esc(card.desc) + '</p>' +
-          '<div class="report-v2-card-illus report-v2-card-illus--placeholder" aria-hidden="true">配图占位</div>' +
-          '</article>'
-        );
-      })
-      .join('');
+    const rt = document.getElementById('reportJobTitle');
+    if (rt) rt.textContent = job.name + ' · 职业体验报告';
+    const figmaJobName = document.getElementById('figmaJobName');
+    if (figmaJobName) figmaJobName.textContent = job.name === 'AI产品' ? 'AI产品经理' : job.name;
   }
 
   function patchReport(report) {
     if (!report) return;
-    state.lastReport = report;
-    renderReport(report);
+    const summary = document.getElementById('reportSummary');
+    if (summary && report.comparisonSummary) summary.textContent = report.comparisonSummary;
+    const figmaSummary = document.getElementById('figmaReportSummary');
+    if (figmaSummary && report.comparisonSummary) figmaSummary.textContent = report.comparisonSummary;
+    const next = document.getElementById('reportNextStep');
+    if (next && report.boundaryNotice) {
+      next.innerHTML = '<b>边界说明：</b>' + esc(report.boundaryNotice);
+    }
+    const figmaNotice = document.getElementById('figmaReportNotice');
+    if (figmaNotice && report.boundaryNotice) figmaNotice.textContent = report.boundaryNotice;
+  }
+
+  function buildFigmaReport() {
+    const host = document.getElementById('report');
+    if (!host || document.getElementById('figmaReport')) return;
+    host.insertAdjacentHTML('beforeend', `
+      <article class="report figma-report" id="figmaReport" aria-label="职业体验报告">
+        <header class="figma-report-nav">
+          <div class="figma-brand"><img src="assets/report/brand.png" alt="试途" /><span>首页</span><span class="active">探索</span><span>轨迹</span></div>
+          <div class="figma-user"><img src="assets/profile-avatar.jpg" alt="小途头像" /><b>小途</b></div>
+        </header>
+        <div class="figma-report-body">
+          <section class="figma-hero">
+            <div class="figma-copy">
+              <div class="figma-report-return"><button class="figma-back" data-go="growth" type="button" aria-label="返回">‹</button><span>▮ 你的职业体验报告</span></div>
+              <p class="figma-eyebrow">你的体验职业是：</p>
+              <h1 id="figmaJobName">AI产品经理</h1>
+              <span class="figma-potential">适配潜力：<b>高</b></span>
+              <p id="figmaReportSummary">你在用户理解和问题拆解方面表现较好。较适合从产品视角进入 AI 行业，但在优先级判断上仍可进一步加强。</p>
+            </div>
+            <img class="figma-hero-art" src="assets/report/hero-workspace.png" alt="AI 产品经理工作场景插画" />
+          </section>
+          <section class="figma-evidence-panel">
+            <h2>🌳 你的岗位能力对照：</h2>
+            <div class="figma-evidence-copy"><h3>AI判断依据</h3><ul id="figmaReportBasis"><li>你在排序题中优先选择了解决高频核心问题。</li><li>你能从访谈记录中提取关键用户痛点。</li><li>你的开放回答体现出一定的产品思路，但缺少更明确的优先级标准。</li></ul><p id="figmaReportNotice" class="figma-notice"></p></div>
+          </section>
+          <section class="figma-advice">
+            <h2>💡 给你的「学习建议」💡</h2>
+            <div class="figma-advice-grid">
+              <article class="figma-advice-card coral"><span>♥　你的优势</span><h3>用户理解较强</h3><p>你能从任务中准确识别出用户真正遇到的问题。</p><img src="assets/report/strength-user.png" alt="用户理解插画" /></article>
+              <article class="figma-advice-card yellow"><span>◢　你的优势</span><h3>沟通表达清晰</h3><p>你的回答结构较明确，能够解释判断依据。</p><img src="assets/report/strength-communication.png" alt="沟通表达插画" /></article>
+              <article class="figma-advice-card blue"><span>●　值得加强</span><h3>优先级决策</h3><p>在资源有限时的取舍逻辑仍可加强。</p><img src="assets/report/improve-priority.png" alt="优先级决策插画" /></article>
+              <article class="figma-advice-card green"><span>◆　值得加强</span><h3>证据判断</h3><p>建议练习基于信息证据做决策。</p><img src="assets/report/improve-evidence.png" alt="证据判断插画" /></article>
+            </div>
+          </section>
+          <div class="figma-report-actions"><button class="figma-secondary" data-go="roles" type="button">体验其他岗位</button><button class="figma-primary" data-go="growth" type="button">查看成长轨迹</button></div>
+        </div>
+      </article>`);
   }
 
   async function initApi() {
@@ -374,27 +352,6 @@
     state.currentJobId = jobId;
     updateTaskTitles(jobId);
 
-    if (jobId !== 'ai_product') {
-      const name = document.getElementById('previewJobName');
-      const desc = document.getElementById('previewJobDesc');
-      if (name) name.textContent = job.name + ' · 预览';
-      if (desc) desc.textContent = job.desc;
-      go('previewNotice');
-      return;
-    }
-    if (window.MvuUI) {
-      const name = document.getElementById('previewJobName');
-      const desc = document.getElementById('previewJobDesc');
-      const copy = document.getElementById('previewJobCopy');
-      const launch = document.getElementById('launchMvuBtn');
-      if (name) name.textContent = 'AI Product · 体验预览';
-      if (desc) desc.textContent = '用 3–5 分钟，在真实的激活与留存问题中做一次产品优先级判断。';
-      if (copy) copy.textContent = '你将先做一个临时决策，再选择两类证据，观察新的事实如何改变取舍，最后保留或修订并提交验证计划。';
-      if (launch) { launch.hidden = false; launch.onclick = () => window.MvuUI.start(state.sessionId); }
-      go('previewNotice');
-      return;
-    }
-
     if (!state.useMock && state.sessionId) {
       try {
         const task = await api('/tasks', {
@@ -428,26 +385,29 @@
       renderGrowth();
     }
     go('analyze2');
+    window.setTimeout(() => finishAnalysisProgress('task'), 1500);
   }
 
   async function loadReport() {
     updateTaskTitles(state.currentJobId);
+    // The report screen should always open immediately. Remote report data is
+    // optional enhancement and must never block the local experience flow.
+    go('report');
     if (!state.useMock && state.sessionId) {
       try {
         const report = await api('/reports/generate', { method: 'POST', headers: apiHeaders() });
         patchReport(report);
       } catch (err) {
         console.warn('报告接口失败', err);
-        renderReport(state.lastReport);
       }
-    } else {
-      renderReport(state.lastReport);
     }
-    go('report');
   }
 
-  function bindApiEvents() {
+  function bindUi() {
     document.addEventListener('click', (e) => {
+      const nav = e.target.closest('[data-go]');
+      if (nav && !nav.closest('#drawer')) go(nav.dataset.go);
+
       const startBtn = e.target.closest('[data-action="start-job"]');
       if (startBtn) startJob(startBtn.dataset.jobId);
 
@@ -456,6 +416,144 @@
         state.currentJobId = reportBtn.dataset.jobId;
         loadReport();
       }
+
+      const drawerGo = e.target.closest('#drawer [data-go]');
+      if (drawerGo) {
+        document.getElementById('drawer').classList.remove('show');
+        document.getElementById('drawerShade').classList.remove('show');
+        go(drawerGo.dataset.go);
+      }
+    });
+
+    document.querySelectorAll('[data-nav]').forEach((b) => {
+      b.addEventListener('click', () => go(b.dataset.nav));
+    });
+
+    document.querySelectorAll('.selectable .chip').forEach((c) => {
+      c.addEventListener('click', () => c.classList.toggle('selected'));
+    });
+
+    document.querySelectorAll('.single-select .option').forEach((o) => {
+      o.addEventListener('click', () => {
+        o.parentElement.querySelectorAll('.option').forEach((x) => x.classList.remove('selected'));
+        o.classList.add('selected');
+      });
+    });
+
+    const rankingList = document.getElementById('rankingList');
+    let draggedItem = null;
+    rankingList.querySelectorAll('.sort-item').forEach((item) => {
+      item.addEventListener('dragstart', () => {
+        draggedItem = item;
+        requestAnimationFrame(() => item.classList.add('dragging'));
+      });
+      item.addEventListener('dragend', () => {
+        item.classList.remove('dragging');
+        rankingList.querySelectorAll('.sort-item').forEach((x) => x.classList.remove('drag-over'));
+        draggedItem = null;
+      });
+      item.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        if (item !== draggedItem) item.classList.add('drag-over');
+      });
+      item.addEventListener('dragleave', () => item.classList.remove('drag-over'));
+      item.addEventListener('drop', (e) => {
+        e.preventDefault();
+        if (!draggedItem || item === draggedItem) return;
+        const before = e.clientY < item.getBoundingClientRect().top + item.offsetHeight / 2;
+        rankingList.insertBefore(draggedItem, before ? item : item.nextSibling);
+        item.classList.remove('drag-over');
+      });
+    });
+
+    const matchingBoard = document.getElementById('matchingBoard');
+    const matchLines = document.getElementById('matchLines');
+    let selectedSource = null;
+    const connections = new Map();
+    const drawConnections = () => {
+      const boardRect = matchingBoard.getBoundingClientRect();
+      matchLines.replaceChildren();
+      connections.forEach((target, source) => {
+        const a = source.getBoundingClientRect();
+        const b = target.getBoundingClientRect();
+        const x1 = a.right - boardRect.left;
+        const y1 = a.top + a.height / 2 - boardRect.top - 36;
+        const x2 = b.left - boardRect.left;
+        const y2 = b.top + b.height / 2 - boardRect.top - 36;
+        const ns = 'http://www.w3.org/2000/svg';
+        const line = document.createElementNS(ns, 'line');
+        const c1 = document.createElementNS(ns, 'circle');
+        const c2 = document.createElementNS(ns, 'circle');
+        line.setAttribute('x1', x1);
+        line.setAttribute('y1', y1);
+        line.setAttribute('x2', x2);
+        line.setAttribute('y2', y2);
+        c1.setAttribute('cx', x1);
+        c1.setAttribute('cy', y1);
+        c1.setAttribute('r', 4);
+        c2.setAttribute('cx', x2);
+        c2.setAttribute('cy', y2);
+        c2.setAttribute('r', 4);
+        matchLines.append(line, c1, c2);
+      });
+    };
+    document.querySelectorAll('.match-item.source').forEach((source) => {
+      source.addEventListener('click', () => {
+        document.querySelectorAll('.match-item.source').forEach((x) => x.classList.remove('selected'));
+        selectedSource = source;
+        source.classList.add('selected');
+      });
+    });
+    document.querySelectorAll('.match-item.target').forEach((target) => {
+      target.addEventListener('click', () => {
+        if (!selectedSource) return;
+        connections.set(selectedSource, target);
+        selectedSource.classList.remove('selected');
+        selectedSource.classList.add('connected');
+        selectedSource = null;
+        drawConnections();
+      });
+    });
+    window.addEventListener('resize', drawConnections);
+
+    const drawer = document.getElementById('drawer');
+    const shade = document.getElementById('drawerShade');
+    const closeDrawer = () => {
+      drawer.classList.remove('show');
+      shade.classList.remove('show');
+    };
+    document.getElementById('profileBtn').onclick = () => {
+      drawer.classList.add('show');
+      shade.classList.add('show');
+    };
+    document.getElementById('drawerClose').onclick = closeDrawer;
+    shade.onclick = closeDrawer;
+
+    const intro = document.getElementById('intro');
+    let introDismissed = false;
+    const dismissIntro = (withRoute) => {
+      if (introDismissed) return;
+      introDismissed = true;
+      if (withRoute) {
+        intro.classList.add('leaving');
+        window.setTimeout(() => intro.classList.add('hide'), 380);
+      } else {
+        intro.classList.add('hide');
+      }
+    };
+    document.getElementById('introEnterBtn').addEventListener('click', (e) => {
+      e.stopPropagation();
+      dismissIntro(true);
+    });
+    document.getElementById('introSkipBtn').addEventListener('click', (e) => {
+      e.stopPropagation();
+      dismissIntro(false);
+    });
+    intro.addEventListener('click', (e) => {
+      if (!e.target.closest('button')) dismissIntro(true);
+    });
+    document.addEventListener('keydown', (e) => {
+      if (!introDismissed && (e.key === 'Enter' || e.key === ' ')) dismissIntro(true);
     });
 
     document.getElementById('submitProfileBtn').addEventListener('click', async () => {
@@ -463,11 +561,10 @@
       try {
         await saveProfile();
         await loadRecommendations();
-        document.getElementById('analyze1Step3').textContent = '✓ 匹配适合的岗位方向';
-        document.getElementById('analyze1Bar').style.width = '100%';
-        document.getElementById('analyze1Pct').textContent = '100%';
       } catch (err) {
         console.warn(err);
+      } finally {
+        window.setTimeout(() => finishAnalysisProgress('profile'), 500);
       }
     });
 
@@ -480,21 +577,13 @@
     document.getElementById('viewReportBtn').addEventListener('click', loadReport);
   }
 
-  window.CareerApp = {
-    go,
-    startJob,
-    loadReport,
-    getJobs: () => state.jobs.slice(),
-    getCurrentJobId: () => state.currentJobId,
-    isOffline: () => state.useMock,
-  };
-
   document.addEventListener('DOMContentLoaded', async () => {
+    buildFigmaReport();
     state.jobs = fallbackJobs();
     renderRoles();
     renderRecommendations();
     renderGrowth();
-    bindApiEvents();
+    bindUi();
     await initApi();
     go('home');
     window.scrollTo(0, 0);
