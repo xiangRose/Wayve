@@ -419,7 +419,7 @@
     .landing-cta:hover { transform:translate(-2px,-3px); box-shadow:8px 8px 0 var(--hero-ink); }
     .landing-cta b { font-size:25px; line-height:.8; }
     .landing-head small { display:block; margin-top:14px; color:#777b84; font-size:13px; }
-    .landing-scroll-cue { position:absolute; z-index:4; left:50%; bottom:38%; width:48px; height:48px; padding:0; transform:translateX(-50%); border:2px solid var(--hero-ink); border-radius:50%; background:#fff; color:var(--hero-ink); font-size:30px; font-weight:700; line-height:42px; cursor:pointer; animation:landingScrollCue 1.7s ease-in-out infinite; }
+    .landing-scroll-cue { position:absolute; z-index:4; left:50%; bottom:clamp(28%,calc(35% - 4vh + 28.8px),35%); width:48px; height:48px; padding:0; transform:translateX(-50%); border:2px solid var(--hero-ink); border-radius:50%; background:#fff; color:var(--hero-ink); font-size:30px; font-weight:700; line-height:42px; cursor:pointer; animation:landingScrollCue 1.7s ease-in-out infinite; }
     @keyframes landingScrollCue { 0%,100% { transform:translateX(-50%) translateY(0); } 50% { transform:translateX(-50%) translateY(6px); } }
     @keyframes landingScrollCueEdge { 0%,100% { transform:translateY(0); } 50% { transform:translateY(6px); } }
     .hero-plane,.hero-sparkles { position:absolute; z-index:1; color:var(--hero-ink); }
