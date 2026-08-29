@@ -71,7 +71,7 @@ public class ReportContextBuilder {
     private Map<String, Object> radarForTask(TaskSession ts) {
         Map<String, Object> meta = ts.getTaskMeta();
         String setId = meta != null && meta.get("setId") != null ? String.valueOf(meta.get("setId")) : "A";
-        Map<String, Object> content = microtaskBank.buildTemplate(ts.getJobId(), setId);
+        Map<String, Object> content = microtaskBank.buildContentForSession(ts);
         List<Map<String, Object>> stepDefs = (List<Map<String, Object>>) content.get("steps");
         Map<String, Object> radar = microtaskBank.buildRadarFromSteps(ts.getStepsData(), stepDefs);
         radar.put("jobId", ts.getJobId());
@@ -98,9 +98,7 @@ public class ReportContextBuilder {
 
     @SuppressWarnings("unchecked")
     private List<Map<String, Object>> choiceSignalsForTask(TaskSession ts) {
-        Map<String, Object> meta = ts.getTaskMeta();
-        String setId = meta != null && meta.get("setId") != null ? String.valueOf(meta.get("setId")) : "A";
-        Map<String, Object> content = microtaskBank.buildTemplate(ts.getJobId(), setId);
+        Map<String, Object> content = microtaskBank.buildContentForSession(ts);
         List<Map<String, Object>> stepDefs = (List<Map<String, Object>>) content.get("steps");
         List<Map<String, Object>> signals = new ArrayList<>();
         List<Map<String, Object>> stepsData = ts.getStepsData();

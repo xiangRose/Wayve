@@ -44,14 +44,18 @@ public class TaskService {
         String backendJobId = JobIdMapper.toBackend(req.jobId());
         ensureTemplateExists(backendJobId, scaffold);
 
-        String setId = microtaskBank.pickRandomSetId();
-        Map<String, Object> content = microtaskBank.buildTemplate(backendJobId, setId);
+        List<Map<String, Object>> plan = microtaskBank.buildMixedQuestionPlan(backendJobId);
+        Map<String, Object> content = microtaskBank.buildTemplateFromPlan(backendJobId, plan);
 
         TaskSession ts = new TaskSession();
         ts.setSessionId(sessionId);
         ts.setJobId(backendJobId);
         ts.setScaffoldType(scaffold);
-        ts.setTaskMeta(Map.of("setId", setId, "theme", content.get("title")));
+        Map<String, Object> meta = new HashMap<>();
+        meta.put("setId", "MIXED");
+        meta.put("theme", content.get("title"));
+        meta.put("questionPlan", plan);
+        ts.setTaskMeta(meta);
         ts = sessionRepository.save(ts);
         return response(ts, content, 1);
     }
@@ -128,13 +132,7 @@ public class TaskService {
     }
 
     private Map<String, Object> contentOf(TaskSession ts) {
-        String setId = stringMeta(ts, "setId");
-        if (setId.isBlank()) {
-            return templateRepository.findByJobIdAndScaffoldType(ts.getJobId(), ts.getScaffoldType())
-                    .orElseThrow(() -> new ApiException(HttpStatus.NOT_FOUND, "TEMPLATE_NOT_FOUND", "模板不存在"))
-                    .getContent();
-        }
-        return microtaskBank.buildTemplate(ts.getJobId(), setId);
+        return microtaskBank.buildContentForSession(ts);
     }
 
     private String stringMeta(TaskSession ts, String key) {
@@ -185,6 +183,10 @@ public class TaskService {
         res.put("currentStep", stepNum);
         res.put("status", ts.getStatus().name());
         res.put("setId", stringMeta(ts, "setId"));
+        Map<String, Object> meta = ts.getTaskMeta();
+        if (meta != null && meta.get("questionPlan") instanceof List<?> plan) {
+            res.put("questionPlan", plan);
+        }
         res.put("stepContent", stepContent);
         return res;
     }
