@@ -77,7 +77,8 @@
     .bar { height:14px; width:440px; max-width:75vw; border:2px solid var(--ink); margin:26px auto 9px; background:#fff; }
     .bar > span { display:block; height:100%; background:var(--ink); width:70%; transition:width .25s; }
     .loading-list { display:grid; gap:10px; text-align:left; width:350px; max-width:75vw; margin:28px auto 0; color:var(--muted); }
-    .loading-list .done::before { content:'✓'; color:var(--ink); font-weight:bold; display:inline-block; width:23px; }
+    .loading-list > div::before { content:'○'; color:var(--muted); display:inline-block; width:23px; }
+    .loading-list > .done::before { content:'✓'; color:var(--ink); font-weight:bold; }
     #recommend { text-align:center; }
     #recommend > h1 { margin-bottom:7px; }
     .recommendations { min-height:clamp(380px,52vh,500px); max-width:1080px; margin:24px auto 0; display:flex; justify-content:center; align-items:center; padding:28px 48px 44px; overflow:visible; }
@@ -116,6 +117,17 @@
       height:100%;
       min-height:calc(100dvh - 96px);
       background:#fff;
+    }
+    .roles-return-recommend {
+      position:absolute;
+      z-index:20;
+      top:clamp(16px,2.6vh,28px);
+      left:clamp(18px,4vw,58px);
+      padding:7px 4px;
+      border:0;
+      border-bottom:2px solid #f2c94c;
+      background:rgba(255,255,255,.9);
+      font-weight:700;
     }
     .roles-explore-scene {
       position:relative;
@@ -246,6 +258,7 @@
     }
     @media (max-width:900px) {
       #roles { padding:0; }
+      .roles-return-recommend { top:12px; left:14px; font-size:13px; }
       .roles-explore,
       .roles-explore-scene {
         min-height:calc(100dvh - 70px);
@@ -255,6 +268,99 @@
         max-width:96px;
       }
       .roles-explore-bubble-text { font-size:10px; }
+    }
+    @media (max-width:800px) {
+      #roles {
+        overflow-x:hidden;
+        overflow-y:auto;
+      }
+      .roles-explore {
+        height:auto;
+        min-height:100%;
+      }
+      .roles-explore-scene {
+        display:grid;
+        grid-template-columns:repeat(3,minmax(0,1fr));
+        align-content:start;
+        gap:22px 18px;
+        height:auto;
+        min-height:100%;
+        padding:58px 24px 390px;
+        aspect-ratio:auto;
+        overflow:hidden;
+      }
+      .roles-explore-node {
+        position:relative;
+        left:auto !important;
+        top:auto !important;
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        justify-self:stretch;
+        width:100%;
+        min-width:0;
+        max-width:none;
+        min-height:132px;
+      }
+      .roles-explore-avatar {
+        width:clamp(78px,13vw,96px);
+      }
+      .roles-explore-bubble,
+      .roles-explore-bubble--ui,
+      .roles-explore-bubble--pm,
+      .roles-explore-bubble--dev,
+      .roles-explore-bubble--data,
+      .roles-explore-bubble--ops {
+        position:relative;
+        inset:auto;
+        width:min(100%,190px);
+        margin:0 auto -2px;
+      }
+      .roles-explore-bubble-text {
+        font-size:12px;
+        line-height:1.35;
+        white-space:normal;
+        overflow-wrap:anywhere;
+      }
+      .roles-explore-floor-wrap {
+        height:350px;
+      }
+      .roles-explore-desk-stage {
+        inset:auto 0 0;
+        height:360px;
+      }
+    }
+    @media (max-width:520px) {
+      .roles-explore-scene {
+        grid-template-columns:repeat(2,minmax(0,1fr));
+        gap:16px 14px;
+        padding:52px 18px 340px;
+      }
+      .roles-explore-node {
+        min-height:124px;
+      }
+      .roles-explore-node:last-child {
+        grid-column:1 / -1;
+        justify-self:center;
+        width:calc((100% - 14px) / 2);
+      }
+      .roles-explore-avatar {
+        width:78px;
+      }
+      .roles-explore-bubble,
+      .roles-explore-bubble--ui,
+      .roles-explore-bubble--pm,
+      .roles-explore-bubble--dev,
+      .roles-explore-bubble--data,
+      .roles-explore-bubble--ops {
+        width:min(100%,160px);
+      }
+      .roles-explore-floor-wrap {
+        height:310px;
+      }
+      .roles-explore-desk-stage {
+        height:320px;
+      }
     }
     @media (prefers-reduced-motion:reduce) {
       .roles-explore-avatar { transition:none; }
@@ -491,7 +597,8 @@
     body, body * { font-family:"PingFang SC","PingFang TC",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif !important; }
     *, *::before, *::after { box-shadow:none !important; }
     .bar > span { transition:width .18s ease; }
-    .btn:disabled { cursor:wait; opacity:.68; filter:saturate(.72); transform:rotate(-1deg); }
+    .btn:disabled { cursor:not-allowed; opacity:1; background:#d8d2ca; color:#817a74; border-color:#aaa29a; filter:none; transform:none; }
+    .btn:disabled:hover { background:#d8d2ca; color:#817a74; border-color:#aaa29a; filter:none; transform:none; }
     .entry-card:first-child { background:#ffe7d8; }
     .entry-card:last-child { background:#ddf4ef; }
     .fan-card:first-child { background:#ffe1a6; }
@@ -581,7 +688,7 @@
     @media (max-width:1100px) { .landing-scroll-cue { left:50%; right:auto; bottom:22%; transform:translateX(-50%); animation-name:landingScrollCue; } }
     @media (min-width:701px) and (max-width:800px) { .landing-scroll-cue { left:50%; right:auto; bottom:1%; transform:translateX(-50%); animation-name:landingScrollCue; } }
     @media (max-width:700px) { .landing-scroll-cue { left:50%; right:auto; bottom:1%; transform:translateX(-50%); animation-name:landingScrollCue; } }
-    #profile1 .form,#profile2 .form,#profile3 .form { max-width:980px; min-height:590px; margin-top:-18px; padding:100px 46px 68px; overflow:visible; background:transparent url("../assets/wide-sticky-note.svg") center / 100% 100% no-repeat; border:0; border-radius:0; box-shadow:none; }
+    #profile1 .form,#profile2 .form,#profile3 .form { max-width:980px; min-height:590px; margin-top:-18px; padding:100px 46px 68px; overflow:visible; background:transparent; border:0; border-image-source:url("../assets/wide-sticky-note.svg"); border-image-slice:114 104 94 42 fill; border-image-width:90px 90px 90px 36px; border-image-repeat:stretch; border-radius:0; box-shadow:none; }
     #profile1 .form::before,#profile2 .form::before,#profile3 .form::before,#profile1 .form::after,#profile2 .form::after,#profile3 .form::after { content:none; }
     #profile1 .form .form-actions,#profile2 .form .form-actions,#profile3 .form .form-actions { position:relative; z-index:1; margin-top:38px; padding-right:42px; }
     @media (max-width:850px) { #profile1 .form,#profile2 .form,#profile3 .form { min-height:0; padding:88px 24px 62px; } #profile1 .form::before,#profile2 .form::before,#profile3 .form::before { width:190px; left:calc(50% - 95px); } }
@@ -592,7 +699,7 @@
     #report.active { height:calc(100vh - 96px); height:calc(100dvh - 96px); }
     .shell:has(#report.active) > .nav { display:flex; }
     .figma-report-nav { display:none; }
-    @media (max-width:700px) { .nav { height:70px; padding:0 18px; gap:24px; }.nav .brand img { width:66px; height:40px; }.nav .links { gap:23px; }.nav .links button { font-size:16px; }.nav .links button.active::after { bottom:-3px; width:25px; height:4px; }.profile-trigger { margin-left:auto; }.profile-trigger span { display:none; }.profile-trigger img { width:36px; height:36px; }.screen,#report.active { height:calc(100vh - 70px); height:calc(100dvh - 70px); } }
+    @media (max-width:700px) { .nav { height:70px; padding:0 14px; gap:14px; }.nav .brand img { width:62px; height:40px; }.nav .links { gap:clamp(12px,4vw,20px); flex:0 1 auto; min-width:0; }.nav .links button { padding:9px 0; font-size:clamp(14px,4vw,16px); line-height:1; white-space:nowrap; word-break:keep-all; }.nav .links button.active::after { bottom:-5px; width:25px; height:4px; }.profile-trigger { flex:0 0 auto; margin-left:auto; }.profile-trigger span { display:none; }.profile-trigger img { width:34px; height:34px; }.screen,#report.active { height:calc(100vh - 70px); height:calc(100dvh - 70px); } }
 
     /* Wayve opening animation — intentionally scoped to the intro layer only. */
     .intro-wayve { overflow:hidden; cursor:default; color:#20232a; background:#fff; isolation:isolate; }
@@ -780,14 +887,13 @@
     }
     #profile1 .form,#profile2 .form,#profile3 .form {
       width:min(980px,100%);
-      height:min(680px,calc(100dvh - 144px));
       min-height:0;
       margin:0;
       padding:clamp(74px,8vh,92px) clamp(30px,4vw,46px) clamp(42px,5vh,56px);
-      overflow:hidden;
-      transform:translateY(clamp(-72px,-6vh,-42px));
+      overflow:visible;
+      transform:none;
     }
-    #profile1 .form .field,#profile2 .form .field,#profile3 .form .field { margin:14px 0; }
+    #profile1 .form .field,#profile2 .form .field,#profile3 .form .field { margin:14px 0 0; }
     #profile1 .form h1,#profile2 .form h1,#profile3 .form h1 {
       max-width:360px;
       font-size:clamp(26px,2.25vw,30px);
@@ -795,7 +901,7 @@
     #profile1 .form textarea,#profile2 .form textarea,#profile3 .form textarea { min-height:82px; }
     #profile1 .form .form-actions,#profile2 .form .form-actions,#profile3 .form .form-actions { margin-top:18px; }
     @media (max-height:800px) {
-      #profile1 .form,#profile2 .form,#profile3 .form { height:calc(100dvh - 122px); padding-top:62px; padding-bottom:32px; }
+      #profile1 .form,#profile2 .form,#profile3 .form { padding-top:62px; padding-bottom:32px; }
       #profile1 .form h1,#profile2 .form h1,#profile3 .form h1 { font-size:clamp(24px,2.25vw,28px); margin-bottom:6px; }
       #profile1 .form .subtitle,#profile2 .form .subtitle,#profile3 .form .subtitle { font-size:14px; margin-bottom:8px; }
       #profile1 .form .field,#profile2 .form .field,#profile3 .form .field { margin:10px 0; }
@@ -806,7 +912,7 @@
     @media (max-width:850px) {
       :is(#profile1,#profile2,#profile3) { padding:16px; }
       :is(#profile1,#profile2,#profile3) .page-top { top:16px; left:18px; right:18px; font-size:12px; }
-      #profile1 .form,#profile2 .form,#profile3 .form { width:100%; height:calc(100dvh - 100px); padding:68px 24px 26px; }
+      #profile1 .form,#profile2 .form,#profile3 .form { width:100%; padding:68px 24px 26px; }
     }
 
     /* Figma node 108:561 — 轨迹页 */

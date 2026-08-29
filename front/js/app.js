@@ -48,6 +48,7 @@
     sceneDraft: { selectedOptionId: null, customText: '' },
     sceneStepStates: {},
     sceneFlowStarted: false,
+    rolesEntrySource: null,
   };
 
   const ROLE_DESK_ITEMS = [
@@ -243,7 +244,7 @@
     const button = document.getElementById(config.buttonId);
     const step = document.getElementById(config.stepId);
     if (button) { button.disabled = true; button.textContent = config.pendingLabel; }
-    if (step) { step.classList.remove('done'); step.textContent = '○ ' + config.doneStep; }
+    if (step) { step.classList.remove('done'); step.textContent = config.doneStep; }
     setAnalysisProgress(key, 0);
     const timer = window.setInterval(() => {
       const current = analysisProgress[key]?.value || 0;
@@ -314,7 +315,11 @@
     if (active) active.scrollTop = 0;
     window.scrollTo(0, 0);
     if (id === 'growth') renderGrowth();
-    if (id === 'roles') renderRoles();
+    if (id === 'roles') {
+      renderRoles();
+      const returnButton = document.getElementById('rolesReturnRecommendBtn');
+      if (returnButton) returnButton.hidden = state.rolesEntrySource !== 'recommend';
+    }
     if (id === 'sceneSim') renderSceneSim();
     if (id === 'analyze1') startAnalysisProgress('profile');
     if (id === 'analyze2') startAnalysisProgress('task');
@@ -333,6 +338,38 @@
     const el = document.getElementById(id);
     if (!el) return [];
     return [...el.querySelectorAll('.chip.selected')].map((c) => c.textContent.trim());
+  }
+
+  function hasProfileText(id) {
+    const field = document.getElementById(id);
+    return Boolean(field && field.value.trim());
+  }
+
+  function hasProfileSelection(id) {
+    const group = document.getElementById(id);
+    return Boolean(group && group.querySelector('.chip.selected'));
+  }
+
+  function validateProfileStep(step) {
+    if (step === 'profile1') {
+      const status = document.getElementById('profileStatus');
+      return Boolean(status && status.value.trim() && hasProfileText('profileBackground'));
+    }
+    if (step === 'profile2') return hasProfileSelection('experienceChips') && hasProfileText('profileSkills');
+    if (step === 'profile3') {
+      return hasProfileSelection('interestChips') && hasProfileSelection('workStyleChips') && hasProfileText('profileGoal');
+    }
+    return true;
+  }
+
+  function updateProfileCtaState(step) {
+    const screen = document.getElementById(step);
+    const button = screen && screen.querySelector('.form-actions .btn');
+    if (button) button.disabled = !validateProfileStep(step);
+  }
+
+  function updateAllProfileCtaStates() {
+    ['profile1', 'profile2', 'profile3'].forEach(updateProfileCtaState);
   }
 
   function normalizeJobs(raw) {
@@ -1588,7 +1625,16 @@
 
     document.addEventListener('click', (e) => {
       const nav = e.target.closest('[data-go]');
-      if (nav && !nav.closest('#drawer')) go(nav.dataset.go);
+      if (nav && !nav.closest('#drawer')) {
+        const screen = nav.closest('.screen');
+        const isProfileForward = screen && nav.closest('.form-actions') && ['profile1', 'profile2'].includes(screen.id);
+        if (isProfileForward && !validateProfileStep(screen.id)) return;
+        if (nav.dataset.go === 'roles' && nav.dataset.rolesEntry !== 'preserve') {
+          state.rolesEntrySource = nav.dataset.rolesEntry === 'recommend' ? 'recommend' : null;
+        }
+        go(nav.dataset.go);
+        updateAllProfileCtaStates();
+      }
 
       const startBtn = e.target.closest('[data-action="start-job"]');
       if (startBtn) startJob(startBtn.dataset.jobId);
@@ -1634,17 +1680,33 @@
       if (drawerGo) {
         document.getElementById('drawer').classList.remove('show');
         document.getElementById('drawerShade').classList.remove('show');
+        if (drawerGo.dataset.go === 'roles') state.rolesEntrySource = null;
         go(drawerGo.dataset.go);
       }
     });
 
     document.querySelectorAll('[data-nav]').forEach((b) => {
-      b.addEventListener('click', () => go(b.dataset.nav));
+      b.addEventListener('click', () => {
+        if (b.dataset.nav === 'roles') state.rolesEntrySource = null;
+        go(b.dataset.nav);
+      });
     });
 
     document.querySelectorAll('.selectable .chip').forEach((c) => {
-      c.addEventListener('click', () => c.classList.toggle('selected'));
+      c.addEventListener('click', () => {
+        c.classList.toggle('selected');
+        updateAllProfileCtaStates();
+      });
     });
+
+    ['profileStatus', 'profileBackground', 'profileSkills', 'profileStory', 'profileGoal']
+      .map((id) => document.getElementById(id))
+      .filter(Boolean)
+      .forEach((field) => {
+        field.addEventListener('input', updateAllProfileCtaStates);
+        field.addEventListener('change', updateAllProfileCtaStates);
+      });
+    updateAllProfileCtaStates();
 
     const microtaskNextBtn = document.getElementById('microtaskNextBtn');
     if (microtaskNextBtn) {
@@ -1692,10 +1754,6 @@
       e.stopPropagation();
       dismissIntro(true);
     });
-    document.getElementById('introSkipBtn').addEventListener('click', (e) => {
-      e.stopPropagation();
-      dismissIntro(false);
-    });
     intro.addEventListener('click', (e) => {
       if (!e.target.closest('button')) dismissIntro(true);
     });
@@ -1710,6 +1768,7 @@
     });
 
     document.getElementById('submitProfileBtn').addEventListener('click', async () => {
+      if (!validateProfileStep('profile3')) return;
       go('analyze1');
       try {
         await saveProfile();
