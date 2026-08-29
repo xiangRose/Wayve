@@ -22,12 +22,18 @@
     currentJobId: 'ai_product',
     taskSessionId: null,
     completedJobs: [],
+    questionIndex: 0,
+    questionAnswers: {},
+    persistedQuestions: new Set(),
+    quizCompleted: false,
     hasRecommendations: false,
     rolesEntrySource: 'direct',
   };
 
   const screens = document.querySelectorAll('.screen');
   const analysisProgress = {};
+  const QUESTION_SCREENS = ['choice', 'ranking', 'category', 'evidence', 'open'];
+  const QUESTION_IDS = QUESTION_SCREENS;
 
   const analysisConfig = {
     profile: {
@@ -130,6 +136,67 @@
     if (id === 'roles') updateRecommendationBackControl();
     if (id === 'analyze1') startAnalysisProgress('profile');
     if (id === 'analyze2') startAnalysisProgress('task');
+    const questionIndex = QUESTION_SCREENS.indexOf(id);
+    if (questionIndex >= 0) {
+      state.questionIndex = questionIndex;
+      restoreQuestionAnswer(questionIndex);
+      updateQuestionNav();
+    }
+  }
+
+  function captureQuestionAnswer(index = state.questionIndex) {
+    const id = QUESTION_IDS[index];
+    if (id === 'choice') state.questionAnswers[id] = [...document.querySelectorAll('#choice .option.selected')].map((x) => x.textContent.trim())[0] || '';
+    if (id === 'ranking') state.questionAnswers[id] = [...document.querySelectorAll('#rankingList .sort-item')].map((x) => x.textContent.trim());
+    if (id === 'category') state.questionAnswers[id] = [...document.querySelectorAll('#category .match-item.source.connected')].map((x) => x.dataset.source);
+    if (id === 'evidence') state.questionAnswers[id] = [...document.querySelectorAll('#evidence input[type="checkbox"]:checked')].map((x) => x.parentElement.textContent.trim());
+    if (id === 'open') state.questionAnswers[id] = document.getElementById('openAnswer')?.value || '';
+  }
+
+  function restoreQuestionAnswer(index) {
+    const id = QUESTION_IDS[index]; const value = state.questionAnswers[id];
+    if (id === 'choice') document.querySelectorAll('#choice .option').forEach((x) => x.classList.toggle('selected', x.textContent.trim() === value));
+    if (id === 'ranking' && Array.isArray(value)) { const list = document.getElementById('rankingList'); value.forEach((text) => { const item = [...list.children].find((x) => x.textContent.trim() === text); if (item) list.appendChild(item); }); }
+    if (id === 'evidence' && Array.isArray(value)) document.querySelectorAll('#evidence input[type="checkbox"]').forEach((x) => { x.checked = value.includes(x.parentElement.textContent.trim()); });
+    if (id === 'open' && document.getElementById('openAnswer')) document.getElementById('openAnswer').value = value || '';
+  }
+
+  function questionIsValid(index = state.questionIndex) {
+    const id = QUESTION_IDS[index]; const value = state.questionAnswers[id];
+    if (id === 'choice') return Boolean(value);
+    if (id === 'ranking') return Array.isArray(value) && value.length > 0;
+    if (id === 'category') return Array.isArray(value) && value.length > 0;
+    if (id === 'evidence') return Array.isArray(value) && value.length > 0;
+    if (id === 'open') return typeof value === 'string' && value.trim().length > 0;
+    return false;
+  }
+
+  function updateQuestionNav(message = '') {
+    const screen = document.getElementById(QUESTION_IDS[state.questionIndex]); if (!screen) return;
+    const progress = screen.querySelector('.task-progress');
+    if (progress) { progress.firstChild.nodeValue = Math.round(((state.questionIndex + 1) / QUESTION_IDS.length) * 100) + '%'; const bar = progress.querySelector('.bar span'); if (bar) bar.style.width = Math.round(((state.questionIndex + 1) / QUESTION_IDS.length) * 100) + '%'; }
+    const prev = screen.querySelector('[data-qnav="prev"]'); const next = screen.querySelector('[data-qnav="next"]');
+    if (prev) prev.disabled = state.questionIndex === 0;
+    if (next) next.disabled = !questionIsValid();
+    const note = screen.querySelector('.question-validation'); if (note) note.textContent = message;
+  }
+
+  async function persistQuestion(index) {
+    captureQuestionAnswer(index);
+    const id = QUESTION_IDS[index];
+    if (state.persistedQuestions.has(id) || state.useMock || !state.taskSessionId) return;
+    state.persistedQuestions.add(id);
+    try { await api('/tasks/' + state.taskSessionId + '/step', { method: 'POST', headers: apiHeaders(true), body: JSON.stringify({ answer: { questionId: id, value: state.questionAnswers[id], demo: true }, events: [] }) }); }
+    catch (err) { state.persistedQuestions.delete(id); console.warn('题目保存失败', err); }
+  }
+
+  async function navigateQuestion(direction) {
+    captureQuestionAnswer();
+    if (direction < 0) { go(QUESTION_IDS[state.questionIndex - 1]); return; }
+    if (!questionIsValid()) { updateQuestionNav('请先完成这一题，再继续。'); return; }
+    await persistQuestion(state.questionIndex);
+    if (state.questionIndex === QUESTION_IDS.length - 1) { if (!state.quizCompleted) { state.quizCompleted = true; await submitTaskAndFinish(); } return; }
+    go(QUESTION_IDS[state.questionIndex + 1]);
   }
 
   function updateRecommendationBackControl() {
@@ -421,18 +488,6 @@
   }
 
   async function submitTaskAndFinish() {
-    if (!state.useMock && state.taskSessionId) {
-      try {
-        const answer = { text: document.getElementById('openAnswer').value.trim(), demo: true };
-        await api('/tasks/' + state.taskSessionId + '/step', {
-          method: 'POST',
-          headers: apiHeaders(true),
-          body: JSON.stringify({ answer, events: [] }),
-        });
-      } catch (err) {
-        console.warn('任务提交失败', err);
-      }
-    }
     if (!state.completedJobs.includes(state.currentJobId)) {
       state.completedJobs.push(state.currentJobId);
       renderGrowth();
@@ -484,6 +539,11 @@
         document.getElementById('drawerShade').classList.remove('show');
         go(drawerGo.dataset.go);
       }
+      if (e.target.closest('.question .option, .question .sort-item, .question .match-item, .question input[type="checkbox"]')) {
+        window.setTimeout(() => { captureQuestionAnswer(); updateQuestionNav(); }, 0);
+      }
+      const qnav = e.target.closest('[data-qnav]');
+      if (qnav) navigateQuestion(qnav.dataset.qnav === 'prev' ? -1 : 1);
     });
 
     document.querySelectorAll('[data-nav]').forEach((b) => {
@@ -638,7 +698,7 @@
       go('recommend');
     });
 
-    document.getElementById('submitTaskBtn').addEventListener('click', submitTaskAndFinish);
+    document.getElementById('openAnswer')?.addEventListener('input', () => { captureQuestionAnswer(4); updateQuestionNav(); });
     document.getElementById('viewReportBtn').addEventListener('click', loadReport);
   }
 

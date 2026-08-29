@@ -807,3 +807,10 @@
       .growth-sketch { height:180px; }
       .growth-record-card { padding-right:100px; }
     }
+
+    .question-nav { display:flex; justify-content:space-between; align-items:center; margin-top:28px; padding-top:18px; border-top:1px solid #ece7df; }
+    .question-arrow { display:inline-flex; align-items:center; gap:10px; border:0; background:transparent; color:#2e2d2b; font-size:32px; line-height:1; padding:8px 4px; cursor:pointer; }
+    .question-arrow span { font-size:12px; font-weight:700; letter-spacing:.04em; }
+    .question-arrow:hover:not(:disabled), .question-arrow:focus-visible:not(:disabled) { color:#9a69bb; outline:none; }
+    .question-arrow:disabled { color:#c9c4bc; cursor:not-allowed; opacity:.55; }
+    .question-validation { min-height:20px; margin:14px 0 0; color:#a5674e; font-size:13px; }
