@@ -808,7 +808,8 @@
       .growth-record-card { padding-right:100px; }
     }
 
-    .question-nav { display:flex; justify-content:flex-end; align-items:center; gap:23px; margin-top:20px; margin-bottom:23px; padding:0 102px 0 0; }
+    .question { position:relative; }
+    .question-nav { display:flex; justify-content:flex-end; align-items:center; gap:23px; margin:0; padding:0; }
     .question-arrow { display:grid; place-items:center; width:57px; height:57px; flex:0 0 57px; border:1px solid #a3e092; border-radius:50%; background:#fff; padding:0; cursor:pointer; font-size:0; transition:background .15s ease, opacity .15s ease, box-shadow .15s ease; }
     .question-arrow::before { content:""; display:block; width:27px; height:28px; background:center / contain no-repeat; }
     .question-arrow[data-qnav="prev"]::before { background-image:url("../assets/figma/question-arrow-left.svg"); transform:rotate(90deg); }
@@ -818,5 +819,6 @@
     .question-arrow:not(:disabled)[data-qnav="next"] { background:#8ac27b; }
     .question-arrow:not(:disabled)[data-qnav="next"]::before { filter:brightness(0) invert(1); }
     .question-arrow:disabled { cursor:not-allowed; opacity:.35; background:#fff; }
+    @media (min-width:701px) { :is(#choice,#ranking,#category,#evidence,#open) .question-nav { position:absolute; right:102px; bottom:23px; } }
     @media (max-width:700px) { .question-nav { gap:16px; padding-right:0; } .question-arrow { width:52px; height:52px; flex-basis:52px; } }
     .question-validation { min-height:20px; margin:14px 0 0; color:#a5674e; font-size:13px; }
