@@ -14,6 +14,10 @@ assert((html.match(/data-qnav="next"/g) || []).length === 5, 'next control not r
 assert(css.includes('assets/figma/question-arrow-left.svg') && css.includes('assets/figma/question-arrow-right.svg'), 'Figma arrow assets not wired');
 assert(css.includes('width:57px') && css.includes('height:57px') && css.includes('gap:23px'), 'Figma pagination geometry drift');
 assert(css.includes('border-radius:50%') && css.includes('#a3e092'), 'Figma pagination circle styling drift');
+assert(css.includes('.question-arrow:not(:disabled)[data-qnav="next"]') && css.includes('background:#8ac27b'), 'active Next state missing');
+assert(css.includes('filter:brightness(0) invert(1)'), 'active Next white arrow state missing');
+assert(css.includes('padding:0 102px 0 0') && css.includes('margin-bottom:23px'), 'pagination is not anchored inside question panel');
+assert(css.includes('.question-arrow span { position:absolute') && css.includes('clip:rect(0,0,0,0)'), 'pagination labels are not visually hidden');
 assert(!html.includes('提交回答') && !html.includes('提交匹配') && !html.includes('提交选择'), 'per-question submit CTA remains');
 assert(app.includes('navigateQuestion') && app.includes('persistQuestion') && app.includes('restoreQuestionAnswer'), 'pagination handlers incomplete');
 assert(app.includes('questionAnswers') && app.includes('persistedQuestions') && app.includes('quizCompleted'), 'answer persistence/completion state missing');
