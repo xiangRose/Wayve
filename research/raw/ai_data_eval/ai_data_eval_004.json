@@ -1,0 +1,13 @@
+{
+  "sampleId": "ai_data_eval_004",
+  "jobId": "ai_data_eval",
+  "source": "boss",
+  "sourceUrl": "https://www.zhipin.com/job_detail/4d19b911f8563e8d0nJz3dy5FFpW.html?securityId=XBVb4EwUrwI9h-j125WX0gYFlxvIX610Xrew-lKlxbeQ6jzibvapZlMmMvMW3O9RLDeVGMwQ1YiURC-M8LV48_3UyuwOor5tYiNJd9fdlYqLXgw_faJWgDazNAPyrHWwCgi_J9J1py_HNKJqPc4FclQzKNNcpkm27ZPomTCLwGQt4cnIPce-agynRs8z4wioJUnMn0NhPlsoRngqWYZy5ZRGw6226sBXsck4MBZ_BrV8tDMLSaLfov84vDV9e7Tqm53HBAK0oJ7mGcVD7qHtKP3jLKSMc-0MwCq4aZaXi2x8f0xXgh2vJ9SxxqdmXycPTMOjwAOj7IXIHgYdKb68oikprKIFVhlX_gCp6WvMjMj5GEGMCkDdhBUsnAhdwQJxsz1Qkc7umgUail7RQM3JHeuXgr3U-Dr9ct0xBD1j5pdV39pGdGJb67jOkM8~&ka=company_more_job_4d19b911f8563e8d0nJz3dy5FFpW",
+  "crawledAt": "2026-08-28",
+  "title": "数据标注/AI训练师数据标注-评测(北京)",
+  "company": "灵波微步（北京）科技有限公司",
+  "level": "unknown",
+  "rawText": "“一、工作时间；作息：9:00–18:30，午休1.5h（12:00–13:30）；休息：周末双休，法定节假日正常休。二、任职要求；1. 学历与专业：学历：985、211院校本科及以上，或QS世界排名前100院校毕业；专业方向：统计学。2. 工作经验：有大模型数据标注相关经验优先。3. 行业认知与学习能力：了解大模型（ChatGPT、DeepSeek等）、图像识别、语音处理等基础概念；学习能力强，能快速掌握新技术、新工具与标注规范。4. 综合素养：文字功底扎实，逻辑清晰，具备较强的数据分析、推理与处理能力；沟通表达良好，责任心强，细致严谨，具备团队协作精神；能快速理解、记忆复杂标注规则（SOP）具备主动思考与问题反馈能力，可发现规则模糊 / 滞后点并推动迭代5. 英语能力：6级以上成绩三、岗位职责数据标注执行：严格按照标注规范，对大模型训练数据进行标注、编辑、纠错与批注，保障数据质量。数据质量管控：对标注结果进行全流程质检，识别偏差与问题，确保数据准确可用。工具与效率提升：熟练使用数据处理平台，优化工作方法，持续提升标注效率与质量。四、薪酬福利薪资结构：　　基础8k+2k岗位补贴+1.5*（0-2）k绩效　　薪资浮动区间10-13k　　五险一金工作地址：北京市东城区新世界中心写字楼A座716”",
+  "crawlMethod": "manual",
+  "extracted": {}
+}

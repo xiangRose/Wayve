@@ -1,0 +1,13 @@
+{
+  "sampleId": "ai_ui_design_001",
+  "jobId": "ai_ui_design",
+  "source": "company_site",
+  "sourceUrl": "https://jobs.bytedance.com/en/position/7674908085597571381/detail",
+  "crawledAt": "2026-08-28",
+  "title": "AI-native UX Designer",
+  "company": "字节跳动",
+  "level": "unknown",
+  "rawText": "Responsibilities:\n- Lead the interaction design for AI-native products and system-level software, exploring new interaction paradigms for the AI era.\n- Define cross-device consistency frameworks for ecosystem scenarios, primarily focusing on mobile and multi-device collaboration.\n- Abstract complex product logic, AI Agent workflows, and multimodal inputs/outputs into clear, natural, and implementable interaction experiences.\n- Drive 0-to-1 exploratory projects from problem definition and conceptual design to prototype validation and full-cycle implementation.\n- Collaborate closely with product, algorithm, engineering, visual, motion, and hardware teams to transform concepts into production-ready solutions.\n\nMinimum Qualifications:\n- 5 years of experience in UX design, experience design, or a related field.\n- Demonstrated system-level thinking with the ability to define experience problems from an ecosystem perspective rather than isolated pages or flows.\n- Proven experience leading ambiguous or 0-to-1 exploratory design projects.\n- Proficiency with modern design tools (e.g., Figma).\n\nPreferred Qualifications:\n- Experience designing for AI products, mobile OS, system-level software, or multimodal interfaces (voice/gesture).\n- Advanced prototyping skills using tools such as ProtoPie, Framer, SwiftUI, or AI-assisted coding.",
+  "crawlMethod": "auto",
+  "extracted": {}
+}

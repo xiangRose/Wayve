@@ -1,0 +1,13 @@
+{
+  "sampleId": "ai_data_eval_008",
+  "jobId": "ai_data_eval",
+  "source": "boss",
+  "sourceUrl": "https://www.zhipin.com/job_detail/1451f693ac63b9f30nJ909W0EFVR.html?securityId=E5-sZ3AAXcOYo-f1J5UR51zlTmMnX90ELmld9-qJh9XkuN__PNuFKrmBT7edqNL6cjM3nJ8xZllRYqkcrWeGgxnjQHh2VVKwiMs3Rz83wOVQKp8m_uUDa6EVY8J7_VBsWmajRjz8joNGhON28TDQLVWz7S6umG30ttCGlrr0kHLAqDTjWPnKjp0e6KXnSUuwMR39fBRpT2jn7zIQKoSgVCAsv6k4xyiXVw9COTAwww4GfydPaoWuA0w8Kr9holmTFmG581Dc7QEYQGOTn6O5sqSuU2FG1gVhAUvHxl8SwiXiDq8-7Mvh65Hh4ztfNuFLx6r0lgTlbqIzz2QwdCHRlOWr0ISP5wgOw_fL0ivGUJJWNyHv21WA5ihSa3OovTWUsXLgMkM~&ka=company_more_job_1451f693ac63b9f30nJ909W0EFVR",
+  "crawledAt": "2026-08-28",
+  "title": "AI数据评测运营 - LLM&Omni方向",
+  "company": "北京捷科智诚科技有限公司",
+  "level": "junior",
+  "rawText": "岗位职责：1. 负责大模型训练及评测所需的数据标注任务全流程管理，包括需求拆解、规范制定、任务分发、进度监控及质量验收。2. 搭建并迭代标注质量评估体系，通过一致性检验、Badcase复盘、难度分级抽检等手段，持续提升数据质量。3. 管理标注团队，制定培训计划与绩效考核方案，并负责项目结算。5. 参与评测数据集构建及后续摸底报告产出等执行任务。6. 梳理运营SOP，推动1. 自动化质检工具的需求设计与落地，提升运营效率与自动化水平。任职要求1. 有友商AI数据运营&产品经验优先（标注、评测经验不限制）2. 学历大学本科及以上，专业不限3. 有大模型数据标注、评估项目管理及运营经验，大厂任职经历1年及以上优先4. 具备优秀的沟通协调能力和团队协作意识，抗压能力强5. 具备责任心和较强的团队意识，对大模型有较强的兴趣6. 有沉淀文档的意识，做事认真负责”",
+  "crawlMethod": "manual",
+  "extracted": {}
+}

@@ -1,0 +1,13 @@
+{
+  "sampleId": "ai_app_dev_005",
+  "jobId": "ai_app_dev",
+  "source": "boss",
+  "sourceUrl": "https://www.zhipin.com/job_detail/acae70c53749c7170nJ93du7F1ZU.html?ka=company_more_job_acae70c53749c7170nJ93du7F1ZU",
+  "crawledAt": "2026-08-28",
+  "title": "AI全栈",
+  "company": "鲲星",
+  "level": "junior",
+  "rawText": "职位亮点\n技术前沿：深度参与多模态大模型(OpenAl,Claude,Midjourney等）的聚合与调度落地。\n核心岗位：负责公司AI业务的“核心大动脉”，直接决定产品的响应速度与稳定性。\n岗位职责\n中转系统搭建与二次开发：负责基于new-api或one-api等开源大模型管理中转系统进行二次开发，实现渠道分\n发、额度控制、高可用高并发管理。\n多模型接口聚合接入：负责将国外主流大模型(如OpenAl、Anthropic Claude、Google Gemini)及生图/多模态\n接口(Midjourney、Suno等）进行协议适配，统一封装为标准API供国内业务端调用。\n网络优化与代理管理：针对国内网络环境，设计并维护高效、稳定的海外网络中转机制，优化多节点代理，解决接\n口延迟及被封禁风险。\n性能监控与计费重构：开发并完善Token计费、多租户管理、日志审计功能；针对高并发请求，设计合理的缓存、\n队列及熔断兜底机制。\n技能需求\n1. 核心硬性技能\n后端主力语言：精通Go 语言(Golang)或Python。由于new-api 和 one-api 底层采用Go 语言(Gin 框架)编\n写，优先招募熟练掌握Go语言的开发人员。\nAl协议与流式传输：深入理解OpenAlAPI规范。必须熟练掌握SSE(Server-Sent Events)流式传输协议，能够解\n决大模型流式打字效果在转发过程中的断连、卡顿、丢包等工程问题。\n网络与代理架构：熟悉常用的网络中转技术。具备反向代理（如Nginx配置优化）、前置代理配置（ForwardProx\ny、防封策略等实战经验，确保国内服务器到海外API节点之间的安全稳定连接。\n高并发与中间件：熟练使用Redis（用于Token计数、分布式锁、高频接口限流）及主流关系型数据库（MySQL/\nPostgreSQL）。具备处理高并发API请求、多渠道负载均衡、超时重试、熔断降级等工程能力。\n2.业务理解与工程经验\n开源项目二改经验：有new-api/one-api或类似APlGateway开源项目实际部署、改代码、调优经验者优先。\nToken编解码与计算：理解不同模型(如 tiktoken,cl10okbase）的Token计算原理，能够精准针对 Prompt 和C\nompletion进行计费统计与扣费设计。\n3. 加分项\n前端全栈能力：熟悉React/Vue，能够顺手修改new-api的管理后台前端界面。\n合规与内容安全：了解国内大模型合规要求，有对接国内敏感词过滤系统（网易易盾、阿里云内容安全等）或内容\n审查(Moderation)接口经验。\nAgent 框架理解：熟悉主流的Al应用架构（如LangChain、Llamalndex或AgentScope），理解上游应用是如何\n消费API 的。\n任职要求\n学历经验：计算机或相关专业本科及以上学历，2年以上后端开发经验（若有优秀的开源项目重度参与经历可放\n宽）。\n自驱力：对大模型生态及开源社区（GitHub）充满热情，能主动跟进国外大模型接口的最新变动（如新版API升\n级、参数变更）。",
+  "crawlMethod": "manual",
+  "extracted": {}
+}

@@ -1,0 +1,13 @@
+{
+  "sampleId": "ai_data_eval_009",
+  "jobId": "ai_data_eval",
+  "source": "boss",
+  "sourceUrl": "https://www.zhipin.com/job_detail/37187a678c5ec4380nJy2t21E1RT.html?securityId=MFf4HkchFtffg-h13m9g43Fn7JeJoiyKWg3hmsAFSUwvMzVIO_gMNXJwbrwEM2BmM48NZMnfrUM7EKqQP_Wtmxnk0du-jfTNso7lmRxdoaBlRVR7s-4d1Ss9t2LRcKx3bkysQxgilGgs8wOiq5slZcmAaVG5yv1t_P1-uZm7jqnYMBEyowiLPZeSbQBucTOCNDK0EEMhntpjbJCBVNwikfAdStj0Wdl5VXQsfFZfv6-m5vS-YoKLSXCY7qc0P7H2WGYsft7yA3m8_ZJg2yYMa__FYR5HoaUQfE_xd1H4q9CuYaI-2V3WglaSFfqaO6Uj-_3a-TeRnbky2ybwxStdKzI7oVl_9sQdOm38GwyJ28bbCMqnBt2k8S6FkyCfQI1D2vpJcpOrkw~~&ka=company_more_job_37187a678c5ec4380nJy2t21E1RT",
+  "crawledAt": "2026-08-28",
+  "title": "标注/评测项目助理",
+  "company": "浙江热热科技有限公司",
+  "level": "junior",
+  "rawText": "岗位职责：1、协助项目经理进行数据/pingce项目的日常维护，负责任务的验收和质量把控，及时识别并反馈风险，确保项目按计划交付；2、带领组员对任务进行复盘，能够分析高频错误类型，定期总结badcase集；3、维护项目文档，包括bpo周期产出情况、培训文档、入项SOP、FAQ的更新记录；4、协助维护标注/评测标准，确保评测员理解与执行统一，并负责日常的作业答疑；5、跟踪一线同学产能、质量及出勤情况，统计评测效率、质量趋势及异常数据，发现问题及时反馈；6、负责新人入项前的培训工作、入项考试与准入情况，统计批次通过率并分析问题，能够优化培训资料、项目流程及SOP。任职要求：1、全日制本科及以上；2、1年以上AI数据标注/模型评测项目经验，有基础团队管理经验，具备项目管理能力；3、具备良好的沟通协调能力和执行能力，逻辑思维强，工作认真细致，责任心强，具备较强的问题分析能力；4、熟练使用 Excel、Word、PowerPoint 等办公软件，具备基础数据分析能力；加分项1、飞书、多维表格等项目协作工具使用经验；助理2：岗位职责1、协助项目经理完成评测人员的简历初筛、面试组织以及新人上岗培训，做好评测人力的基础管理工作。2、负责评测任务日常答疑，处理评测执行中的歧义、边界案例，保障评测标准理解与执行口径统一。3. 参与评测任务拆解、进度跟进，完成评测结果验收质检，识别产出中的质量问题，及时向上同步风险，保障项目按期交付。4. 协助沉淀项目数据资产：维护 Badcase 库、典型样例样本集，组织内部认知校准会；整理争议样本，协助更新评测 SOP、FAQ 文档与仲裁参考案例。5. 汇总任务过程数据，输出日常统计、质量小结，协助完成评测问题归因，支撑后续模型迭代参考。6. 对接内部业务、评测执行人员，做好信息对齐，跟进问题闭环；协助落地评测执行细则，把抽象的视频审美要求转化为可执行的作业指引。任职要求1. 本科及以上学历，1-2 年数据运营、项目助理、评测 / 标注项目相关工作经验；有 AIGC、视频内容评测经验优先。2. 具备基础视频审美能力，能够理解画面、镜头、叙事相关评测维度，识别视频内容的明显瑕疵，可落地执行质检验收工作。3. 做事细致严谨，执行力强，面对多任务、高并发场景可以稳定输出，具备基础风险识别意识，发现异常及时反馈。4. 沟通表达清晰，能够传递评测规则，独立组织培训、答疑，协调处理评测中的争议问题。5. 熟练使用 Excel（数据透视表）、飞书等协作工具，具备文档整理撰写、数据汇总复盘能力。加分项1. 编导、摄影、数媒、动画、影视文学等相关专业背景，熟悉基础镜头语言、视频叙事逻辑。2. 有 AI 多模态 / 视频大模型评测、数据标注项目实操经历。3. 有英语 / 日语读写能力，可支持多语言视频评测辅助工作。4. 使用过主流 AI 视频生成工具，对 AIGC 视频内容有一定认知。",
+  "crawlMethod": "manual",
+  "extracted": {}
+}

@@ -1,0 +1,66 @@
+{
+  "jobId": "ai_data_eval",
+  "name": "AI数据与评测",
+  "aliases": [
+    "大模型评测产品经理",
+    "AI评测标注"
+  ],
+  "definition": "负责设计和执行AI产品的评测体系，确保模型输出质量达标，并推动效果迭代。",
+  "coreWorkObject": "评测体系, 数据标注, 评测报告",
+  "typicalWorkSnippet": "在设计评测方案时，需要在自动评测和人工评测之间进行取舍，考虑资源有限和评测标准的全面性。同时，需与产品和算法团队沟通，确保评测结果能够推动模型优化。",
+  "whyExperience": "用户能体验到如何通过数据评测推动AI产品的质量提升，并理解评测在AI产品开发中的关键作用。",
+  "deliverables": [
+    "评测方案",
+    "评测报告",
+    "标注数据集"
+  ],
+  "skills": [
+    "数据分析",
+    "评测设计",
+    "跨团队沟通"
+  ],
+  "painPoints": [
+    "数据质量问题",
+    "评测标准对齐",
+    "跨团队协调"
+  ],
+  "levelDiff": "入门级别侧重于数据标注和质量检查，资深则需设计评测体系并提供决策支持。",
+  "roleBoundaries": {
+    "vs_ai_product": "数据评测负责验证模型效果与质量标准；产品负责定义需求与成功指标。",
+    "vs_ai_ui_design": "数据与评测定义评测标准和成功指标；UI设计关注用户体验和界面呈现。",
+    "vs_ai_ops": "数据与评测负责评测数据的质量和分析；运营关注用户反馈和市场推广。",
+    "vs_ai_app_dev": "数据与评测负责评测标准和数据质量；应用开发负责技术实现和工程取舍。"
+  },
+  "competencyRequirements": {
+    "问题拆解": "中高",
+    "用户/客户理解": "中",
+    "证据判断": "高",
+    "方案构建": "高",
+    "决策取舍": "中高",
+    "沟通表达": "高"
+  },
+  "specificCompetencies": [
+    "数据标注质量控制",
+    "评测体系设计"
+  ],
+  "evidenceSources": [
+    {
+      "title": "微信基础-大模型评测产品经理",
+      "source": "company_site",
+      "url": "https://careers.tencent.com/"
+    },
+    {
+      "title": "微信AI-小微对话效果与评测",
+      "source": "company_site",
+      "url": "https://careers.tencent.com/jobdesc.html?postId=2021521585860673536"
+    },
+    {
+      "title": "AI产品评测岗",
+      "source": "boss",
+      "url": "https://www.zhipin.com/job_detail/68d183923dbafde80nJz2tS9EFRQ.html?securityId=JjIR9z_QHt9re-x1RgSqeKUTuKprtheW8e1PigbSMyvT2TkrmkbfNF6CfRJoWDCdfqxZHiXW5K6FL5OKXy_xhWUNCFikNn0v0nfD7NDjunzvWeqkOczBAkKOMjqK7nq-xLjM6bouXCsuRcBQmojz4BUXlye6UXrilMspV8ae_lp-_r_Br1s-S92SpC6WzSyt7DDXiGtEaz5gLn6KVROAPR5jY-hXdH7joLsZNtw8433hQS1tcMuGjr7nDb9dD7kwneYhYjreK3G5pZX5O0MnB7EbZ3f2QpoIZFYz6iAbQwyXDykAaH9742M2g3VX3SrKL_PLqauSY4aX7IThIsicC9Qrts6r4vz_rp0IS5ePfM13CbbbwAGEgFkxKym8fmapvmuQgNZJmzO57Ou8PVgi1EiUsekzhD4X0SEx7IJ_nF6cyz4_vgq6RfqUiy0~&ka=company_more_job_68d183923dbafde80nJz2tS9EFRQ"
+    }
+  ],
+  "sampleCount": 10,
+  "modelVersion": "v1-hackathon",
+  "disclaimer": "Demo 岗位模型，基于公开样本归纳，非行业官方标准"
+}

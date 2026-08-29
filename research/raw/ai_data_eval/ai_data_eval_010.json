@@ -1,0 +1,13 @@
+{
+  "sampleId": "ai_data_eval_010",
+  "jobId": "ai_data_eval",
+  "source": "boss",
+  "sourceUrl": "https://www.zhipin.com/job_detail/0bfd566bc8f114070nN629y8E1dW.html?securityId=HtO33rJ4G2eAO-l1eI6acrd7M796MDkQmizJduM3ihvEPRv1JYvuR9lNPbHgGfdYD3eXc3u2vaong-DOOE5qa5MQbUcBmSgy0tVjJdCraYjvgxAqk1EIr60jY_nELT8zDjjq3ByjJWM2hb-cHzTkjj6B17BEHVj0D_2NQ4BkM3nDSDalfb9QNGI6OEfQAi7ITwCOumYepEYLLJuH_Aq97PN2xya1PoDxTj36c_Fiz_rPwlGEuEdscreKvQyXB1YgWTX2vPQ2JbKKarfGIuBo4oa79jH4RrzbL8B-jgrcDu97R52Yiz_BYppkM0LJSNfjtY4C6vKKUYuLI4JoXvTxhxGiWP9763OiI4ZcMYKukWvqhgCjGyP4oVwsIBHYYA3tFXWIqjY~&ka=company_more_job_0bfd566bc8f114070nN629y8E1dW",
+  "crawledAt": "2026-08-28",
+  "title": "数据评测采集/有夜班/六险一金",
+  "company": "大连斯锐信息技术有限公司",
+  "level": "junior",
+  "rawText": "岗位职责：1、配合完成白班与夜班2周交替工作安排，白班时间为早9至晚7，夜班时间为晚9至早7；中间共有2.5小时休息时间。2、工作期间需上交手机，服从现场管理要求；3、每日固定加班2小时，加班费为43元/小时，夜班补贴93元/天；4、享有双休待遇；5、执行数据采集：在指定场景执行标准或复合动作的数据采集；6、确保数据质量：严格按照数据采集脚本执行任务，对采集到的原始数1. 数据进行初步筛选、检查和整理，确保动作的规范性和数据的完整性；2. 设备与反馈：负责VR设备、传感器等工具的日常维护与基础调试，与算法、运营团队协作，及时反馈设备故障、数据异常等问题，并提出优化建议。任职要求：1. 沟通流利不卡顿，思路清晰，精神面貌佳；2. 能适应轮班制度，接受白班与夜班交替工作安排；3. 协调性高、方向感辨识度高，无色盲和色弱；4. 能够按照采集规范进行执行和操作。”",
+  "crawlMethod": "manual",
+  "extracted": {}
+}

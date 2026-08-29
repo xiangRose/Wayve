@@ -1,0 +1,13 @@
+{
+  "sampleId": "ai_product_001",
+  "jobId": "ai_product",
+  "source": "company_site",
+  "sourceUrl": "https://careers.tencent.com/jobdesc.html?postId=2053645695394689024",
+  "crawledAt": "2026-08-28",
+  "title": "《王者荣耀》-技术策划-AI工具方向",
+  "company": "腾讯",
+  "level": "unknown",
+  "rawText": "岗位职责：\n1. 负责探索游戏行业 AI 提效工作流程相关能力，探索应用场景，设计平台管线；\n2. 负责已有工具管线的 AI 化，将 AI 赋能到常用编辑器以及日常使用的工作平台中；\n3. 负责推进 UGC+AI 方向上 AI 能力的探索与扩展；\n4. 根据各个职能需求推动 AI 能力产品化，提升游戏研发效率和 AI 在项目内的落地推广。\n\n岗位要求：\n1. 熟悉游戏行业研发的基本流程，对游戏行业有浓厚兴趣；\n2. 2 年以上 AIGC 产品或游戏岗位推动 AIGC 落地的类似工作经验；\n3. 深入理解 AI 相关技术的发展和能力边界，有深度 AI 工具使用习惯；\n4. 优化 Agent 能力，有 Agent 实操经验；\n5. 具备优秀的产品规划能力，能独立完成竞品对比、需求分析及原型设计。",
+  "crawlMethod": "auto",
+  "extracted": {}
+}

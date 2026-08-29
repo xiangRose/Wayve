@@ -1,0 +1,13 @@
+{
+  "sampleId": "ai_app_dev_001",
+  "jobId": "ai_app_dev",
+  "source": "company_site",
+  "sourceUrl": "https://careers.tencent.com/jobdesc.html?postId=2076924809798922240",
+  "crawledAt": "2026-08-28",
+  "title": "金融科技-大模型Agent应用研发",
+  "company": "腾讯",
+  "level": "unknown",
+  "rawText": "岗位职责：\n1. 业务落地与技术攻坚：参与腾讯金融科技大模型在智能投顾、智能运营、智能客服、搜索推荐等核心金融场景的落地与迭代；\n2. 前沿探索与标准沉淀：持续追踪大模型及 AI Agent 领域的前沿技术（如多智能体协同、Tool Learning、Skills、RAG 进阶架构等），结合金融业务痛点沉淀技术方法论。\n\n岗位要求：\n1. 计算机、人工智能或相关专业硕士及以上学历，具备较多的大模型（LLM）项目落地经验；\n2. 深入理解 Agent 核心范式与组件，包括 Agent Loop、Tool Use、Skills、MCP、Memory 机制、RAG、ReAct、Plan-and-Execute 等；\n3. 熟悉 Qwen、DeepSeek、Gemini、Claude 等主流大模型，对 LLM 全技术栈（数据处理、SFT、RLHF/DPO 等）有体系化认知；\n4. 熟练掌握 vLLM、TensorRT-LLM、LangChain 等框架，能独立主导模型训练、微调（LoRA/PEFT）及高性能推理部署；\n5. 能够构建完善的 LLM 评估体系，擅长通过 A/B Test 验证算法收益。",
+  "crawlMethod": "auto",
+  "extracted": {}
+}

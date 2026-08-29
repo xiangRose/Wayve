@@ -1,0 +1,67 @@
+{
+  "jobId": "ai_ops",
+  "name": "AI运营",
+  "aliases": [
+    "AI产品运营",
+    "AI策略产品运营"
+  ],
+  "definition": "负责AI产品的运营策略制定与执行，通过数据分析、用户反馈和跨部门协作，推动AI技术在业务场景中的落地与优化。",
+  "coreWorkObject": "AI产品, 用户数据, 运营策略, 跨部门协作",
+  "typicalWorkSnippet": "在推动AI产品落地时，需平衡用户需求与技术实现，协调产品、算法和业务团队，确保策略有效执行并达成业务目标。",
+  "whyExperience": "用户可以体验到AI技术在实际业务场景中的应用与优化过程，以及如何通过运营策略提升产品价值。",
+  "deliverables": [
+    "运营策略方案",
+    "用户数据分析报告",
+    "产品优化建议"
+  ],
+  "skills": [
+    "数据分析",
+    "跨部门沟通",
+    "项目管理",
+    "用户洞察"
+  ],
+  "painPoints": [
+    "跨团队沟通协调",
+    "策略落地执行",
+    "用户反馈处理"
+  ],
+  "levelDiff": "入门级侧重于执行具体的运营任务，资深级则负责策略制定与跨部门协调，推动复杂项目落地。",
+  "roleBoundaries": {
+    "vs_ai_product": "运营负责用户增长、留存与策略执行；产品负责功能定义与优先级决策。",
+    "vs_ai_ui_design": "运营关注用户需求与产品策略，UI设计关注用户界面与体验。",
+    "vs_ai_data_eval": "运营关注用户反馈与策略优化，数据评测关注模型性能与数据质量。",
+    "vs_ai_app_dev": "运营负责产品策略与用户需求，应用开发负责技术实现与产品功能开发。"
+  },
+  "competencyRequirements": {
+    "问题拆解": "高",
+    "用户/客户理解": "高",
+    "证据判断": "中高",
+    "方案构建": "高",
+    "决策取舍": "中高",
+    "沟通表达": "高"
+  },
+  "specificCompetencies": [
+    "AI技术应用能力",
+    "运营策略制定"
+  ],
+  "evidenceSources": [
+    {
+      "title": "微信小店-生态治理产品运营",
+      "source": "company_site",
+      "url": "https://careers.tencent.com/jobdesc.html?postId=2077724655581577216"
+    },
+    {
+      "title": "策略产品运营（大模型Agent方向）",
+      "source": "boss",
+      "url": "unknown"
+    },
+    {
+      "title": "AI产品运营",
+      "source": "boss",
+      "url": "unknown"
+    }
+  ],
+  "sampleCount": 12,
+  "modelVersion": "v1-hackathon",
+  "disclaimer": "Demo 岗位模型，基于公开样本归纳，非行业官方标准"
+}

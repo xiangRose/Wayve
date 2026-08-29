@@ -1,0 +1,13 @@
+{
+  "sampleId": "ai_ops_001",
+  "jobId": "ai_ops",
+  "source": "company_site",
+  "sourceUrl": "https://careers.tencent.com/jobdesc.html?postId=2077724655581577216",
+  "crawledAt": "2026-08-28",
+  "title": "微信小店-生态治理产品运营",
+  "company": "腾讯",
+  "level": "unknown",
+  "rawText": "岗位职责：\n1. 负责电商直播内容治理及达人工作，通过治理工作降低用户负反馈；\n2. 建立直播间治理的基建流程；\n3. 与各方合作应对各类治理紧急事项。\n\n岗位要求：\n1. 本科以上学历，优先考虑具有电商直播治理等相关工作经验的候选人；\n2. 善于制定规则和定性分析，对于研究规则问题有足够的耐心和探索欲；\n3. 具有较强数据分析能力，能够熟练掌握 SQL、Excel 等数据分析工具；\n4. 跨团队沟通能力强，能够与合作方有效沟通和协作，共同推进治理工作；\n5. 能独挡一面，具有较好的工作承压能力。",
+  "crawlMethod": "auto",
+  "extracted": {}
+}

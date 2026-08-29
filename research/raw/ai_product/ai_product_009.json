@@ -1,0 +1,13 @@
+{
+  "sampleId": "ai_product_009",
+  "jobId": "ai_product",
+  "source": "boss",
+  "sourceUrl": "unknown",
+  "crawledAt": "2026-08-28",
+  "title": "AI Native产品经理",
+  "company": "第四范式",
+  "level": "unknown",
+  "rawText": "职位详情：C端产品、B端产品、语义类AI、语音类AI、AI Native\n\n1、拥有产品路线图，在所有层面做优先级决策——能力 vs. 简洁、灵活 vs. 可靠、深度 vs. 广度\n2、塑造自然语言如何转化为可靠Agent Harness——从 Agent 编排，到数据检索、可视化、回测与执行\n3、负责 AI Coding、代码智能体、研发 / 企业知识智能体等产品方向，输出定位、用户场景、roadmap 与商业化方案。\n4、通过深度使用、用户调研和数据分析发现并解决产品摩擦\n5、负责 AI Native 应用方向的产品规划，重点围绕 AI Coding、Code Agent、研发智能体、企业知识管理智能体等场景，定义产品定位、目标用户、核心场景、版本路线图和商业化路径。\n\n我想要什么样的人？\n- 无论你是应届生还是经验丰富的从业者，有 AI Agent 产品或UGC 平台经验优先\n- 产品直觉强，系统性思维——看到全局，抓住最重要的问题\n- 动手能力强：会原型、写文档、测试、推上线——而不只是协调\n- AI 原生工具的重度用户（Claude Code、Cursor 等）——用 AI 来构建，而不只是谈论 AI",
+  "crawlMethod": "manual",
+  "extracted": {}
+}

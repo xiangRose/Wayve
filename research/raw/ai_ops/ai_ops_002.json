@@ -1,0 +1,13 @@
+{
+  "sampleId": "ai_ops_002",
+  "jobId": "ai_ops",
+  "source": "company_site",
+  "sourceUrl": "https://careers.tencent.com/",
+  "crawledAt": "2026-08-28",
+  "title": "微信小店-产品策划-推荐方向",
+  "company": "腾讯",
+  "level": "unknown",
+  "rawText": "岗位职责：\n1. 负责电商推荐工作，对用户需求进行挖掘和抽象、输出方案和策略、有效提升用户体验和效率；\n2. 对微信内商业场景进行深入洞察，基于平台价值观和目标、提出有效策略促进生态中不同角色共同良性发展。",
+  "crawlMethod": "auto",
+  "extracted": {}
+}

@@ -1,0 +1,66 @@
+{
+  "jobId": "ai_ui_design",
+  "name": "UI设计",
+  "aliases": [
+    "交互设计师",
+    "用户体验设计师"
+  ],
+  "definition": "负责设计AI产品的用户界面和交互体验，确保产品的易用性和视觉吸引力。",
+  "coreWorkObject": "用户界面,交互体验,设计工具",
+  "typicalWorkSnippet": "在设计AI产品时，需平衡用户需求与技术限制，定义交互框架并输出设计方案，与产品和技术团队协作确保方案落地。",
+  "whyExperience": "用户能体验到设计如何影响AI产品的用户体验和市场表现。",
+  "deliverables": [
+    "交互设计方案",
+    "高保真原型",
+    "设计规范"
+  ],
+  "skills": [
+    "视觉设计能力",
+    "交互设计能力",
+    "用户研究能力"
+  ],
+  "painPoints": [
+    "多方协作沟通",
+    "设计方案反复修改",
+    "快速响应需求变化"
+  ],
+  "levelDiff": "入门者关注设计执行，资深者则需定义设计策略和标准。",
+  "roleBoundaries": {
+    "vs_ai_product": "UI设计负责界面和交互细节，产品经理负责产品功能和市场定位。",
+    "vs_ai_ops": "UI设计关注用户体验，运营关注用户增长和留存。",
+    "vs_ai_data_eval": "UI设计定义用户界面，数据评测评估用户行为和界面效果。",
+    "vs_ai_app_dev": "UI设计提供设计方案，应用开发实现技术落地。"
+  },
+  "competencyRequirements": {
+    "问题拆解": "中高",
+    "用户/客户理解": "高",
+    "证据判断": "中高",
+    "方案构建": "高",
+    "决策取舍": "中高",
+    "沟通表达": "高"
+  },
+  "specificCompetencies": [
+    "视觉创意能力",
+    "设计工具熟练度"
+  ],
+  "evidenceSources": [
+    {
+      "title": "AI-native UX Designer",
+      "source": "company_site",
+      "url": "https://jobs.bytedance.com/en/position/7674908085597571381/detail"
+    },
+    {
+      "title": "微信视频号-互动模块产品策划",
+      "source": "company_site",
+      "url": "https://careers.tencent.com/"
+    },
+    {
+      "title": "【腾娱】游戏UI设计",
+      "source": "boss",
+      "url": "https://m.zhipin.com/mpa/html/weijd/weijd-job/1be4b219a912ea520nZ92t60FlFR?date8=20260828&sid=tosee_jd_79e1e358e0e4f1e60XR82Nu5GFFY&openWeapp=1&fromSource=2"
+    }
+  ],
+  "sampleCount": 12,
+  "modelVersion": "v1-hackathon",
+  "disclaimer": "Demo 岗位模型，基于公开样本归纳，非行业官方标准"
+}

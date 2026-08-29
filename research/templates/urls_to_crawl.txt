@@ -1,0 +1,16 @@
+# 五岗公开 JD 批量爬取列表（腾讯招聘 + 字节招聘）
+# 格式: jobId source url title company
+
+ai_product	company_site	https://careers.tencent.com/jobdesc.html?postId=2053645695394689024	王者荣耀-技术策划-AI工具方向	腾讯
+ai_product	company_site	https://careers.tencent.com/jobdesc.html?postId=2077724655581577216	微信输入法-AI产品策划	腾讯
+
+ai_ops	company_site	https://careers.tencent.com/jobdesc.html?postId=2077724655581577216	微信小店-生态治理产品运营	腾讯
+
+ai_data_eval	company_site	https://careers.tencent.com/jobdesc.html?postId=2021521585860673536	微信AI-对话效果与评测	腾讯
+ai_data_eval	company_site	https://careers.tencent.com/jobdesc.html?postId=2080545048625332224	AI数据湖与搜索引擎	腾讯
+
+ai_app_dev	company_site	https://careers.tencent.com/jobdesc.html?postId=2076924809798922240	金融科技-大模型Agent应用	腾讯
+ai_app_dev	company_site	https://careers.tencent.com/jobdesc.html?postId=2080545048625332224	AI搜索引擎研发	腾讯
+
+ai_ui_design	company_site	https://jobs.bytedance.com/en/position/7674908085597571381/detail	AI-native UX Designer	字节跳动
+ai_ui_design	company_site	https://careers.tencent.com/jobdesc.html?postId=2077724655581577216	微信视频号-互动产品策划	腾讯

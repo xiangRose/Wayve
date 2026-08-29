@@ -1,0 +1,70 @@
+{
+  "jobId": "ai_product",
+  "name": "AI产品",
+  "aliases": [
+    "AIGC产品经理",
+    "大模型产品经理"
+  ],
+  "definition": "负责定义和推动AI技术在产品中的应用，提升用户体验和商业价值。",
+  "coreWorkObject": "AI技术,用户需求,产品方案,数据分析",
+  "typicalWorkSnippet": "在有限资源下，产品经理需要权衡用户需求与技术可行性，定义产品方向并协调团队实现方案落地。",
+  "whyExperience": "用户可以体验到如何将前沿技术转化为实际产品，并在多方协作中推动创新。",
+  "deliverables": [
+    "产品需求文档",
+    "产品原型",
+    "用户调研报告",
+    "数据分析报告"
+  ],
+  "skills": [
+    "产品规划",
+    "用户研究",
+    "数据分析",
+    "跨团队协作",
+    "技术理解"
+  ],
+  "painPoints": [
+    "跨部门协调",
+    "需求变更",
+    "技术落地难度",
+    "用户反馈处理"
+  ],
+  "levelDiff": "入门级关注执行和支持，资深级负责战略规划和创新方向。",
+  "roleBoundaries": {
+    "vs_ai_ui_design": "产品决定做什么、为什么、优先级；UI设计决定怎么做才可用、信息如何呈现。",
+    "vs_ai_ops": "产品定义功能和目标；运营负责用户获取和留存策略。",
+    "vs_ai_data_eval": "产品定义需求和成功标准；数据评测负责验证产品效果和质量。",
+    "vs_ai_app_dev": "产品定义问题与成功标准；应用开发负责可交付的技术实现与工程取舍。"
+  },
+  "competencyRequirements": {
+    "问题拆解": "高",
+    "用户/客户理解": "高",
+    "证据判断": "高",
+    "方案构建": "高",
+    "决策取舍": "高",
+    "沟通表达": "中高"
+  },
+  "specificCompetencies": [
+    "AI技术应用能力",
+    "市场趋势洞察"
+  ],
+  "evidenceSources": [
+    {
+      "title": "《王者荣耀》-技术策划-AI工具方向",
+      "source": "company_site",
+      "url": "https://careers.tencent.com/jobdesc.html?postId=2053645695394689024"
+    },
+    {
+      "title": "微信读书产品部-AI产品经理",
+      "source": "company_site",
+      "url": "https://careers.tencent.com/"
+    },
+    {
+      "title": "微信输入法-AI产品策划",
+      "source": "company_site",
+      "url": "https://careers.tencent.com/"
+    }
+  ],
+  "sampleCount": 13,
+  "modelVersion": "v1-hackathon",
+  "disclaimer": "Demo 岗位模型，基于公开样本归纳，非行业官方标准"
+}

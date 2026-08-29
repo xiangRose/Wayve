@@ -1,0 +1,23 @@
+{
+  "sampleId": "ai_product_001",
+  "jobId": "ai_product",
+  "source": "boss",
+  "sourceUrl": "https://www.zhipin.com/job_detail/xxxx.html",
+  "crawledAt": "2026-08-27",
+  "title": "AI产品经理",
+  "company": "某科技公司",
+  "level": "unknown",
+  "rawText": "在此粘贴 JD 或小红书帖子全文，至少 50 字……",
+  "crawlMethod": "manual",
+  "extracted": {
+    "aliases": [],
+    "responsibilities": [],
+    "workObjects": [],
+    "deliverables": [],
+    "skills": [],
+    "painPoints": [],
+    "collaborators": [],
+    "levelDiff": "",
+    "roleBoundaries": ""
+  }
+}

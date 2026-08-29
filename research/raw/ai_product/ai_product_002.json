@@ -1,0 +1,13 @@
+{
+  "sampleId": "ai_product_002",
+  "jobId": "ai_product",
+  "source": "company_site",
+  "sourceUrl": "https://careers.tencent.com/",
+  "crawledAt": "2026-08-28",
+  "title": "微信读书产品部-AI产品经理",
+  "company": "腾讯",
+  "level": "unknown",
+  "rawText": "岗位职责：\n1. 负责读书产品部新应用的产品策划工作，涵盖 IM 群聊、AI Agent、实时协同等；\n2. 结合前沿技术发展趋势，探索 AI 在办公协作/项目管理等场景的创新落地方案；\n3. 洞察挖掘用户对 AI 的真实需求和具体场景，设计解决方案并落地；\n4. 跟进并理解大模型等相关技术发展，深刻理解模型进化带来的改变，在产品的设计中充分应用模型能力。",
+  "crawlMethod": "auto",
+  "extracted": {}
+}

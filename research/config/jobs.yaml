@@ -1,0 +1,66 @@
+# 五岗 → 搜索关键词（手采 / 公开搜索用）
+# PRD §岗位调研：每岗 15–30 条样本，爬虫失败不阻塞 Demo
+
+jobs:
+  ai_product:
+    name: AI产品
+    boss_keywords:
+      - AI产品经理
+      - AIGC产品经理
+      - 大模型产品经理
+      - AI产品
+    search_hints:
+      - site:zhipin.com AI产品经理
+      - AI product manager JD 职责
+
+  ai_ops:
+    name: AI运营
+    boss_keywords:
+      - AI产品运营
+      - AIGC运营
+      - 大模型运营
+      - AI增长运营
+    search_hints:
+      - AI product growth 运营
+      - AIGC 用户增长 留存
+
+  ai_data_eval:
+    name: AI数据与评测
+    boss_keywords:
+      - AI数据标注
+      - 大模型评测
+      - LLM评测工程师
+      - AI数据质量
+    search_hints:
+      - 大模型评测 岗位职责
+      - LLM evaluation benchmark
+
+  ai_app_dev:
+    name: AI应用开发
+    boss_keywords:
+      - AI应用开发
+      - 大模型应用开发
+      - AIGC应用工程师
+      - AI全栈工程师
+    search_hints:
+      - AI application developer JD
+      - RAG 应用开发 职责
+
+  ai_ui_design:
+    name: UI设计
+    boss_keywords:
+      - AI UX设计师
+      - AIGC交互设计师
+      - AI UI设计
+      - 大模型产品设计
+    search_hints:
+      - AI UX designer 岗位职责
+      - 大模型产品交互设计
+
+career_pages:
+  - company: 字节跳动
+    url: https://jobs.bytedance.com/
+  - company: 腾讯
+    url: https://careers.tencent.com/
+  - company: 阿里巴巴
+    url: https://talent.alibaba.com/

@@ -1,0 +1,13 @@
+{
+  "sampleId": "ai_data_eval_003",
+  "jobId": "ai_data_eval",
+  "source": "boss",
+  "sourceUrl": "https://www.zhipin.com/job_detail/68d183923dbafde80nJz2tS9EFRQ.html?securityId=JjIR9z_QHt9re-x1RgSqeKUTuKprtheW8e1PigbSMyvT2TkrmkbfNF6CfRJoWDCdfqxZHiXW5K6FL5OKXy_xhWUNCFikNn0v0nfD7NDjunzvWeqkOczBAkKOMjqK7nq-xLjM6bouXCsuRcBQmojz4BUXlye6UXrilMspV8ae_lp-_r_Br1s-S92SpC6WzSyt7DDXiGtEaz5gLn6KVROAPR5jY-hXdH7joLsZNtw8433hQS1tcMuGjr7nDb9dD7kwneYhYjreK3G5pZX5O0MnB7EbZ3f2QpoIZFYz6iAbQwyXDykAaH9742M2g3VX3SrKL_PLqauSY4aX7IThIsicC9Qrts6r4vz_rp0IS5ePfM13CbbbwAGEgFkxKym8fmapvmuQgNZJmzO57Ou8PVgi1EiUsekzhD4X0SEx7IJ_nF6cyz4_vgq6RfqUiy0~&ka=company_more_job_68d183923dbafde80nJz2tS9EFRQ",
+  "crawledAt": "2026-08-28",
+  "title": "AI产品评测岗",
+  "company": "卓越际联科技有限公司",
+  "level": "unknown",
+  "rawText": "“岗位概述： 负责协助模型评测运营工作，包括评测数据集的设计与维护、评测结果的抽检校验、产品问题的跟踪与分析，确保模型输出质量达标并持续推动效果迭代。【岗位职责】参与评测数据集的设计、搭建与日常维护，覆盖创作、知识问答、文档理解、生图等多场景，保障评测集的完整性和时效性；对评测团队产出的标注数据和评测结果进行抽检校验，识别打分偏差，推动评测标准对齐，确保初标-质检-验收全流程质量一致；跟踪并处理客户方及内部在产品问题平台上发起的问题反馈，完善问题标签分类体系，定期输出问题分析报告，为策略迭代提供数据支撑；探索并落地自动化评测或数据处理工具，提升评测效率和数据流转速度。【岗位要求】本科及以上学历，具备大模型评测或AI产品相关工作经验；熟悉模型评测流程与方法，对内容质量有高度敏感度，能够独立判断模型输出在准确性、表达质量、安全性等维度的表现是否达标；具备产品思维和产品运营经验*，能从用户视角审视模型效果，在产品侧形成有效补位；逻辑清晰，做事细致有条理，具备良好的跨团队沟通协调能力；有自动化提效意识或实践经验（如脚本编写、数据处理工具使用等）者优先。”",
+  "crawlMethod": "manual",
+  "extracted": {}
+}

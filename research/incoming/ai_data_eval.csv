@@ -1,0 +1,84 @@
+jobId,source,sourceUrl,title,company,level,rawText
+ai_product,boss,https://www.zhipin.com/job_detail/示例.html,AI产品评测岗,某AI公司,unknown,在此粘贴 BOSS JD 全文。建议每行一条，rawText 用双引号包裹。
+ai_data_eval,boss,https://www.zhipin.com/job_detail/68d183923dbafde80nJz2tS9EFRQ.html?securityId=JjIR9z_QHt9re-x1RgSqeKUTuKprtheW8e1PigbSMyvT2TkrmkbfNF6CfRJoWDCdfqxZHiXW5K6FL5OKXy_xhWUNCFikNn0v0nfD7NDjunzvWeqkOczBAkKOMjqK7nq-xLjM6bouXCsuRcBQmojz4BUXlye6UXrilMspV8ae_lp-_r_Br1s-S92SpC6WzSyt7DDXiGtEaz5gLn6KVROAPR5jY-hXdH7joLsZNtw8433hQS1tcMuGjr7nDb9dD7kwneYhYjreK3G5pZX5O0MnB7EbZ3f2QpoIZFYz6iAbQwyXDykAaH9742M2g3VX3SrKL_PLqauSY4aX7IThIsicC9Qrts6r4vz_rp0IS5ePfM13CbbbwAGEgFkxKym8fmapvmuQgNZJmzO57Ou8PVgi1EiUsekzhD4X0SEx7IJ_nF6cyz4_vgq6RfqUiy0~&ka=company_more_job_68d183923dbafde80nJz2tS9EFRQ,AI产品评测岗,卓越际联科技有限公司,本科及以上学历，具备大模型评测或AI产品相关工作经验,"“岗位概述： 负责协助模型评测运营工作，包括评测数据集的设计与维护、评测结果的抽检校验、产品问题的跟踪与分析，确保模型输出质量达标并持续推动效果迭代。
+【岗位职责】
+参与评测数据集的设计、搭建与日常维护，覆盖创作、知识问答、文档理解、生图等多场景，保障评测集的完整性和时效性；
+对评测团队产出的标注数据和评测结果进行抽检校验，识别打分偏差，推动评测标准对齐，确保初标-质检-验收全流程质量一致；
+跟踪并处理客户方及内部在产品问题平台上发起的问题反馈，完善问题标签分类体系，定期输出问题分析报告，为策略迭代提供数据支撑；
+探索并落地自动化评测或数据处理工具，提升评测效率和数据流转速度。
+【岗位要求】
+本科及以上学历，具备大模型评测或AI产品相关工作经验；
+熟悉模型评测流程与方法，对内容质量有高度敏感度，能够独立判断模型输出在准确性、表达质量、安全性等维度的表现是否达标；
+具备产品思维和产品运营经验*，能从用户视角审视模型效果，在产品侧形成有效补位；
+逻辑清晰，做事细致有条理，具备良好的跨团队沟通协调能力；
+有自动化提效意识或实践经验（如脚本编写、数据处理工具使用等）者优先。”"
+ai_data_eval,boss,https://www.zhipin.com/job_detail/4d19b911f8563e8d0nJz3dy5FFpW.html?securityId=XBVb4EwUrwI9h-j125WX0gYFlxvIX610Xrew-lKlxbeQ6jzibvapZlMmMvMW3O9RLDeVGMwQ1YiURC-M8LV48_3UyuwOor5tYiNJd9fdlYqLXgw_faJWgDazNAPyrHWwCgi_J9J1py_HNKJqPc4FclQzKNNcpkm27ZPomTCLwGQt4cnIPce-agynRs8z4wioJUnMn0NhPlsoRngqWYZy5ZRGw6226sBXsck4MBZ_BrV8tDMLSaLfov84vDV9e7Tqm53HBAK0oJ7mGcVD7qHtKP3jLKSMc-0MwCq4aZaXi2x8f0xXgh2vJ9SxxqdmXycPTMOjwAOj7IXIHgYdKb68oikprKIFVhlX_gCp6WvMjMj5GEGMCkDdhBUsnAhdwQJxsz1Qkc7umgUail7RQM3JHeuXgr3U-Dr9ct0xBD1j5pdV39pGdGJb67jOkM8~&ka=company_more_job_4d19b911f8563e8d0nJz3dy5FFpW,数据标注/AI训练师数据标注-评测(北京),灵波微步（北京）科技有限公司,本科及以上（985/211院校或QS世界排名前100院校）,"“一、工作时间；作息：9:00–18:30，午休1.5h（12:00–13:30）；休息：周末双休，法定节假日正常休。二、任职要求；1. 学历与专业：学历：985、211院校本科及以上，或QS世界排名前100院校毕业；专业方向：统计学。2. 工作经验：有大模型数据标注相关经验优先。3. 行业认知与学习能力：了解大模型（ChatGPT、DeepSeek等）、图像识别、语音处理等基础概念；学习能力强，能快速掌握新技术、新工具与标注规范。4. 综合素养：文字功底扎实，逻辑清晰，具备较强的数据分析、推理与处理能力；沟通表达良好，责任心强，细致严谨，具备团队协作精神；能快速理解、记忆复杂标注规则（SOP）
+具备主动思考与问题反馈能力，可发现规则模糊 / 滞后点并推动迭代
+5. 英语能力：6级以上成绩
+三、岗位职责
+数据标注执行：严格按照标注规范，对大模型训练数据进行标注、编辑、纠错与批注，保障数据质量。
+数据质量管控：对标注结果进行全流程质检，识别偏差与问题，确保数据准确可用。
+工具与效率提升：熟练使用数据处理平台，优化工作方法，持续提升标注效率与质量。
+四、薪酬福利
+薪资结构：
+　　基础8k+2k岗位补贴+1.5*（0-2）k绩效
+　　薪资浮动区间10-13k
+　　五险一金
+工作地址：北京市东城区新世界中心写字楼A座716”"
+ai_data_eval,boss,https://www.zhipin.com/job_detail/b5e8cf99578ee4c00nFz3NS8FVtY.html?securityId=jpjn6BKerBOWc-A17HDSjeRuQpxoYAtQf_PYhK-PPmrcXvzBIy1C9IS2YuX-gk7kHEnwgRI2uAUtnCd3-Cq1s--urp3gzunept12St-NVAl4j6ZrFvF5kdMD1lvo_PFQD8f5cZzoKoo-AH0ZiceXQkli12WYKav25AH1yFEUuWKIj7tn-NQ715fLE9ERbXDS6pkqCHANW0-zxN4WCCd0Ocxy0tAwr7RV3Eyf5Y6hiZTfPLXQx2ZxNJbLyKtMGop_SvgO0dKoDXA14OdriIzCfhXECO5ibXfOhzOgENV7CcHI4yWlSgQo7YcY5bW17rLK8WNfKZ0WktME5O1dKwTHlXcgQUiP1pc6mrwSXUoi9TRp46wLT2TlqhuclqE9x01WZwrp2s8zMZfzOIa2cVLzcihvwu8gG4Vd-2qTWursj9pz4j5X6Ym4HnT3&ka=company_more_job_b5e8cf99578ee4c00nFz3NS8FVtY,AI产品评测（百度健康外包/双休线上面试）,柯莱特信息技术有限公司,本科（1年以内）,"“岗位内容描述：1. 负责医疗AI场景Benchmark体系建设，制定评测标准、数据集规范及质量控制机制，设计并落地覆盖医学专业性、事实准确性、安全性、推理能力等维度的评测方案，建立标准化、可复用的评测流程；2. 负责机评（自动化评测）能力建设，包括Rubric设计、评测规则制定、Prompt优化及评测结果校准，持续提升评测结果的准确性、稳定性和可解释性。1. 与算法、产品、研发等团队紧密协作，推动评测标准统一、评测结论对齐及Benchmark、机评体系的持续迭代优化。
+能力要求描述
+1. 具备大模型或AI产品评测经验，熟悉主流大模型自动化评测方法，具备Benchmark或机评体系建设经验，能够独立完成机评方案设计与优化；
+2. 具有医疗AI评测经验或医学相关背景者优先，具备良好的跨团队沟通与协作能力。”"
+ai_data_eval,boss,https://www.zhipin.com/job_detail/f66aac8672e5dffd0nF42Nm1FVNV.html?securityId=-Sil5jmeLJpPg-T1vDJxQ5mYw3JJerfgA9p-qMggjVynhbObqrxSZW65uVO9fAO319Vb-fRxYDrBWxOdit3TwUZx3IJiNPO0cwFXCjET9MbTwD_fjJKsXUjX9W65PmMIVL9zQygolPe7Ya-lmur8HpGEaFK9MFwxoPJTDe88WVtBwzR-IW27xzsRXAFeuTA4jTcOp2yUCyC3u58kYn_Ohrzh1_szbSpnG9HUkHScw3TN203t5umDkCgMXG_cMX0Tl0pwUVCYSCZczc7pxVWwo1PVXUs2lf6GVLUnxEnaao3Pa_p4fRECGujn0EjwwggoBjMsASzoG1uQxpfNPoBAwClSK2Umqg7iUbuC7al2ZeCMTQjb-l11Y9fWYb9MfoaNmIdVFTtx&ka=company_more_job_f66aac8672e5dffd0nF42Nm1FVNV,1w+AI评测标注-线上面试,上海瑞应人才科技集团有限公司,本科（1-3年）,"工作经验：1. 有大模型生成文生视频、图生视频标注经验，可以对模型效果音视频结果进行主观质量评估、量化分级，熟悉主观打分、badcase归因标签判定的工作内容。2. 熟悉生成视频的常见问题，有视频优劣的判断力，有大量电影影视阅片经验优先。3. 有其他相关视频审核、视频编辑等AI视频评估经验均可；有竞对视频模型的标注评测经验优先，如seedance、海螺、智谱、vidu等。岗位要求：
+1、本科，有美术、艺术、美学或者摄影功底的优先，数字媒体艺术、美术、设计、动画相关专业优先，编导、导演、摄影类经验、技术美术类、有影视拍片项目经历优先，有做过视频审核可放宽专业
+2、有AI算法测试、数据标注的工作经验，对于大模型/AIGC能力有使用经验。
+3、对视频大模型生成的音视频进行主观质量评估，包括各类视频编辑、控制能力等。
+4、熟悉影视剧音视频制作标准、制作流程，AIGC视频制作深度创作者优先。”"
+ai_data_eval,boss,https://www.zhipin.com/job_detail/e08ad41787ba597c0nJz3d-4F1RY.html?securityId=Ui7CPOLjiB_Di-81dIokQqDHKkgf0hUXpYNY4oHLnHA6OeAY7k9Gy7B3apNDtK4iB17yoKrnzhFcDxQi6twl4rzXJUcnMr-Awq4Y69LExjxoEC7ege3ugmJdubzJPIaZRFYbLHJGiX04dB8c1rTq7rDwQT3KxH-fjdgAaIL2qeU-UEft5fAnx9vjf3D507Hw8KZ-yY4_TQvgevPJC00W1_jZCUO9SVmH3J1Td-PIGCS-b9Sm5fwSvOtOu_OK29Ju795iivXI7sd7_vPWuZbN5cfAeqhAwCSwvNNiXuoKqY1GLelEnTgdar4-JbwjGAXZPdhXJgCuVXZfbuiIEJ37GChxD6scH7LqmJ5jtYEN8uDjEiW353xYEqCazQX39LCo_b1u2R43nw~~&ka=company_more_job_e08ad41787ba597c0nJz3d-4F1RY,AI产品评测岗+六险一金+双休,深圳易宝软件有限公司,本科（1-3年）,"岗位概述：负责协助模型评测运营工作，包括评测数据集的设计与维护、评测结果的抽检校验、产品问题的跟踪与分析，确保模型输出质量达标并持续推动效果迭代。【岗位职责】1. 参与评测数据集的设计、搭建与日常维护，覆盖创作、知识问答、文档理解、生图等多场景，保障评测集的完整性和时效性；2. 对评测团队产出的标注数据和评测结果进行抽检校验，识别打分偏差，推动评测标准对齐，确保初标-质检-验收全流程质量一致；3. 跟踪并处理客户方及内部在产品问题平台上发起的问题反馈，完善问题标签分类体系，定期输出问题分析报告，为策略迭1. 代提供数据支撑；
+2. 探索并落地自动化评测或数据处理工具，提升评测效率和数据流转速度。
+【岗位要求】
+1. 本科及以上学历，具备大模型评测或AI产品相关工作经验；
+2. 熟悉模型评测流程与方法*，对内容质量有高度敏感度，能够独立判断模型输出在准确性、表达质量、安全性等维度的表现是否达标；
+3. 具备产品思维和产品运营经验*，能从用户视角审视模型效果，在产品侧形成有效补位；
+4. 逻辑清晰，做事细致有条理，具备良好的跨团队沟通协调能力；
+5. 有自动化提效意识或实践经验（如脚本编写、数据处理工具使用等）者优先。”
+
+
+"
+ai_data_eval,boss,https://www.zhipin.com/job_detail/1451f693ac63b9f30nJ909W0EFVR.html?securityId=E5-sZ3AAXcOYo-f1J5UR51zlTmMnX90ELmld9-qJh9XkuN__PNuFKrmBT7edqNL6cjM3nJ8xZllRYqkcrWeGgxnjQHh2VVKwiMs3Rz83wOVQKp8m_uUDa6EVY8J7_VBsWmajRjz8joNGhON28TDQLVWz7S6umG30ttCGlrr0kHLAqDTjWPnKjp0e6KXnSUuwMR39fBRpT2jn7zIQKoSgVCAsv6k4xyiXVw9COTAwww4GfydPaoWuA0w8Kr9holmTFmG581Dc7QEYQGOTn6O5sqSuU2FG1gVhAUvHxl8SwiXiDq8-7Mvh65Hh4ztfNuFLx6r0lgTlbqIzz2QwdCHRlOWr0ISP5wgOw_fL0ivGUJJWNyHv21WA5ihSa3OovTWUsXLgMkM~&ka=company_more_job_1451f693ac63b9f30nJ909W0EFVR,AI数据评测运营 - LLM&Omni方向,北京捷科智诚科技有限公司,本科（1-3年）,"岗位职责：1. 负责大模型训练及评测所需的数据标注任务全流程管理，包括需求拆解、规范制定、任务分发、进度监控及质量验收。2. 搭建并迭代标注质量评估体系，通过一致性检验、Badcase复盘、难度分级抽检等手段，持续提升数据质量。3. 管理标注团队，制定培训计划与绩效考核方案，并负责项目结算。5. 参与评测数据集构建及后续摸底报告产出等执行任务。6. 梳理运营SOP，推动1. 自动化质检工具的需求设计与落地，提升运营效率与自动化水平。
+任职要求
+1. 有友商AI数据运营&产品经验优先（标注、评测经验不限制）
+2. 学历大学本科及以上，专业不限
+3. 有大模型数据标注、评估项目管理及运营经验，大厂任职经历1年及以上优先
+4. 具备优秀的沟通协调能力和团队协作意识，抗压能力强
+5. 具备责任心和较强的团队意识，对大模型有较强的兴趣
+6. 有沉淀文档的意识，做事认真负责”"
+ai_data_eval,boss,https://www.zhipin.com/job_detail/37187a678c5ec4380nJy2t21E1RT.html?securityId=MFf4HkchFtffg-h13m9g43Fn7JeJoiyKWg3hmsAFSUwvMzVIO_gMNXJwbrwEM2BmM48NZMnfrUM7EKqQP_Wtmxnk0du-jfTNso7lmRxdoaBlRVR7s-4d1Ss9t2LRcKx3bkysQxgilGgs8wOiq5slZcmAaVG5yv1t_P1-uZm7jqnYMBEyowiLPZeSbQBucTOCNDK0EEMhntpjbJCBVNwikfAdStj0Wdl5VXQsfFZfv6-m5vS-YoKLSXCY7qc0P7H2WGYsft7yA3m8_ZJg2yYMa__FYR5HoaUQfE_xd1H4q9CuYaI-2V3WglaSFfqaO6Uj-_3a-TeRnbky2ybwxStdKzI7oVl_9sQdOm38GwyJ28bbCMqnBt2k8S6FkyCfQI1D2vpJcpOrkw~~&ka=company_more_job_37187a678c5ec4380nJy2t21E1RT,标注/评测项目助理,浙江热热科技有限公司,本科（1-3年）,"岗位职责：1、协助项目经理进行数据/pingce项目的日常维护，负责任务的验收和质量把控，及时识别并反馈风险，确保项目按计划交付；2、带领组员对任务进行复盘，能够分析高频错误类型，定期总结badcase集；3、维护项目文档，包括bpo周期产出情况、培训文档、入项SOP、FAQ的更新记录；4、协助维护标注/评测标准，确保评测员理解与执行统一，并负责日常的作业答疑；5、跟踪一线同学产能、质量及出勤情况，统计评测效率、质量趋势及异常数据，发现问题及时反馈；6、负责新人入项前的培训工作、入项考试与准入情况，统计批次通过率并分析问题，能够优化培训资料、项目流程及SOP。任职要求：1、全日制本科及以上；2、1年以上AI数据标注/模型评测项目经验，有基础团队管理经验，具备项目管理能力；3、具备良好的沟通协调能力和执行能力，逻辑思维强，工作认真细致，责任心强，具备较强的问题分析能力；
+4、熟练使用 Excel、Word、PowerPoint 等办公软件，具备基础数据分析能力；
+加分项
+1、飞书、多维表格等项目协作工具使用经验；
+助理2：
+岗位职责
+1、协助项目经理完成评测人员的简历初筛、面试组织以及新人上岗培训，做好评测人力的基础管理工作。
+2、负责评测任务日常答疑，处理评测执行中的歧义、边界案例，保障评测标准理解与执行口径统一。3. 参与评测任务拆解、进度跟进，完成评测结果验收质检，识别产出中的质量问题，及时向上同步风险，保障项目按期交付。
+4. 协助沉淀项目数据资产：维护 Badcase 库、典型样例样本集，组织内部认知校准会；整理争议样本，协助更新评测 SOP、FAQ 文档与仲裁参考案例。
+5. 汇总任务过程数据，输出日常统计、质量小结，协助完成评测问题归因，支撑后续模型迭代参考。
+6. 对接内部业务、评测执行人员，做好信息对齐，跟进问题闭环；协助落地评测执行细则，把抽象的视频审美要求转化为可执行的作业指引。
+任职要求
+1. 本科及以上学历，1-2 年数据运营、项目助理、评测 / 标注项目相关工作经验；有 AIGC、视频内容评测经验优先。
+2. 具备基础视频审美能力，能够理解画面、镜头、叙事相关评测维度，识别视频内容的明显瑕疵，可落地执行质检验收工作。
+3. 做事细致严谨，执行力强，面对多任务、高并发场景可以稳定输出，具备基础风险识别意识，发现异常及时反馈。
+4. 沟通表达清晰，能够传递评测规则，独立组织培训、答疑，协调处理评测中的争议问题。
+5. 熟练使用 Excel（数据透视表）、飞书等协作工具，具备文档整理撰写、数据汇总复盘能力。
+加分项
+1. 编导、摄影、数媒、动画、影视文学等相关专业背景，熟悉基础镜头语言、视频叙事逻辑。
+2. 有 AI 多模态 / 视频大模型评测、数据标注项目实操经历。
+3. 有英语 / 日语读写能力，可支持多语言视频评测辅助工作。
+4. 使用过主流 AI 视频生成工具，对 AIGC 视频内容有一定认知。"
+ai_data_eval,boss,https://www.zhipin.com/job_detail/0bfd566bc8f114070nN629y8E1dW.html?securityId=HtO33rJ4G2eAO-l1eI6acrd7M796MDkQmizJduM3ihvEPRv1JYvuR9lNPbHgGfdYD3eXc3u2vaong-DOOE5qa5MQbUcBmSgy0tVjJdCraYjvgxAqk1EIr60jY_nELT8zDjjq3ByjJWM2hb-cHzTkjj6B17BEHVj0D_2NQ4BkM3nDSDalfb9QNGI6OEfQAi7ITwCOumYepEYLLJuH_Aq97PN2xya1PoDxTj36c_Fiz_rPwlGEuEdscreKvQyXB1YgWTX2vPQ2JbKKarfGIuBo4oa79jH4RrzbL8B-jgrcDu97R52Yiz_BYppkM0LJSNfjtY4C6vKKUYuLI4JoXvTxhxGiWP9763OiI4ZcMYKukWvqhgCjGyP4oVwsIBHYYA3tFXWIqjY~&ka=company_more_job_0bfd566bc8f114070nN629y8E1dW,数据评测采集/有夜班/六险一金,大连斯锐信息技术有限公司,大专（1-3年）,"岗位职责：1、配合完成白班与夜班2周交替工作安排，白班时间为早9至晚7，夜班时间为晚9至早7；中间共有2.5小时休息时间。2、工作期间需上交手机，服从现场管理要求；3、每日固定加班2小时，加班费为43元/小时，夜班补贴93元/天；4、享有双休待遇；5、执行数据采集：在指定场景执行标准或复合动作的数据采集；6、确保数据质量：严格按照数据采集脚本执行任务，对采集到的原始数1. 数据进行初步筛选、检查和整理，确保动作的规范性和数据的完整性；
+2. 设备与反馈：负责VR设备、传感器等工具的日常维护与基础调试，与算法、运营团队协作，及时反馈设备故障、数据异常等问题，并提出优化建议。
+任职要求：
+1. 沟通流利不卡顿，思路清晰，精神面貌佳；
+2. 能适应轮班制度，接受白班与夜班交替工作安排；
+3. 协调性高、方向感辨识度高，无色盲和色弱；
+4. 能够按照采集规范进行执行和操作。”"

@@ -1,0 +1,13 @@
+{
+  "sampleId": "ai_product_003",
+  "jobId": "ai_product",
+  "source": "company_site",
+  "sourceUrl": "https://careers.tencent.com/",
+  "crawledAt": "2026-08-28",
+  "title": "微信输入法-AI产品策划",
+  "company": "腾讯",
+  "level": "unknown",
+  "rawText": "岗位职责：\n1. 负责微信输入法 AI 方向的产品策划，围绕大语言模型（LLM）、Agent、多模态交互、语音识别与合成（ASR）等前沿技术，探索 AI 在文字输入、智能表达、语音交互、内容创作等核心场景的创新落地方案；\n2. 深度挖掘用户在输入全链路中对 AI 的真实需求和使用场景，设计端到端的产品解决方案并推动落地，持续提升输入效率与表达体验；\n3. 结合业务目标定义模型效果标准和评测体系，协同算法、工程、设计团队进行模型迭代优化与数据飞轮建设；\n4. 持续跟踪大模型与 AI 交互领域的前沿趋势及竞品动态，提出创新性产品策略，强化微信输入法的 AI 产品心智。",
+  "crawlMethod": "auto",
+  "extracted": {}
+}

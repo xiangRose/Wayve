@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "JobResearchSample",
+  "description": "单条岗位调研样本（爬虫或手采）",
+  "type": "object",
+  "required": ["sampleId", "jobId", "source", "crawledAt", "rawText"],
+  "properties": {
+    "sampleId": { "type": "string" },
+    "jobId": {
+      "type": "string",
+      "enum": ["ai_product", "ai_ops", "ai_data_eval", "ai_app_dev", "ai_ui_design"]
+    },
+    "source": {
+      "type": "string",
+      "enum": ["boss", "company_site", "linkedin", "xhs", "interview", "other"]
+    },
+    "sourceUrl": { "type": "string" },
+    "crawledAt": { "type": "string", "format": "date" },
+    "title": { "type": "string" },
+    "company": { "type": "string" },
+    "level": {
+      "type": "string",
+      "enum": ["junior", "mid", "senior", "unknown"]
+    },
+    "rawText": { "type": "string", "minLength": 50 },
+    "crawlMethod": {
+      "type": "string",
+      "enum": ["auto", "manual"]
+    },
+    "extracted": {
+      "type": "object",
+      "properties": {
+        "aliases": { "type": "array", "items": { "type": "string" } },
+        "responsibilities": { "type": "array", "items": { "type": "string" } },
+        "workObjects": { "type": "array", "items": { "type": "string" } },
+        "deliverables": { "type": "array", "items": { "type": "string" } },
+        "skills": { "type": "array", "items": { "type": "string" } },
+        "painPoints": { "type": "array", "items": { "type": "string" } },
+        "collaborators": { "type": "array", "items": { "type": "string" } },
+        "levelDiff": { "type": "string" },
+        "roleBoundaries": { "type": "string" }
+      }
+    }
+  }
+}

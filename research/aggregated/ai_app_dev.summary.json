@@ -1,0 +1,66 @@
+{
+  "jobId": "ai_app_dev",
+  "name": "AI应用开发",
+  "aliases": [
+    "AI全栈开发",
+    "AI应用研发工程师"
+  ],
+  "definition": "负责将AI技术转化为可交付的应用，推动AI在各场景的落地与迭代。",
+  "coreWorkObject": "AI应用系统, 大模型, 智能体, 后端服务",
+  "typicalWorkSnippet": "在资源有限的情况下，决定如何优化AI应用系统以提升性能，同时满足多方业务需求。",
+  "whyExperience": "用户能体验到将前沿AI技术转化为实际应用的过程，感受技术与业务结合的挑战。",
+  "deliverables": [
+    "AI应用系统",
+    "技术方案",
+    "算法集成"
+  ],
+  "skills": [
+    "编程能力",
+    "系统设计",
+    "技术优化"
+  ],
+  "painPoints": [
+    "跨职能团队协作",
+    "性能调优",
+    "技术迭代"
+  ],
+  "levelDiff": "入门者通常负责具体模块开发，资深者则需统筹系统架构与技术方案。",
+  "roleBoundaries": {
+    "vs_ai_ui_design": "应用开发负责技术实现，UI设计负责用户界面设计。",
+    "vs_ai_ops": "应用开发负责技术实现，运营负责用户反馈与市场推广。",
+    "vs_ai_data_eval": "应用开发负责技术实现，数据评测负责模型评估与优化。",
+    "vs_ai_product": "应用开发负责技术实现，产品负责需求定义与优先级决策。"
+  },
+  "competencyRequirements": {
+    "问题拆解": "中高",
+    "用户/客户理解": "中",
+    "证据判断": "中高",
+    "方案构建": "高",
+    "决策取舍": "中高",
+    "沟通表达": "中高"
+  },
+  "specificCompetencies": [
+    "后端开发能力",
+    "AI框架使用"
+  ],
+  "evidenceSources": [
+    {
+      "title": "金融科技-大模型Agent应用研发",
+      "source": "company_site",
+      "url": "https://careers.tencent.com/jobdesc.html?postId=2076924809798922240"
+    },
+    {
+      "title": "豆包AI大模型产品解决方案架构师-火山方舟",
+      "source": "company_site",
+      "url": "https://jobs.bytedance.com/experienced/position/7323089843444599091/detail"
+    },
+    {
+      "title": "AI应用开发工程师",
+      "source": "boss",
+      "url": "https://www.zhipin.com/job_detail/e32184cd330512830nJ50ty0F1pW.html?securityId=NkiBgluKAYz6d-A1wBmNmsgam5OGBfI7dkXfbNvNnxu0vxjMtCnnXZVTBxp9hRUHtic4sibAYyWfJOANVYCA97mMXhTJVNGCbTg8hpqDM4BAviMmuV4GcaJzpm2mcMSJzIA46JP9eBOSgJPyUZA2XB7lqa9Aib5sQUXwY-77j0SqIADj9RWcrJ3VhRLeAMthiW2tVizmT-Prq7xrYneoyvjIZ0iz0YiDlTAweJSRn5qZE1cgfQMJu7TYnVoRJIreP2u-UE-Xuo8w7BEHXEuhDVqnS4gElBHOa18t7gHL-TD-AckmlP_OrKNDl_AMp8CQ0JSFdx1QAmVQtLq--kOkx0CYcKiH-GVh4J2aqzHNaWGUGMi_b534eIvYidn5irP6vL2n8tE06xwu_lkBuCc6fyY9GsOOFRY~&ka=company_more_job_e32184cd330512830nJ50ty0F1pW"
+    }
+  ],
+  "sampleCount": 9,
+  "modelVersion": "v1-hackathon",
+  "disclaimer": "Demo 岗位模型，基于公开样本归纳，非行业官方标准"
+}

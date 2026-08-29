@@ -1,0 +1,13 @@
+{
+  "sampleId": "ai_data_eval_005",
+  "jobId": "ai_data_eval",
+  "source": "boss",
+  "sourceUrl": "https://www.zhipin.com/job_detail/b5e8cf99578ee4c00nFz3NS8FVtY.html?securityId=jpjn6BKerBOWc-A17HDSjeRuQpxoYAtQf_PYhK-PPmrcXvzBIy1C9IS2YuX-gk7kHEnwgRI2uAUtnCd3-Cq1s--urp3gzunept12St-NVAl4j6ZrFvF5kdMD1lvo_PFQD8f5cZzoKoo-AH0ZiceXQkli12WYKav25AH1yFEUuWKIj7tn-NQ715fLE9ERbXDS6pkqCHANW0-zxN4WCCd0Ocxy0tAwr7RV3Eyf5Y6hiZTfPLXQx2ZxNJbLyKtMGop_SvgO0dKoDXA14OdriIzCfhXECO5ibXfOhzOgENV7CcHI4yWlSgQo7YcY5bW17rLK8WNfKZ0WktME5O1dKwTHlXcgQUiP1pc6mrwSXUoi9TRp46wLT2TlqhuclqE9x01WZwrp2s8zMZfzOIa2cVLzcihvwu8gG4Vd-2qTWursj9pz4j5X6Ym4HnT3&ka=company_more_job_b5e8cf99578ee4c00nFz3NS8FVtY",
+  "crawledAt": "2026-08-28",
+  "title": "AI产品评测（百度健康外包/双休线上面试）",
+  "company": "柯莱特信息技术有限公司",
+  "level": "unknown",
+  "rawText": "“岗位内容描述：1. 负责医疗AI场景Benchmark体系建设，制定评测标准、数据集规范及质量控制机制，设计并落地覆盖医学专业性、事实准确性、安全性、推理能力等维度的评测方案，建立标准化、可复用的评测流程；2. 负责机评（自动化评测）能力建设，包括Rubric设计、评测规则制定、Prompt优化及评测结果校准，持续提升评测结果的准确性、稳定性和可解释性。1. 与算法、产品、研发等团队紧密协作，推动评测标准统一、评测结论对齐及Benchmark、机评体系的持续迭代优化。能力要求描述1. 具备大模型或AI产品评测经验，熟悉主流大模型自动化评测方法，具备Benchmark或机评体系建设经验，能够独立完成机评方案设计与优化；2. 具有医疗AI评测经验或医学相关背景者优先，具备良好的跨团队沟通与协作能力。”",
+  "crawlMethod": "manual",
+  "extracted": {}
+}

@@ -1,0 +1,13 @@
+{
+  "sampleId": "ai_data_eval_006",
+  "jobId": "ai_data_eval",
+  "source": "boss",
+  "sourceUrl": "https://www.zhipin.com/job_detail/f66aac8672e5dffd0nF42Nm1FVNV.html?securityId=-Sil5jmeLJpPg-T1vDJxQ5mYw3JJerfgA9p-qMggjVynhbObqrxSZW65uVO9fAO319Vb-fRxYDrBWxOdit3TwUZx3IJiNPO0cwFXCjET9MbTwD_fjJKsXUjX9W65PmMIVL9zQygolPe7Ya-lmur8HpGEaFK9MFwxoPJTDe88WVtBwzR-IW27xzsRXAFeuTA4jTcOp2yUCyC3u58kYn_Ohrzh1_szbSpnG9HUkHScw3TN203t5umDkCgMXG_cMX0Tl0pwUVCYSCZczc7pxVWwo1PVXUs2lf6GVLUnxEnaao3Pa_p4fRECGujn0EjwwggoBjMsASzoG1uQxpfNPoBAwClSK2Umqg7iUbuC7al2ZeCMTQjb-l11Y9fWYb9MfoaNmIdVFTtx&ka=company_more_job_f66aac8672e5dffd0nF42Nm1FVNV",
+  "crawledAt": "2026-08-28",
+  "title": "1w+AI评测标注-线上面试",
+  "company": "上海瑞应人才科技集团有限公司",
+  "level": "junior",
+  "rawText": "工作经验：1. 有大模型生成文生视频、图生视频标注经验，可以对模型效果音视频结果进行主观质量评估、量化分级，熟悉主观打分、badcase归因标签判定的工作内容。2. 熟悉生成视频的常见问题，有视频优劣的判断力，有大量电影影视阅片经验优先。3. 有其他相关视频审核、视频编辑等AI视频评估经验均可；有竞对视频模型的标注评测经验优先，如seedance、海螺、智谱、vidu等。岗位要求：1、本科，有美术、艺术、美学或者摄影功底的优先，数字媒体艺术、美术、设计、动画相关专业优先，编导、导演、摄影类经验、技术美术类、有影视拍片项目经历优先，有做过视频审核可放宽专业2、有AI算法测试、数据标注的工作经验，对于大模型/AIGC能力有使用经验。3、对视频大模型生成的音视频进行主观质量评估，包括各类视频编辑、控制能力等。4、熟悉影视剧音视频制作标准、制作流程，AIGC视频制作深度创作者优先。”",
+  "crawlMethod": "manual",
+  "extracted": {}
+}

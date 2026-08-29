@@ -1,0 +1,13 @@
+{
+  "sampleId": "ai_ui_design_002",
+  "jobId": "ai_ui_design",
+  "source": "company_site",
+  "sourceUrl": "https://careers.tencent.com/",
+  "crawledAt": "2026-08-28",
+  "title": "微信视频号-互动模块产品策划",
+  "company": "腾讯",
+  "level": "unknown",
+  "rawText": "岗位职责：\n1. 负责微信视频号互动模块的产品策划，包括互动功能的策略制定、原型设计及推动上线；\n2. 以提升用户互动意愿为核心目标，设计并优化互动功能体验，根据用户 feedback 和数据表现不断调优；\n3. 深入分析用户需求与行为，挖掘互动场景机会点，提出创新性功能方案并推动验证落地；\n4. 协同设计、研发等合作团队高效推进项目，确保产品按时高质量交付。",
+  "crawlMethod": "auto",
+  "extracted": {}
+}
