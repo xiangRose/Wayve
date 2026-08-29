@@ -627,6 +627,11 @@
 
     /* Microtask workspace: adapted from Figma node 132:878. */
     :is(#choice,#ranking,#category,#evidence,#open) { --microtask-shift-x:clamp(40px,5vw,80px); }
+    #choice {
+      --mts:1.2;
+      --microtask-content-width:min(900px,64vw);
+      --microtask-half-width:min(450px,32vw);
+    }
     :is(#previewNotice,#choice,#ranking,#category,#evidence,#open,#analyze2) { position:relative; isolation:isolate; padding:0 clamp(28px,6vw,90px) 40px; overflow-y:auto; background:#fff; }
     :is(#previewNotice,#choice,#ranking,#category,#evidence,#open,#analyze2)::before { content:""; position:absolute; z-index:-1; top:50%; left:50%; width:min(1380px,100vw); aspect-ratio:1280 / 679; transform:translate(-50%,-46%); background:url("../assets/microtask-laptop-clean.jpg") center / contain no-repeat; pointer-events:none; }
     :is(#previewNotice,#choice,#ranking,#category,#evidence,#open,#analyze2) > * { position:relative; z-index:1; }
@@ -662,14 +667,91 @@
     }
 
     /* Desktop task content sits inside the laptop screen rather than on top of it. */
+    #choice .microtask-nav { gap:16px; margin-top:calc(14px * var(--mts)); }
+    .microtask-nav-btn {
+      width:52px;
+      height:52px;
+      border-radius:50%;
+      border:2.5px solid #7bc96f;
+      background:#fff;
+      display:grid;
+      place-items:center;
+      padding:0;
+      min-width:0;
+      transition:background .18s ease,border-color .18s ease,box-shadow .18s ease;
+    }
+    .microtask-nav-btn svg {
+      width:22px;
+      height:22px;
+      stroke:#6fb863;
+      fill:none;
+      stroke-width:2.25;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+    }
+    .microtask-nav-btn:hover:not(:disabled) {
+      background:#a7dd9d;
+      border-color:#6fb863;
+      box-shadow:0 0 0 4px rgba(167,221,157,.35);
+    }
+    .microtask-nav-btn:hover:not(:disabled) svg { stroke:#fff; }
+    .microtask-nav-btn:disabled { opacity:.32; cursor:not-allowed; }
+
     @media (min-width:851px) {
       :is(#previewNotice,#choice,#ranking,#category,#evidence,#open)::before { top:-58px; width:min(1560px,104vw); transform:translateX(-50%); }
-      :is(#choice,#ranking,#category,#evidence,#open) .task-top { width:min(740px,52vw); margin:clamp(84px,11vh,112px) auto 10px; margin-left:calc(50% - min(370px,26vw) + var(--microtask-shift-x,0px)); margin-right:auto; padding:0 0 8px; border-bottom:1px solid rgba(32,35,42,.15); background:transparent; }
-      :is(#choice,#ranking,#category,#evidence,#open) .question,#category .question { width:min(740px,52vw); margin:0 auto 28px; margin-left:calc(50% - min(370px,26vw) + var(--microtask-shift-x,0px)); margin-right:auto; }
-      #choice .question-dropdown--chat .question-dropdown__meta { font-size:16px; }
+      #choice::before { top:-78px; width:min(1880px,118vw); }
+      :is(#choice,#ranking,#category,#evidence,#open) .task-top {
+        width:min(740px,52vw);
+        margin:clamp(84px,11vh,112px) auto 10px;
+        margin-left:calc(50% - min(370px,26vw) + var(--microtask-shift-x,0px));
+        margin-right:auto;
+        padding:0 0 8px;
+        border-bottom:1px solid rgba(32,35,42,.15);
+        background:transparent;
+      }
+      #choice .task-top {
+        width:var(--microtask-content-width);
+        margin:clamp(92px,12vh,124px) auto 12px;
+        margin-left:calc(50% - var(--microtask-half-width) + var(--microtask-shift-x,0px));
+        margin-right:auto;
+      }
+      :is(#choice,#ranking,#category,#evidence,#open) .question,#category .question {
+        width:min(740px,52vw);
+        margin:0 auto 28px;
+        margin-left:calc(50% - min(370px,26vw) + var(--microtask-shift-x,0px));
+        margin-right:auto;
+      }
+      #choice .question {
+        width:var(--microtask-content-width);
+        margin:0 auto 32px;
+        margin-left:calc(50% - var(--microtask-half-width) + var(--microtask-shift-x,0px));
+        margin-right:auto;
+      }
+      #choice .task-top h3 { font-size:calc(18px * var(--mts)); }
+      #choice .subtitle { font-size:calc(16px * var(--mts)); }
+      #choice .question-dropdown--chat .question-dropdown__meta { font-size:calc(17px * var(--mts)); }
+      #choice .question-dropdown__hint { font-size:calc(13px * var(--mts)); }
+      #choice .scenario {
+        font-size:calc(15px * var(--mts));
+        padding:calc(14px * var(--mts)) calc(16px * var(--mts));
+        margin:calc(12px * var(--mts)) 0 calc(20px * var(--mts));
+      }
+      #choice #microtaskPrompt {
+        font-size:calc(28px * var(--mts));
+        line-height:1.28;
+        margin-bottom:calc(10px * var(--mts));
+      }
+      #choice .options { gap:calc(12px * var(--mts)); margin:calc(18px * var(--mts)) 0 calc(22px * var(--mts)); }
+      #choice .option {
+        font-size:calc(15px * var(--mts));
+        min-height:calc(52px * var(--mts));
+        padding:calc(12px * var(--mts)) calc(16px * var(--mts));
+      }
       :is(#choice,#ranking,#category,#evidence,#open) .question-dropdown { border-color:#e5f2e8; }
       :is(#choice,#ranking,#category,#evidence,#open) .options { margin:16px 0 20px; }
-      :is(#choice,#ranking,#category,#evidence,#open) .option,:is(#choice,#ranking,#category,#evidence,#open) .sort-item,:is(#choice,#ranking,#category,#evidence,#open) .match-item { min-height:48px; padding:10px 14px; }
+      :is(#choice,#ranking,#category,#evidence,#open) .option,
+      :is(#choice,#ranking,#category,#evidence,#open) .sort-item,
+      :is(#choice,#ranking,#category,#evidence,#open) .match-item { min-height:48px; padding:10px 14px; }
       :is(#choice,#ranking,#category,#evidence,#open) .task-actions { margin-top:12px; }
       #previewNotice .form { width:min(700px,52vw); margin:clamp(116px,15vh,150px) auto 0 !important; }
     }

@@ -37,6 +37,8 @@
     microtaskScores: null,
     microtaskRadar: null,
     localMicrotaskAnswers: [],
+    microtaskStepAnswers: {},
+    microtaskMaxSubmittedStep: 0,
     completedJobs: [],
     sceneStep: 0,
     sceneScripts: null,
@@ -727,6 +729,42 @@
       .join('');
   }
 
+  function updateMicrotaskNavButtons(step, total, status) {
+    const prevBtn = document.getElementById('microtaskPrevBtn');
+    const nextBtn = document.getElementById('microtaskNextBtn');
+    if (!prevBtn || !nextBtn) return;
+    prevBtn.disabled = step <= 1;
+    const hasSelection = Boolean(state.microtaskSelectedOption);
+    nextBtn.disabled = !hasSelection && status !== 'completed';
+    if (status === 'completed' && step >= total) {
+      nextBtn.setAttribute('aria-label', '进入情景模拟');
+    } else if (step >= total) {
+      nextBtn.setAttribute('aria-label', '完成微任务');
+    } else {
+      nextBtn.setAttribute('aria-label', '下一题');
+    }
+  }
+
+  function restoreMicrotaskSelection(step) {
+    const saved = state.microtaskStepAnswers[step];
+    state.microtaskSelectedOption = saved || null;
+    document.querySelectorAll('#microtaskOptions .option').forEach((x) => x.classList.remove('selected'));
+    if (saved) {
+      const opt = document.querySelector('#microtaskOptions [data-microtask-option="' + saved + '"]');
+      if (opt) opt.classList.add('selected');
+    }
+  }
+
+  async function goMicrotaskPrev() {
+    if (state.microtaskStep <= 1) return;
+    await renderMicrotaskFromLocal(state.currentJobId, state.microtaskStep - 1);
+    restoreMicrotaskSelection(state.microtaskStep);
+    const bank = await loadMicrotaskBank();
+    const backendId = API_JOB_TO_BACKEND[state.currentJobId] || state.currentJobId;
+    const total = bank.jobs?.[backendId]?.sets?.[state.microtaskSetId]?.questions?.length || 6;
+    updateMicrotaskNavButtons(state.microtaskStep, total, 'in_progress');
+  }
+
   function formatMicrotaskMeta(stepContent) {
     const parts = [stepContent.speaker];
     if (stepContent.speakerRole) parts.push(stepContent.speakerRole);
@@ -772,15 +810,8 @@
     }
 
     state.microtaskSelectedOption = null;
-    const nextBtn = document.getElementById('microtaskNextBtn');
-    if (nextBtn) {
-      nextBtn.disabled = true;
-      if (status === 'completed') {
-        nextBtn.textContent = '进入情景模拟';
-      } else {
-        nextBtn.textContent = step >= total ? '完成微任务' : '下一题';
-      }
-    }
+    restoreMicrotaskSelection(step);
+    updateMicrotaskNavButtons(step, total, status);
   }
 
   async function loadMicrotaskBank() {
@@ -823,6 +854,23 @@
   async function submitMicrotaskStep() {
     if (!state.microtaskSelectedOption && state.microtaskStep < 6) return;
 
+    const bank = await loadMicrotaskBank();
+    const backendId = API_JOB_TO_BACKEND[state.currentJobId] || state.currentJobId;
+    const total = bank.jobs?.[backendId]?.sets?.[state.microtaskSetId]?.questions?.length || 6;
+
+    state.microtaskStepAnswers[state.microtaskStep] = state.microtaskSelectedOption;
+
+    if (state.microtaskStep < state.microtaskMaxSubmittedStep) {
+      if (state.microtaskStep >= total) {
+        await finishMicrotasks();
+        return;
+      }
+      await renderMicrotaskFromLocal(state.currentJobId, state.microtaskStep + 1);
+      restoreMicrotaskSelection(state.microtaskStep);
+      updateMicrotaskNavButtons(state.microtaskStep, total, 'in_progress');
+      return;
+    }
+
     const answer = { selectedOptionId: state.microtaskSelectedOption };
 
     if (!state.useMock && state.taskSessionId) {
@@ -833,6 +881,7 @@
           body: JSON.stringify({ answer, events: [] }),
         });
         if (res.taskRadar) state.microtaskRadar = res.taskRadar;
+        state.microtaskMaxSubmittedStep = Math.max(state.microtaskMaxSubmittedStep, state.microtaskStep + 1);
         state.localMicrotaskAnswers.push({
           step: state.microtaskStep,
           selectedOptionId: state.microtaskSelectedOption,
@@ -859,10 +908,8 @@
       step: state.microtaskStep,
       selectedOptionId: state.microtaskSelectedOption,
     });
+    state.microtaskMaxSubmittedStep = Math.max(state.microtaskMaxSubmittedStep, state.microtaskStep + 1);
 
-    const bank = await loadMicrotaskBank();
-    const backendId = API_JOB_TO_BACKEND[state.currentJobId] || state.currentJobId;
-    const total = bank.jobs?.[backendId]?.sets?.[state.microtaskSetId]?.questions?.length || 6;
     if (state.microtaskStep >= total) {
       try {
         await loadMicrotaskScores();
@@ -1041,6 +1088,8 @@
     state.microtaskSelectedOption = null;
     state.microtaskSetId = pickMicrotaskSetId();
     state.localMicrotaskAnswers = [];
+    state.microtaskStepAnswers = {};
+    state.microtaskMaxSubmittedStep = 0;
     state.microtaskRadar = null;
     updateTaskTitles(jobId);
 
@@ -1385,10 +1434,13 @@
       const microOption = e.target.closest('[data-microtask-option]');
       if (microOption) {
         state.microtaskSelectedOption = microOption.dataset.microtaskOption;
+        state.microtaskStepAnswers[state.microtaskStep] = state.microtaskSelectedOption;
         document.querySelectorAll('#microtaskOptions .option').forEach((x) => x.classList.remove('selected'));
         microOption.classList.add('selected');
-        const nextBtn = document.getElementById('microtaskNextBtn');
-        if (nextBtn) nextBtn.disabled = false;
+        const bank = state.microtaskBank;
+        const backendId = API_JOB_TO_BACKEND[state.currentJobId] || state.currentJobId;
+        const total = bank?.jobs?.[backendId]?.sets?.[state.microtaskSetId]?.questions?.length || 6;
+        updateMicrotaskNavButtons(state.microtaskStep, total, 'in_progress');
       }
 
       const drawerGo = e.target.closest('#drawer [data-go]');
@@ -1410,6 +1462,10 @@
     const microtaskNextBtn = document.getElementById('microtaskNextBtn');
     if (microtaskNextBtn) {
       microtaskNextBtn.addEventListener('click', submitMicrotaskStep);
+    }
+    const microtaskPrevBtn = document.getElementById('microtaskPrevBtn');
+    if (microtaskPrevBtn) {
+      microtaskPrevBtn.addEventListener('click', goMicrotaskPrev);
     }
 
     const drawer = document.getElementById('drawer');

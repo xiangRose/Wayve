@@ -106,8 +106,13 @@
           </div>
         </div>
         <div class="options single-select" id="microtaskOptions"></div>
-        <div class="task-actions">
-          <button class="btn" id="microtaskNextBtn" type="button" disabled>下一题</button>
+        <div class="task-actions microtask-nav">
+          <button class="microtask-nav-btn" id="microtaskPrevBtn" type="button" aria-label="上一题" disabled>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H7M7 12l4-4M7 12l4 4" /></svg>
+          </button>
+          <button class="microtask-nav-btn" id="microtaskNextBtn" type="button" aria-label="下一题" disabled>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h12M17 12l-4-4M17 12l-4 4" /></svg>
+          </button>
         </div>
       </div>
     </section>
