@@ -1,12 +1,12 @@
 {
   "jobs": [
     {
-      "jobId": "ai_product",
-      "name": "AI产品",
-      "definition": "负责定义和推动AI技术在产品中的应用，提升用户体验和商业价值。",
-      "coreWorkObject": "AI技术,用户需求,产品方案,数据分析",
-      "typicalWorkSnippet": "在有限资源下，产品经理需要权衡用户需求与技术可行性，定义产品方向并协调团队实现方案落地。",
-      "whyExperience": "用户可以体验到如何将前沿技术转化为实际产品，并在多方协作中推动创新。",
+      "jobId": "ai_pm",
+      "name": "AI 产品经理",
+      "definition": "在用户需求、AI 能力、业务目标和研发约束之间做判断，定义产品问题与优先级。",
+      "coreWorkObject": "用户问题、产品方案、研发资源",
+      "typicalWorkSnippet": "注册量增长但首次完成率下降时，判断应先解决导入体验、模板引导还是总结质量，并在研发资源受限下确定本周唯一优化项。",
+      "whyExperience": "体验如何在数据、用户反馈与研发约束之间做产品优先级判断。",
       "estimatedMinutes": 7,
       "taskStatus": "interactive",
       "competencyRequirements": {
@@ -18,17 +18,44 @@
         "沟通表达": "中高"
       },
       "specificCompetencies": [
-        "AI技术应用能力",
-        "市场趋势洞察"
+        "AI 能力边界理解",
+        "产品需求表达",
+        "版本规划",
+        "技术与业务协调"
       ]
     },
     {
-      "jobId": "ai_ops",
-      "name": "AI运营",
-      "definition": "负责AI产品的运营策略制定与执行，通过数据分析、用户反馈和跨部门协作，推动AI技术在业务场景中的落地与优化。",
-      "coreWorkObject": "AI产品, 用户数据, 运营策略, 跨部门协作",
-      "typicalWorkSnippet": "在推动AI产品落地时，需平衡用户需求与技术实现，协调产品、算法和业务团队，确保策略有效执行并达成业务目标。",
-      "whyExperience": "用户可以体验到AI技术在实际业务场景中的应用与优化过程，以及如何通过运营策略提升产品价值。",
+      "jobId": "ai_ux",
+      "name": "AI 产品设计（UI/UX）",
+      "definition": "将复杂 AI 能力转化为可理解、可操作且具有反馈感的用户体验。",
+      "coreWorkObject": "用户流程、信息架构、交互反馈",
+      "typicalWorkSnippet": "功能堆叠导致新用户不知从何开始时，重新组织首页信息架构与首次操作流程，帮助用户完成第一次有效操作。",
+      "whyExperience": "体验如何从用户首次目标出发组织信息层级与交互流程，而非从功能列表出发。",
+      "estimatedMinutes": 7,
+      "taskStatus": "interactive",
+      "competencyRequirements": {
+        "问题拆解": "高",
+        "用户/客户理解": "高",
+        "证据判断": "中",
+        "方案构建": "高",
+        "决策取舍": "中高",
+        "沟通表达": "中高"
+      },
+      "specificCompetencies": [
+        "信息架构",
+        "交互流程",
+        "状态与反馈设计",
+        "低保真原型",
+        "AI 不确定性表达"
+      ]
+    },
+    {
+      "jobId": "ai_consultant",
+      "name": "AI 解决方案顾问",
+      "definition": "理解客户业务流程，将 AI 能力转化为可验证、可落地的业务方案。",
+      "coreWorkObject": "客户需求、业务流程、技术与合规约束",
+      "typicalWorkSnippet": "客户提出“用 AI 提高老师效率”的模糊目标时，澄清真实流程与限制，选择试点场景并形成六周内可验证方案。",
+      "whyExperience": "体验如何把客户一句话需求转化为可落地的试点方案，并识别合规与部署约束。",
       "estimatedMinutes": 7,
       "taskStatus": "preview_only",
       "competencyRequirements": {
@@ -36,78 +63,64 @@
         "用户/客户理解": "高",
         "证据判断": "中高",
         "方案构建": "高",
-        "决策取舍": "中高",
+        "决策取舍": "高",
         "沟通表达": "高"
       },
       "specificCompetencies": [
-        "AI技术应用能力",
-        "运营策略制定"
+        "业务流程梳理",
+        "技术可行性判断",
+        "合规与部署意识",
+        "方案陈述"
       ]
     },
     {
-      "jobId": "ai_data_eval",
-      "name": "AI数据与评测",
-      "definition": "负责设计和执行AI产品的评测体系，确保模型输出质量达标，并推动效果迭代。",
-      "coreWorkObject": "评测体系, 数据标注, 评测报告",
-      "typicalWorkSnippet": "在设计评测方案时，需要在自动评测和人工评测之间进行取舍，考虑资源有限和评测标准的全面性。同时，需与产品和算法团队沟通，确保评测结果能够推动模型优化。",
-      "whyExperience": "用户能体验到如何通过数据评测推动AI产品的质量提升，并理解评测在AI产品开发中的关键作用。",
+      "jobId": "ai_operator",
+      "name": "AI 产品运营",
+      "definition": "围绕 AI 产品的使用、激活、留存和反馈建立运营动作与验证实验。",
+      "coreWorkObject": "用户行为、产品数据、运营实验",
+      "typicalWorkSnippet": "社交平台带来大量新用户但首次生成率低时，判断流失环节并设计一个优先验证的运营或产品联动实验。",
+      "whyExperience": "体验如何建立可验证假设、选择相关数据并设计有指标的运营实验。",
       "estimatedMinutes": 7,
       "taskStatus": "preview_only",
-      "competencyRequirements": {
-        "问题拆解": "中高",
-        "用户/客户理解": "中",
-        "证据判断": "高",
-        "方案构建": "高",
-        "决策取舍": "中高",
-        "沟通表达": "高"
-      },
-      "specificCompetencies": [
-        "数据标注质量控制",
-        "评测体系设计"
-      ]
-    },
-    {
-      "jobId": "ai_app_dev",
-      "name": "AI应用开发",
-      "definition": "负责将AI技术转化为可交付的应用，推动AI在各场景的落地与迭代。",
-      "coreWorkObject": "AI应用系统, 大模型, 智能体, 后端服务",
-      "typicalWorkSnippet": "在资源有限的情况下，决定如何优化AI应用系统以提升性能，同时满足多方业务需求。",
-      "whyExperience": "用户能体验到将前沿AI技术转化为实际应用的过程，感受技术与业务结合的挑战。",
-      "estimatedMinutes": 7,
-      "taskStatus": "preview_only",
-      "competencyRequirements": {
-        "问题拆解": "中高",
-        "用户/客户理解": "中",
-        "证据判断": "中高",
-        "方案构建": "高",
-        "决策取舍": "中高",
-        "沟通表达": "中高"
-      },
-      "specificCompetencies": [
-        "后端开发能力",
-        "AI框架使用"
-      ]
-    },
-    {
-      "jobId": "ai_ui_design",
-      "name": "AIUI设计",
-      "definition": "负责设计AI产品的用户界面和交互体验，确保产品的易用性和视觉吸引力。",
-      "coreWorkObject": "用户界面,交互体验,设计工具",
-      "typicalWorkSnippet": "在设计AI产品时，需平衡用户需求与技术限制，定义交互框架并输出设计方案，与产品和技术团队协作确保方案落地。",
-      "whyExperience": "用户能体验到设计如何影响AI产品的用户体验和市场表现。",
-      "estimatedMinutes": 7,
-      "taskStatus": "interactive",
       "competencyRequirements": {
         "问题拆解": "中高",
         "用户/客户理解": "高",
-        "证据判断": "中高",
-        "方案构建": "高",
-        "决策取舍": "中高",
+        "证据判断": "高",
+        "方案构建": "中高",
+        "决策取舍": "高",
+        "沟通表达": "中高"
+      },
+      "specificCompetencies": [
+        "漏斗分析",
+        "运营实验",
+        "指标意识",
+        "反馈闭环",
+        "执行落地"
+      ]
+    },
+    {
+      "jobId": "ai_researcher",
+      "name": "AI 用户研究",
+      "definition": "研究用户如何理解、采用和持续使用 AI 产品，为产品决策提供证据。",
+      "coreWorkObject": "用户行为、研究问题、定性与定量证据",
+      "typicalWorkSnippet": "团队希望判断“用户是否愿意长期使用 AI 作为职业决策助手”时，将宽泛问题转化为可研究问题并设计可行研究流程。",
+      "whyExperience": "体验如何区分自我报告与实际行为，并在样本与周期限制下设计研究方案。",
+      "estimatedMinutes": 7,
+      "taskStatus": "preview_only",
+      "competencyRequirements": {
+        "问题拆解": "高",
+        "用户/客户理解": "高",
+        "证据判断": "高",
+        "方案构建": "中高",
+        "决策取舍": "中",
         "沟通表达": "高"
       },
       "specificCompetencies": [
-        "视觉创意能力",
-        "设计工具熟练度"
+        "研究问题定义",
+        "方法选择",
+        "样本意识",
+        "研究伦理",
+        "结论边界"
       ]
     }
   ]
