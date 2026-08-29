@@ -148,7 +148,7 @@
     const id = QUESTION_IDS[index];
     if (id === 'choice') state.questionAnswers[id] = [...document.querySelectorAll('#choice .option.selected')].map((x) => x.textContent.trim())[0] || '';
     if (id === 'ranking') state.questionAnswers[id] = [...document.querySelectorAll('#rankingList .sort-item')].map((x) => x.textContent.trim());
-    if (id === 'category') state.questionAnswers[id] = [...document.querySelectorAll('#category .match-item.source.connected')].map((x) => x.dataset.source);
+    if (id === 'category') state.questionAnswers[id] = [...document.querySelectorAll('#category .match-item.source.connected')].reduce((result, source) => { result[source.dataset.source] = source.dataset.matchTarget || ''; return result; }, {});
     if (id === 'evidence') state.questionAnswers[id] = [...document.querySelectorAll('#evidence input[type="checkbox"]:checked')].map((x) => x.parentElement.textContent.trim());
     if (id === 'open') state.questionAnswers[id] = document.getElementById('openAnswer')?.value || '';
   }
@@ -157,6 +157,7 @@
     const id = QUESTION_IDS[index]; const value = state.questionAnswers[id];
     if (id === 'choice') document.querySelectorAll('#choice .option').forEach((x) => x.classList.toggle('selected', x.textContent.trim() === value));
     if (id === 'ranking' && Array.isArray(value)) { const list = document.getElementById('rankingList'); value.forEach((text) => { const item = [...list.children].find((x) => x.textContent.trim() === text); if (item) list.appendChild(item); }); }
+    if (id === 'category' && value && typeof value === 'object') document.querySelectorAll('#category .match-item.source').forEach((source) => { const target = value[source.dataset.source]; source.classList.toggle('connected', Boolean(target)); source.dataset.matchTarget = target || ''; });
     if (id === 'evidence' && Array.isArray(value)) document.querySelectorAll('#evidence input[type="checkbox"]').forEach((x) => { x.checked = value.includes(x.parentElement.textContent.trim()); });
     if (id === 'open' && document.getElementById('openAnswer')) document.getElementById('openAnswer').value = value || '';
   }
@@ -165,7 +166,7 @@
     const id = QUESTION_IDS[index]; const value = state.questionAnswers[id];
     if (id === 'choice') return Boolean(value);
     if (id === 'ranking') return Array.isArray(value) && value.length > 0;
-    if (id === 'category') return Array.isArray(value) && value.length > 0;
+    if (id === 'category') return value && typeof value === 'object' && Object.keys(value).length > 0;
     if (id === 'evidence') return Array.isArray(value) && value.length > 0;
     if (id === 'open') return typeof value === 'string' && value.trim().length > 0;
     return false;
@@ -594,6 +595,11 @@
     const drawConnections = () => {
       const boardRect = matchingBoard.getBoundingClientRect();
       matchLines.replaceChildren();
+      connections.clear();
+      document.querySelectorAll('.match-item.source.connected[data-match-target]').forEach((source) => {
+        const target = document.querySelector(`.match-item.target[data-target="${CSS.escape(source.dataset.matchTarget)}"]`);
+        if (target) connections.set(source, target);
+      });
       connections.forEach((target, source) => {
         const a = source.getBoundingClientRect();
         const b = target.getBoundingClientRect();
@@ -631,6 +637,7 @@
         connections.set(selectedSource, target);
         selectedSource.classList.remove('selected');
         selectedSource.classList.add('connected');
+        selectedSource.dataset.matchTarget = target.dataset.target;
         selectedSource = null;
         drawConnections();
       });

@@ -808,9 +808,13 @@
       .growth-record-card { padding-right:100px; }
     }
 
-    .question-nav { display:flex; justify-content:space-between; align-items:center; margin-top:28px; padding-top:18px; border-top:1px solid #ece7df; }
-    .question-arrow { display:inline-flex; align-items:center; gap:10px; border:0; background:transparent; color:#2e2d2b; font-size:32px; line-height:1; padding:8px 4px; cursor:pointer; }
-    .question-arrow span { font-size:12px; font-weight:700; letter-spacing:.04em; }
-    .question-arrow:hover:not(:disabled), .question-arrow:focus-visible:not(:disabled) { color:#9a69bb; outline:none; }
-    .question-arrow:disabled { color:#c9c4bc; cursor:not-allowed; opacity:.55; }
+    .question-nav { display:flex; justify-content:flex-end; align-items:center; gap:23px; margin-top:28px; padding-top:0; }
+    .question-arrow { display:grid; place-items:center; width:57px; height:57px; flex:0 0 57px; border:1px solid #a3e092; border-radius:50%; background:#fff; padding:0; cursor:pointer; transition:background .15s ease, opacity .15s ease, box-shadow .15s ease; }
+    .question-arrow::before { content:""; display:block; width:27px; height:28px; background:center / contain no-repeat; }
+    .question-arrow[data-qnav="prev"]::before { background-image:url("../assets/figma/question-arrow-left.svg"); transform:rotate(90deg); }
+    .question-arrow[data-qnav="next"]::before { background-image:url("../assets/figma/question-arrow-right.svg"); transform:rotate(-90deg); }
+    .question-arrow span { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+    .question-arrow:hover:not(:disabled), .question-arrow:focus-visible:not(:disabled) { background:#f6fff6; box-shadow:0 0 0 3px rgba(163,224,146,.25); outline:none; }
+    .question-arrow:disabled { cursor:not-allowed; opacity:.35; background:#fff; }
+    @media (max-width:700px) { .question-nav { gap:16px; } .question-arrow { width:52px; height:52px; flex-basis:52px; } }
     .question-validation { min-height:20px; margin:14px 0 0; color:#a5674e; font-size:13px; }
