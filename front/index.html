@@ -120,7 +120,11 @@
     <section class="screen" id="sceneSim" aria-label="情景模拟">
       <article class="scene-sim">
         <span class="scene-sim-badge" id="sceneSimBadge"></span>
-        <div class="scene-sim-art"><img id="sceneSimArt" alt="" /></div>
+        <div class="scene-sim-stage">
+          <button class="scene-sim-side-btn" id="sceneSimPrevBtn" type="button" data-action="scene-phase-prev" aria-label="上一步" hidden>上一步</button>
+          <div class="scene-sim-art"><img id="sceneSimArt" alt="" /></div>
+          <button class="scene-sim-side-btn" id="sceneSimNextBtn" type="button" data-action="scene-phase-next" aria-label="下一步" hidden>下一步</button>
+        </div>
         <div class="scene-sim-panel" id="sceneSimPanel" aria-live="polite"></div>
       </article>
     </section>
