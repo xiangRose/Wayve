@@ -45,6 +45,8 @@
     scenePanelPhase: 0,
     scenePanelMaxPhase: 0,
     sceneDraft: { selectedOptionId: null, customText: '' },
+    sceneStepStates: {},
+    sceneFlowStarted: false,
   };
 
   const ROLE_DESK_ITEMS = [
@@ -1091,6 +1093,9 @@
     state.microtaskStepAnswers = {};
     state.microtaskMaxSubmittedStep = 0;
     state.microtaskRadar = null;
+    state.sceneStepStates = {};
+    state.sceneFlowStarted = false;
+    state.sceneStep = 0;
     updateTaskTitles(jobId);
 
     let task = null;
@@ -1171,6 +1176,32 @@
     state.scenePanelPhase = 0;
     state.scenePanelMaxPhase = 0;
     state.sceneDraft = { selectedOptionId: null, customText: '' };
+  }
+
+  function saveSceneStepState() {
+    syncSceneDraftFromDom();
+    state.sceneStepStates[state.sceneStep] = {
+      draft: {
+        selectedOptionId: state.sceneDraft.selectedOptionId,
+        customText: state.sceneDraft.customText,
+      },
+      panelPhase: state.scenePanelPhase,
+      maxPhase: state.scenePanelMaxPhase,
+    };
+  }
+
+  function restoreSceneStepState(step) {
+    const saved = state.sceneStepStates[step];
+    if (saved) {
+      state.sceneDraft = {
+        selectedOptionId: saved.draft.selectedOptionId,
+        customText: saved.draft.customText,
+      };
+      state.scenePanelPhase = saved.panelPhase;
+      state.scenePanelMaxPhase = saved.maxPhase;
+    } else {
+      resetScenePanelState();
+    }
   }
 
   function getCurrentSceneScript() {
@@ -1259,11 +1290,9 @@
 
     const phase = state.scenePanelPhase;
     const lastPhase = SCENE_PANEL_PHASES.length - 1;
-    prevBtn.hidden = phase <= 0;
+    prevBtn.hidden = false;
     nextBtn.hidden = false;
-    if (!prevBtn.hidden) {
-      prevBtn.disabled = false;
-    }
+    prevBtn.disabled = false;
     prevBtn.textContent = '上一步';
     prevBtn.setAttribute('data-action', 'scene-phase-prev');
     prevBtn.setAttribute('aria-label', '上一步');
@@ -1329,7 +1358,41 @@
     if (next > state.scenePanelMaxPhase) return;
     syncSceneDraftFromDom();
     state.scenePanelPhase = next;
+    saveSceneStepState();
     renderSceneSim();
+  }
+
+  function retreatScenePanelPhase() {
+    syncSceneDraftFromDom();
+    saveSceneStepState();
+
+    if (state.scenePanelPhase > 0) {
+      state.scenePanelPhase -= 1;
+      renderSceneSim();
+      return;
+    }
+
+    if (state.sceneStep > 0) {
+      state.sceneStep -= 1;
+      restoreSceneStepState(state.sceneStep);
+      renderSceneSim();
+      return;
+    }
+
+    goToMicrotaskLastQuestion();
+  }
+
+  async function goToMicrotaskLastQuestion() {
+    saveSceneStepState();
+    const bank = await loadMicrotaskBank();
+    const backendId = API_JOB_TO_BACKEND[state.currentJobId] || state.currentJobId;
+    const total = bank.jobs?.[backendId]?.sets?.[state.microtaskSetId]?.questions?.length || 6;
+    state.microtaskStep = total;
+    await renderMicrotaskFromLocal(state.currentJobId, total);
+    restoreMicrotaskSelection(total);
+    const status = state.microtaskMaxSubmittedStep >= total ? 'completed' : 'in_progress';
+    updateMicrotaskNavButtons(total, total, status);
+    go('choice');
   }
 
   function advanceScenePanelPhase() {
@@ -1342,6 +1405,7 @@
     if (state.scenePanelPhase > state.scenePanelMaxPhase) {
       state.scenePanelMaxPhase = state.scenePanelPhase;
     }
+    saveSceneStepState();
     renderSceneSim();
   }
 
@@ -1357,6 +1421,7 @@
         window.alert('请选择一项方案，或填写你的处理方式。');
         state.scenePanelPhase = SCENE_PANEL_PHASES.length - 1;
         state.scenePanelMaxPhase = SCENE_PANEL_PHASES.length - 1;
+        saveSceneStepState();
         renderSceneSim();
         return;
       }
@@ -1376,22 +1441,34 @@
       }
     }
 
+    saveSceneStepState();
+
     if (state.sceneStep >= SCENE_STEPS.length - 1) {
       go('analyze2');
       window.setTimeout(() => finishAnalysisProgress('task'), 1500);
       return;
     }
     state.sceneStep += 1;
-    resetScenePanelState();
+    restoreSceneStepState(state.sceneStep);
     renderSceneSim();
   }
 
-  async function startSceneFlow() {
-    state.sceneStep = 0;
-    state.sceneScripts = null;
-    resetScenePanelState();
-    await loadSceneScripts();
+  async function enterSceneFromMicrotask() {
+    if (!state.sceneFlowStarted) {
+      state.sceneStep = 0;
+      state.sceneScripts = null;
+      state.sceneStepStates = {};
+      resetScenePanelState();
+      state.sceneFlowStarted = true;
+    } else {
+      restoreSceneStepState(state.sceneStep);
+    }
+    if (!state.sceneScripts) await loadSceneScripts();
     go('sceneSim');
+  }
+
+  async function startSceneFlow() {
+    await enterSceneFromMicrotask();
   }
 
   async function loadReport() {
@@ -1449,7 +1526,7 @@
       if (sceneSideBtn && !sceneSideBtn.hidden) {
         const action = sceneSideBtn.getAttribute('data-action');
         if (action === 'scene-phase-prev') {
-          goScenePanelPhase(state.scenePanelPhase - 1);
+          retreatScenePanelPhase();
         } else if (action === 'scene-phase-next') {
           advanceScenePanelPhase();
         } else if (action === 'scene-submit' || action === 'scene-continue') {
@@ -1462,6 +1539,7 @@
       if (sceneOption) {
         state.sceneDraft.selectedOptionId = sceneOption.dataset.sceneOption;
         state.sceneDraft.customText = '';
+        saveSceneStepState();
         renderSceneSim();
       }
 
