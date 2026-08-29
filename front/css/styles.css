@@ -824,9 +824,9 @@
         container-type:inline-size;
       }
       :is(#choice,#ranking,#category,#evidence,#open) .question-nav {
-        position:absolute;
-        right:11.05cqw;
-        bottom:3.75cqw;
+        position:relative;
+        margin-top:1.84cqw;
+        margin-left:auto;
         width:14.84cqw;
         height:6.17cqw;
         gap:2.49cqw;
