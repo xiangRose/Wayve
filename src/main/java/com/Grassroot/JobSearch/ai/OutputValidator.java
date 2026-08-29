@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 public class OutputValidator {
 
     private static final Pattern FORBIDDEN = Pattern.compile("最适合|天生适合|一定不适合|你就是");
+    private static final Pattern SCENE_FORBIDDEN = Pattern.compile(
+            "很适合|抗压能力很强|很有责任心|优秀决定|沟通能力很好|你很适合|你是一个");
 
     private final JsonResourceLoader jsonResourceLoader;
 
@@ -19,6 +21,13 @@ public class OutputValidator {
     public void validateNoForbiddenWords(String text) {
         if (text != null && FORBIDDEN.matcher(text).find()) {
             throw new IllegalStateException("AI 输出含禁用词");
+        }
+    }
+
+    public void validateSceneEvidenceOutput(String text) {
+        validateNoForbiddenWords(text);
+        if (text != null && SCENE_FORBIDDEN.matcher(text).find()) {
+            throw new IllegalStateException("AI 输出含场景禁用推断词");
         }
     }
 

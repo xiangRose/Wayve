@@ -11,7 +11,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 import java.time.Instant;
+import java.util.Map;
 import java.util.UUID;
 
 @Entity
@@ -44,6 +47,12 @@ public class UserSession {
 
     @Column(length = 8000)
     private String resumeText;
+
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(name = "resume_evidence_data")
+    private Map<String, Object> resumeEvidenceData;
+
+    private String resumeEvidenceStatus = "pending";
 
     private Instant createdAt;
     private Instant updatedAt;
@@ -80,5 +89,9 @@ public class UserSession {
     public void setWorkPreference(String workPreference) { this.workPreference = workPreference; }
     public String getResumeText() { return resumeText; }
     public void setResumeText(String resumeText) { this.resumeText = resumeText; }
+    public Map<String, Object> getResumeEvidenceData() { return resumeEvidenceData; }
+    public void setResumeEvidenceData(Map<String, Object> resumeEvidenceData) { this.resumeEvidenceData = resumeEvidenceData; }
+    public String getResumeEvidenceStatus() { return resumeEvidenceStatus; }
+    public void setResumeEvidenceStatus(String resumeEvidenceStatus) { this.resumeEvidenceStatus = resumeEvidenceStatus; }
     public Instant getCreatedAt() { return createdAt; }
 }

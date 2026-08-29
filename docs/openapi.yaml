@@ -12,6 +12,7 @@ tags:
   - name: sessions
   - name: jobs
   - name: tasks
+  - name: scenes
   - name: reports
 
 paths:
@@ -243,6 +244,67 @@ paths:
         "200":
           description: 反馈已保存
 
+  /scenes/{sceneId}:
+    get:
+      tags: [scenes]
+      summary: 获取会议室场景剧本（A/B 顺序随机）
+      parameters:
+        - name: sceneId
+          in: path
+          required: true
+          schema:
+            type: string
+            example: PRODUCT_S1
+      responses:
+        "200":
+          description: 场景剧本
+
+  /scenes:
+    get:
+      tags: [scenes]
+      summary: 按岗位列出场景
+      parameters:
+        - name: roleId
+          in: query
+          required: true
+          schema:
+            type: string
+            example: ai_pm
+      responses:
+        "200":
+          description: 场景列表
+
+  /scenes/{sceneId}/answers:
+    post:
+      tags: [scenes]
+      summary: 提交场景回答（固定选项或自由输入）
+      parameters:
+        - $ref: "#/components/parameters/SessionIdHeaderRequired"
+        - name: sceneId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SceneAnswerRequest"
+      responses:
+        "200":
+          description: 单幕场景证据
+
+  /scene-evidence:
+    get:
+      tags: [scenes]
+      summary: 查询本会话已保存的场景证据
+      parameters:
+        - $ref: "#/components/parameters/SessionIdHeaderRequired"
+      responses:
+        "200":
+          description: 证据列表
+
   /reports/generate:
     post:
       tags: [reports]
@@ -349,6 +411,22 @@ components:
         workPreference:
           type: string
         resumeText:
+          type: string
+
+    SceneAnswerRequest:
+      type: object
+      required: [roleId, answerType]
+      properties:
+        roleId:
+          type: string
+          example: ai_pm
+        answerType:
+          type: string
+          enum: [preset, custom]
+        selectedOptionId:
+          type: string
+          example: PRODUCT_S1_A
+        rawAnswer:
           type: string
 
     JobCard:

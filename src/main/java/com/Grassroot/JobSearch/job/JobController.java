@@ -35,6 +35,6 @@ public class JobController {
             @RequestBody(required = false) Map<String, List<String>> body) {
         boolean isDemo = "true".equalsIgnoreCase(demoMode) || demoSessionId.equals(sessionId);
         List<String> rejected = body == null ? List.of() : body.getOrDefault("rejectedJobIds", List.of());
-        return jobService.recommend(isDemo, rejected);
+        return jobService.recommend(isDemo, sessionId, rejected);
     }
 }

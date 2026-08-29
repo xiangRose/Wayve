@@ -31,4 +31,9 @@ public class InterestSignal {
     public void setLongTermWillingness(String longTermWillingness) { this.longTermWillingness = longTermWillingness; }
     public void setFeelingSource(String feelingSource) { this.feelingSource = feelingSource; }
     public void setFreeText(String freeText) { this.freeText = freeText; }
+    public String getTaskSessionId() { return taskSessionId; }
+    public String getLikeLevel() { return likeLevel; }
+    public String getLongTermWillingness() { return longTermWillingness; }
+    public String getFeelingSource() { return feelingSource; }
+    public String getFreeText() { return freeText; }
 }
