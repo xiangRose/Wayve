@@ -19,6 +19,13 @@ public class SeedDataLoader implements CommandLineRunner {
 
     private static final Logger log = LoggerFactory.getLogger(SeedDataLoader.class);
 
+    private static final List<String> TEMPLATE_PATHS = List.of(
+            "seed/task-templates/ai_product.career_changer.json",
+            "seed/task-templates/ai_ui_design.career_changer.json",
+            "seed/task-templates/ai_ops.career_changer.json",
+            "seed/task-templates/ai_data_eval.career_changer.json",
+            "seed/task-templates/ai_app_dev.career_changer.json");
+
     private final JsonResourceLoader json;
     private final JobRepository jobRepository;
     private final TaskTemplateRepository taskTemplateRepository;
@@ -31,12 +38,12 @@ public class SeedDataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        if (jobRepository.count() > 0) {
-            return;
+        if (jobRepository.count() == 0) {
+            seedJobs();
+        } else {
+            ensureAllJobsInteractive();
         }
-        seedJobs();
-        seedTemplate("seed/task-templates/ai_pm.career_changer.json");
-        seedTemplate("seed/task-templates/ai_ux.career_changer.json");
+        TEMPLATE_PATHS.forEach(this::seedTemplateIfMissing);
         log.info("Seed 完成");
     }
 
@@ -56,6 +63,25 @@ public class SeedDataLoader implements CommandLineRunner {
             m.setSpecificCompetencies(castList(j.get("specificCompetencies")));
             jobRepository.save(m);
         }
+    }
+
+    private void seedTemplateIfMissing(String path) {
+        Map<String, Object> data = json.load(path, new TypeReference<>() {});
+        String jobId = (String) data.get("jobId");
+        ScaffoldType scaffold = ScaffoldType.valueOf((String) data.get("scaffoldType"));
+        if (taskTemplateRepository.findByJobIdAndScaffoldType(jobId, scaffold).isPresent()) {
+            return;
+        }
+        seedTemplate(path);
+    }
+
+    private void ensureAllJobsInteractive() {
+        jobRepository.findAll().forEach(job -> {
+            if (!"interactive".equals(job.getTaskStatus())) {
+                job.setTaskStatus("interactive");
+                jobRepository.save(job);
+            }
+        });
     }
 
     private void seedTemplate(String path) {
