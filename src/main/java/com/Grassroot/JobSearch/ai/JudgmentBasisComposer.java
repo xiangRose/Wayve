@@ -50,7 +50,14 @@ public class JudgmentBasisComposer {
         List<Map<String, Object>> choiceSignals =
                 reportContextBuilder.buildMicrotaskChoiceSignals(sessionId, backendJobId);
         if (choiceSignals.isEmpty()) {
-            return Map.of("topSignals", List.of(), "allEvidence", List.of());
+            List<Map<String, Object>> sceneOnly = reportContextBuilder.buildSceneBehaviorSignals(sessionId);
+            if (sceneOnly.isEmpty()) {
+                return Map.of("topSignals", List.of(), "allEvidence", List.of());
+            }
+            Map<String, Object> result = new HashMap<>();
+            result.put("allEvidence", sceneOnly);
+            result.put("topSignals", pickTopSignals(sceneOnly));
+            return result;
         }
 
         List<Integer> radarScores = castIntList(taskRadar.get("scores"));
@@ -64,6 +71,7 @@ public class JudgmentBasisComposer {
             }
             allEvidence.add(buildSignal(row, rawScore, radarScore));
         }
+        allEvidence.addAll(reportContextBuilder.buildSceneBehaviorSignals(sessionId));
 
         Map<String, Object> result = new HashMap<>();
         result.put("allEvidence", allEvidence);
@@ -248,35 +256,44 @@ public class JudgmentBasisComposer {
         }
 
         Map<String, Object> primarySubjective = null;
+        Map<String, Object> primaryScene = null;
         for (Map<String, Object> signal : allEvidence) {
-            if (Boolean.TRUE.equals(signal.get("subjective"))) {
+            if ("scene".equals(stringVal(signal.get("source"))) && primaryScene == null) {
+                primaryScene = signal;
+            }
+            if (Boolean.TRUE.equals(signal.get("subjective")) && primarySubjective == null) {
                 primarySubjective = signal;
-                break;
             }
         }
+        if (primaryScene != null) {
+            ensureSignalInTop(picked, primaryScene, 0);
+        }
         if (primarySubjective != null) {
-            boolean alreadyPicked = false;
-            int pickedIndex = -1;
-            for (int i = 0; i < picked.size(); i++) {
-                if (numberVal(picked.get(i).get("step"), 0) == numberVal(primarySubjective.get("step"), 0)) {
-                    alreadyPicked = true;
-                    pickedIndex = i;
-                    break;
-                }
-            }
-            if (!alreadyPicked) {
-                if (picked.size() >= 3) {
-                    picked.set(0, primarySubjective);
-                } else {
-                    picked.add(0, primarySubjective);
-                }
-            } else if (pickedIndex > 0) {
-                Map<String, Object> moved = picked.remove(pickedIndex);
-                picked.add(0, moved);
-            }
+            ensureSignalInTop(picked, primarySubjective, primaryScene != null ? 1 : 0);
         }
 
         return picked.size() > 3 ? picked.subList(0, 3) : picked;
+    }
+
+    private void ensureSignalInTop(List<Map<String, Object>> picked, Map<String, Object> signal, int slot) {
+        int step = numberVal(signal.get("step"), 0);
+        int idx = -1;
+        for (int i = 0; i < picked.size(); i++) {
+            if (numberVal(picked.get(i).get("step"), 0) == step) {
+                idx = i;
+                break;
+            }
+        }
+        if (idx == -1) {
+            if (picked.size() > slot) {
+                picked.set(slot, signal);
+            } else {
+                picked.add(signal);
+            }
+        } else if (idx > slot) {
+            Map<String, Object> moved = picked.remove(idx);
+            picked.add(slot, moved);
+        }
     }
 
     private String buildSubjectiveLead(boolean emotional) {
@@ -334,20 +351,24 @@ public class JudgmentBasisComposer {
         return "你优先关注：" + focus + "。";
     }
 
-    private String buildInsight(String dimension, int rawScore, boolean emotional) {
+    private String buildCapabilityInsight(String dimension, int rawScore, boolean emotional) {
         if (emotional) {
-            return "压力先占满判断空间，需追问不可持续的环节。";
+            return "压力反应优先，【" + dimension + "】本轮被体验张力掩盖，需分辨是节奏还是协作卡点。";
         }
         if (rawScore >= 5) {
-            return "判断路径清晰，能往动机与价值推进。";
+            return "【" + dimension + "】判断路径清晰，是你本轮相对擅长的方向。";
         }
         if (rawScore >= 4) {
-            return "开始从现象追问原因。";
+            return "【" + dimension + "】本轮表现不错，还有深化空间。";
         }
         if (rawScore >= 3) {
-            return "更关注局部信号，因果还可再展开。";
+            return "【" + dimension + "】本轮有所涉及，因果链条还可拉长。";
         }
-        return "判断尚初步，分析层次还可加深。";
+        return "【" + dimension + "】本轮信号偏弱，是值得关注加强的方向。";
+    }
+
+    private String buildInsight(String dimension, int rawScore, boolean emotional) {
+        return buildCapabilityInsight(dimension, rawScore, emotional);
     }
 
     private String buildGapNote(int rawScore, boolean emotional) {

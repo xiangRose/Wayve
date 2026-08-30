@@ -24,6 +24,24 @@
 5. 如何处理其他角色的限制？（Conflict Handling）
 6. 有没有明确下一步？
 
+## 能力关联分析（`capability_analysis`，必填）
+
+结合 `scene_context`、`scene_question` 与 `user_answer` 原文，写出**情境与回应的直接关系**，并判断涉及哪些**岗位能力维度**、本轮更偏向**擅长显现**还是**尚有欠缺**。
+
+```json
+"capability_analysis": {
+  "scene_link": "一句话：用户回应如何对应情境里的冲突/压力（≤45字）",
+  "competencies": ["优先级取舍", "跨团队沟通"],
+  "strengths": ["本轮显现较顺手的具体行为，≤2条"],
+  "gaps": ["本轮尚可加强的具体行为，≤2条"],
+  "tendency": "strength | gap | mixed"
+}
+```
+
+- `scene_link` 必须同时提到情境要点与用户回应要点，不能只复述一方
+- `strengths` / `gaps` 写**可观察行为**，不写人格；用「更顺手」「还可加强」等过程表述
+- 信息不足时 `tendency` 可为 `mixed`，并在 `gaps` 中写「边界未说明」
+
 ## 禁止推断
 
 - 不得输出：很适合、抗压能力很强、很有责任心、优秀决定、沟通能力很好
@@ -39,4 +57,4 @@
 
 ## 输出（严格 JSON，无 markdown）
 
-字段：`observed_behavior`、`workstyle_evidence`、`role_tags`、`evidence_summary`、`overall_confidence`
+字段：`observed_behavior`、`workstyle_evidence`、`role_tags`、`evidence_summary`、`overall_confidence`、`capability_analysis`（结构见上）

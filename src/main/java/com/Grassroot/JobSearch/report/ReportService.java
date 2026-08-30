@@ -63,6 +63,9 @@ public class ReportService {
         List<Map<String, Object>> choiceSignals = mergeChoiceSignals(
                 sessionId, backendJobId, body == null ? null : body.microtaskChoiceSignals());
         ctx.put("microtask_choice_signals", choiceSignals);
+        if (body != null && body.microtaskCapabilitySummary() != null && !body.microtaskCapabilitySummary().isEmpty()) {
+            ctx.put("microtask_capability_summary", body.microtaskCapabilitySummary());
+        }
         if (body != null && body.userSubjectiveHighlights() != null && !body.userSubjectiveHighlights().isEmpty()) {
             List<Map<String, Object>> highlights = new ArrayList<>(castList(ctx.get("user_subjective_highlights")));
             highlights.addAll(body.userSubjectiveHighlights());

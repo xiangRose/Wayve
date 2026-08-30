@@ -12,58 +12,44 @@
 - `{{task_evidences}}` — 各岗位任务行为证据
 - `{{interest_signals}}` — 兴趣与意愿（不参与能力判断）
 - `{{selected_target_job}}` — 用户自主选择的目标岗位
-- `{{microtask_choice_signals}}` — 本轮 6 道微任务：情境、题干、你的选项、`answerNature`（无分数）
-- `{{user_subjective_highlights}}` — **优先阅读**：C 选项与自定义主观回答原文
-- `{{scene_evidences}}` — 情景模拟证据（可选）
+- `{{microtask_choice_signals}}` — 6 道微任务选择与 `answerNature`
+- `{{microtask_capability_summary}}` — 六维擅长/欠缺汇总（无分数）
+- `{{user_subjective_highlights}}` — C 选项与情景自定义原文
+- `{{scene_evidences}}` — 情景证据，自定义回答含 `capability_analysis`
 
 ## 输出要求（JSON）
 
-- `comparisonSummary` — **2—3 句，≤80 字**；若有主观回应，首句点明，其余概括行为倾向
-- `judgmentBasis` — **4—6 条**「AI 判断依据」（必须结合 `microtask_choice_signals` 与 `scene_evidences`，见下方）
-- `learningAdvice` — 4 条学习建议卡片，每项含 `type`（`strength` 或 `improve`）、`title`、`description`
-- `gapAnalysis` — 已有、可迁移、待建立、仅缺证据
-- `actionTasks[]` — 1—3 个可执行验证任务
-- `boundaryNotice` — 结果边界说明
+- `comparisonSummary` — 2—3 句，≤80 字；概括本轮**相对擅长**与**还可加强**的方向（各至少一点）
+- `judgmentBasis` — 4—6 条（与行为信号规则一致，可略长）
+- `learningAdvice` — 4 条卡片：`type`（`strength` | `improve`）、`title`、`description`
+- `gapAnalysis`、`actionTasks[]`、`boundaryNotice`
 
-## 文风与禁用规则（全文适用，含 judgmentBasis / learningAdvice / comparisonSummary）
+## 能力判断规则（重要）
 
-**必须遵守：**
+**可以**在本轮体验边界内写：
 
-- 只写「本轮任务里你做了什么选择 / 展现了什么行为倾向」，不写对人格或长期能力的定论
-- 用「倾向于」「更愿意」「本轮多次选择」等过程描述，不用「能力强/弱」「优秀/较差」「表现较好/最好」
-- **禁止出现任何数字分数**：不得写「XX 分」「得分」「雷达」「维度分数」「2/3/4/5」等
-- **禁止能力定性**：不得写「你 XX 能力很强/较弱」「你的优势是」「你适合/不适合」「适配潜力」
-- 雷达图仅供产品界面展示，**文字里不得引用雷达数值或排名**
+- 「【用户洞察】相对擅长」「【优先级取舍】还可加强」
+- 情景自定义：写清**情境 ↔ 用户回应**关系，再写涉及能力及擅长/欠缺
 
-**禁用词（含近似表达）：**
+**禁止**：分数、雷达数值、适配潜力、天生适合、长期人格定论
 
-最适合、天生适合、一定不适合、你就是、适配潜力、得分、分数、\d+分、能力强、能力弱、表现较好、表现最好、表现较差、最值得加强、潜力高/低
+禁用词：最适合、天生适合、一定不适合、你就是、适配潜力、\d+分、潜力高/低
 
-**judgmentBasis / 行为信号写作要求（重要）：**
+## learningAdvice（必须遵守）
 
-- 报告 UI 使用结构化「行为信号」，每条包含 lead / observation / insight（可选 gapNote）
-- **禁止**「你选择了 A/B/C」「相比其他选项」等答案解析式写法
-- 写「你先判断什么 → 注意力放在哪里 → 这说明了什么专业路径」
-- 不得复述完整题干，不得对比未选选项
-- 若用户选了压力/退出/回避类选项（如「我都想辞职了」「不想干了」「算了」），**必须单独分析**，不得略过或当作无效作答；说明这是真实第一反应，并追问不可持续的具体环节
+- **2 条 `strength`**：来自 `microtask_capability_summary` 中 `tendency=strength` 的维度，或情景 `capability_analysis.strengths`
+- **2 条 `improve`**：来自 `tendency=gap` 的维度，或情景 `capability_analysis.gaps`
+- 若有情景自定义：`至少 1 条` strength 或 improve 必须引用**情境 + 用户原话 + 能力点**（≤40 字 description）
+- `title` ≤12 字；`description` ≤40 字
 
-**judgmentBasis 反例（禁止）：**
+## judgmentBasis
 
-- 「你选择了 B，相比 A、C…」
-- 「Leo｜数据分析师｜在…情境里…你选择了 A…」
-
-**learningAdvice 要求：**
-
-- 若存在主观回应，**至少 1 条** `learningAdvice` 围绕该想法（≤40 字 description）
-- `title` ≤ 12 字；`description` ≤ 40 字，不写分数与排名
+- 微任务：每题对应维度，写擅长或欠缺倾向
+- 情景自定义：单独一条，写情境与回应关系及能力判断
+- 禁止「你选择了 A/B/C」
 
 ## 约束
 
 - 三层结果严格分开，不得合并为总分
-- 比较只针对用户实际体验过的岗位任务
-- 用户选择证据较少方向时不劝退
+- 用户证据较少时不劝退
 - 行动任务需包含：名称、差距、步骤、时长、提交物、验证标准
-
-## Few-shot
-
-（Day 2 补充完整示例）

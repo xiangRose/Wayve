@@ -11,8 +11,8 @@ target/
 # Cursor IDE
 .cursor/
 
-# Accidental duplicate project tree (real code is under src/)
-JobSearch/
+# Accidental duplicate project tree at repo root (real code is under src/)
+/JobSearch/
 
 # Local scratch / export
 tmp-*.txt
