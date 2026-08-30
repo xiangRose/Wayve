@@ -49,6 +49,7 @@ public class ReportContextBuilder {
         String targetJob = resolveTargetJob(sessionId);
         ctx.put("selected_target_job", targetJob);
         ctx.put("microtask_choice_signals", buildMicrotaskChoiceSignals(sessionId, targetJob));
+        ctx.put("user_subjective_highlights", buildSubjectiveHighlights(sessionId, targetJob));
         return ctx;
     }
 
@@ -116,7 +117,11 @@ public class ReportContextBuilder {
             signal.put("scenario", def.get("message"));
             signal.put("prompt", def.get("prompt"));
             signal.put("selectedOption", label);
+            signal.put("selectedOptionId", optionId);
             signal.put("otherOptions", otherOptionLabels(def, optionId));
+            boolean subjective = isSubjectiveOption(optionId, label);
+            signal.put("answerNature", subjective ? "subjective" : "capability");
+            signal.put("priority", subjective ? "high" : "normal");
             signals.add(signal);
         }
         return signals;
@@ -236,7 +241,79 @@ public class ReportContextBuilder {
         m.put("roleTags", ev.getRoleTags());
         m.put("evidenceSummary", ev.getEvidenceSummary());
         m.put("confidence", ev.getConfidence());
+        m.put("rawAnswer", ev.getRawAnswer());
         return m;
+    }
+
+    private List<Map<String, Object>> buildSubjectiveHighlights(String sessionId, String backendJobId) {
+        List<Map<String, Object>> highlights = new ArrayList<>();
+        for (Map<String, Object> signal : buildMicrotaskChoiceSignals(sessionId, backendJobId)) {
+            String optionId = stringVal(signal.get("selectedOptionId"));
+            if (!"C".equalsIgnoreCase(optionId)) {
+                continue;
+            }
+            Map<String, Object> row = new HashMap<>();
+            row.put("source", "microtask");
+            row.put("step", signal.get("step"));
+            row.put("dimension", signal.get("dimension"));
+            row.put("userWords", stripOptionPrefix(stringVal(signal.get("selectedOption"))));
+            row.put("scenario", signal.get("scenario"));
+            row.put("prompt", signal.get("prompt"));
+            row.put("answerNature", "subjective");
+            row.put("priority", "high");
+            highlights.add(row);
+        }
+        for (SceneEvidence ev : sceneEvidenceRepository.findBySessionIdOrderByCreatedAtAsc(sessionId)) {
+            if (!"custom".equalsIgnoreCase(ev.getAnswerType())) {
+                continue;
+            }
+            String words = ev.getRawAnswer() == null ? "" : ev.getRawAnswer().trim();
+            if (words.isBlank()) {
+                continue;
+            }
+            Map<String, Object> row = new HashMap<>();
+            row.put("source", "scene");
+            row.put("sceneId", ev.getSceneId());
+            row.put("userWords", words);
+            row.put("evidenceSummary", ev.getEvidenceSummary());
+            row.put("answerNature", "subjective");
+            row.put("priority", "high");
+            highlights.add(row);
+        }
+        return highlights;
+    }
+
+    private boolean isSubjectiveOption(String optionId, String label) {
+        if ("C".equalsIgnoreCase(optionId)) {
+            return true;
+        }
+        String stripped = stripOptionPrefix(label);
+        return isEmotionalLabel(stripped) || isEmotionalLabel(label);
+    }
+
+    private boolean isEmotionalLabel(String label) {
+        if (label == null || label.isBlank()) {
+            return false;
+        }
+        return label.contains("辞职")
+                || label.contains("想辞职")
+                || label.contains("不想")
+                || label.contains("算了")
+                || label.contains("放弃")
+                || label.contains("崩溃")
+                || label.contains("受不了")
+                || label.contains("烦")
+                || label.contains("摆烂");
+    }
+
+    private String stripOptionPrefix(String label) {
+        if (label == null || label.length() < 2) {
+            return label == null ? "" : label.trim();
+        }
+        if (label.charAt(1) == '.' && Character.isUpperCase(label.charAt(0))) {
+            return label.substring(2).trim();
+        }
+        return label.trim();
     }
 
     private Map<String, Object> toTaskEvidenceEntry(SceneEvidence ev) {

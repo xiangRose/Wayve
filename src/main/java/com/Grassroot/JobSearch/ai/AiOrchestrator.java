@@ -63,20 +63,65 @@ public class AiOrchestrator {
         return chatJsonMap(prompt, context, "report-generation", true);
     }
 
-    /** 专项：根据题目选择与情景行为生成 AI 判断依据（不含分数） */
-  public List<String> generateJudgmentBasis(Map<String, Object> context) {
+    /** 专项：根据题目选择与情景行为生成行为信号（结构化） */
+    public Map<String, Object> generateBehaviorSignals(Map<String, Object> context) {
         String prompt = promptLoader.load("07-judgment-basis");
-        Map<String, Object> payload = Map.of(
-                "microtask_choice_signals", context.getOrDefault("microtask_choice_signals", List.of()),
-                "scene_evidences", context.getOrDefault("scene_evidences", List.of()),
-                "selected_target_job", context.getOrDefault("selected_target_job", ""));
+        Map<String, Object> payload = new HashMap<>();
+        payload.put("microtask_choice_signals", context.getOrDefault("microtask_choice_signals", List.of()));
+        payload.put("scene_evidences", context.getOrDefault("scene_evidences", List.of()));
+        payload.put("user_subjective_highlights", context.getOrDefault("user_subjective_highlights", List.of()));
+        payload.put("selected_target_job", context.getOrDefault("selected_target_job", ""));
         try {
             Map<String, Object> result = chatJsonMap(prompt, payload, "judgment-basis", false, true);
-            return castStringList(result.get("judgmentBasis"));
+            if (result.get("topSignals") instanceof List<?> || result.get("allEvidence") instanceof List<?>) {
+                return result;
+            }
+            return Map.of();
         } catch (Exception ex) {
-            log.warn("AI 判断依据生成失败: {}", ex.getMessage());
-            return List.of();
+            log.warn("AI 行为信号生成失败: {}", ex.getMessage());
+            return Map.of();
         }
+    }
+
+    /** 专项：根据题目选择与情景行为生成 AI 判断依据（不含分数） */
+    public List<String> generateJudgmentBasis(Map<String, Object> context) {
+        Map<String, Object> pack = generateBehaviorSignals(context);
+        List<Map<String, Object>> all = castMapList(pack.get("allEvidence"));
+        List<String> lines = new ArrayList<>();
+        for (Map<String, Object> signal : all) {
+            lines.add(flattenSignal(signal));
+        }
+        return lines;
+    }
+
+    private String flattenSignal(Map<String, Object> signal) {
+        List<String> parts = new ArrayList<>();
+        parts.add(stringVal(signal.get("lead")));
+        parts.add(stringVal(signal.get("observation")));
+        parts.add(stringVal(signal.get("insight")));
+        String gap = stringVal(signal.get("gapNote"));
+        if (!gap.isBlank()) {
+            parts.add(gap);
+        }
+        return String.join(" ", parts).trim();
+    }
+
+    private String stringVal(Object v) {
+        return v == null ? "" : String.valueOf(v).trim();
+    }
+
+    @SuppressWarnings("unchecked")
+    private List<Map<String, Object>> castMapList(Object v) {
+        if (v instanceof List<?> list) {
+            List<Map<String, Object>> out = new ArrayList<>();
+            for (Object item : list) {
+                if (item instanceof Map<?, ?> map) {
+                    out.add((Map<String, Object>) map);
+                }
+            }
+            return out;
+        }
+        return List.of();
     }
 
     /**

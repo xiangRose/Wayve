@@ -63,12 +63,21 @@ public class ReportService {
         List<Map<String, Object>> choiceSignals = mergeChoiceSignals(
                 sessionId, backendJobId, body == null ? null : body.microtaskChoiceSignals());
         ctx.put("microtask_choice_signals", choiceSignals);
+        if (body != null && body.userSubjectiveHighlights() != null && !body.userSubjectiveHighlights().isEmpty()) {
+            List<Map<String, Object>> highlights = new ArrayList<>(castList(ctx.get("user_subjective_highlights")));
+            highlights.addAll(body.userSubjectiveHighlights());
+            ctx.put("user_subjective_highlights", highlights);
+        }
 
         Map<String, Object> taskRadar = reportContextBuilder.buildTaskRadar(sessionId, stringVal(ctx.get("selected_target_job")));
         Map<String, Object> aiResult = aiOrchestrator.generateReport(ctx);
 
         List<String> aiBasis = aiOrchestrator.generateJudgmentBasis(ctx);
         List<String> composedBasis = judgmentBasisComposer.compose(sessionId, stringVal(ctx.get("selected_target_job")));
+        Map<String, Object> composedSignals = judgmentBasisComposer.composeSignals(
+                sessionId, stringVal(ctx.get("selected_target_job")), taskRadar);
+        Map<String, Object> llmSignals = aiOrchestrator.generateBehaviorSignals(ctx);
+        Map<String, Object> behaviorSignals = judgmentBasisComposer.mergeWithLlmSignals(composedSignals, llmSignals);
 
         ExplorationReport report = new ExplorationReport();
         report.setSessionId(sessionId);
@@ -82,7 +91,7 @@ public class ReportService {
         report.setActionTasks(castList(aiResult.get("actionTasks")));
         report.setBoundaryNotice(stringVal(aiResult.getOrDefault("boundaryNotice", DEFAULT_BOUNDARY)));
         report.setSelectedTargetJob(stringVal(ctx.get("selected_target_job")));
-        return toMap(reportRepository.save(report), taskRadar);
+        return toMap(reportRepository.save(report), taskRadar, behaviorSignals);
     }
 
     public Map<String, Object> get(String reportId) {
@@ -123,7 +132,10 @@ public class ReportService {
         return m;
     }
 
-    private Map<String, Object> toMap(ExplorationReport r, Map<String, Object> taskRadar) {
+    private Map<String, Object> toMap(
+            ExplorationReport r,
+            Map<String, Object> taskRadar,
+            Map<String, Object> behaviorSignals) {
         Map<String, Object> m = new HashMap<>();
         m.put("reportId", r.getId());
         m.put("sessionId", r.getSessionId());
@@ -138,11 +150,19 @@ public class ReportService {
         m.put("judgmentBasis", r.getJudgmentBasis() == null ? List.of() : r.getJudgmentBasis());
         m.put("learningAdvice", r.getLearningAdvice() == null ? List.of() : r.getLearningAdvice());
         m.put("taskRadar", taskRadar == null ? Map.of() : taskRadar);
+        if (behaviorSignals != null && !behaviorSignals.isEmpty()) {
+            m.put("behaviorSignals", behaviorSignals);
+        } else {
+            m.put(
+                    "behaviorSignals",
+                    judgmentBasisComposer.composeSignals(
+                            r.getSessionId(), r.getSelectedTargetJob(), taskRadar == null ? Map.of() : taskRadar));
+        }
         return m;
     }
 
     private Map<String, Object> toMap(ExplorationReport r) {
-        return toMap(r, Map.of());
+        return toMap(r, Map.of(), Map.of());
     }
 
     private static String stringVal(Object v) {
@@ -193,13 +213,13 @@ public class ReportService {
     }
 
     private List<String> resolveJudgmentBasis(List<String> aiBasis, List<String> composedBasis) {
-        if (isRichBasis(aiBasis)) {
-            return aiBasis;
-        }
         if (isRichBasis(composedBasis)) {
             return composedBasis;
         }
-        return !aiBasis.isEmpty() ? aiBasis : composedBasis;
+        if (isRichBasis(aiBasis)) {
+            return aiBasis;
+        }
+        return !composedBasis.isEmpty() ? composedBasis : aiBasis;
     }
 
     private boolean isRichBasis(List<String> basis) {
@@ -207,7 +227,10 @@ public class ReportService {
             return false;
         }
         for (String line : basis) {
-            if (line.contains("已完整记录") || line.contains("只描述行为倾向") || line.length() < 36) {
+            if (line.contains("已完整记录") || line.contains("只描述行为倾向") || line.length() < 24) {
+                return false;
+            }
+            if (line.contains("你选择了") && line.contains("相比")) {
                 return false;
             }
         }
