@@ -2,6 +2,7 @@ package com.Grassroot.JobSearch.ai;
 
 import com.Grassroot.JobSearch.job.JobModel;
 import com.Grassroot.JobSearch.job.JobRepository;
+import com.Grassroot.JobSearch.scene.SceneCatalogService;
 import com.Grassroot.JobSearch.scene.SceneEvidence;
 import com.Grassroot.JobSearch.scene.SceneEvidenceRepository;
 import com.Grassroot.JobSearch.session.UserSession;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Service;
 public class ReportContextBuilder {
 
     private final SceneEvidenceRepository sceneEvidenceRepository;
+    private final SceneCatalogService sceneCatalogService;
     private final TaskSessionRepository taskSessionRepository;
     private final InterestSignalRepository interestSignalRepository;
     private final JobRepository jobRepository;
@@ -29,11 +31,13 @@ public class ReportContextBuilder {
 
     public ReportContextBuilder(
             SceneEvidenceRepository sceneEvidenceRepository,
+            SceneCatalogService sceneCatalogService,
             TaskSessionRepository taskSessionRepository,
             InterestSignalRepository interestSignalRepository,
             JobRepository jobRepository,
             MicrotaskBankService microtaskBank) {
         this.sceneEvidenceRepository = sceneEvidenceRepository;
+        this.sceneCatalogService = sceneCatalogService;
         this.taskSessionRepository = taskSessionRepository;
         this.interestSignalRepository = interestSignalRepository;
         this.jobRepository = jobRepository;
@@ -49,8 +53,205 @@ public class ReportContextBuilder {
         String targetJob = resolveTargetJob(sessionId);
         ctx.put("selected_target_job", targetJob);
         ctx.put("microtask_choice_signals", buildMicrotaskChoiceSignals(sessionId, targetJob));
+        ctx.put("microtask_capability_summary", buildMicrotaskCapabilitySummary(sessionId, targetJob));
         ctx.put("user_subjective_highlights", buildSubjectiveHighlights(sessionId, targetJob));
         return ctx;
+    }
+
+    /**
+     * 供行为信号合成：情景自定义回答的结构化信号。
+     */
+    public List<Map<String, Object>> buildSceneBehaviorSignals(String sessionId) {
+        List<Map<String, Object>> signals = new ArrayList<>();
+        int sceneIndex = 0;
+        for (SceneEvidence ev : sceneEvidenceRepository.findBySessionIdOrderByCreatedAtAsc(sessionId)) {
+            if (!"custom".equalsIgnoreCase(ev.getAnswerType())) {
+                continue;
+            }
+            String words = ev.getRawAnswer() == null ? "" : ev.getRawAnswer().trim();
+            if (words.isBlank()) {
+                continue;
+            }
+            Map<String, Object> sceneScript = safeSceneScript(ev.getSceneId());
+            signals.add(buildSceneSignal(ev, sceneScript, sceneIndex++));
+        }
+        return signals;
+    }
+
+  @SuppressWarnings("unchecked")
+    public List<Map<String, Object>> buildMicrotaskCapabilitySummary(String sessionId, String backendJobId) {
+        if (backendJobId == null || backendJobId.isBlank()) {
+            return List.of();
+        }
+        Map<String, Object> radar = buildTaskRadar(sessionId, backendJobId);
+        List<String> dimensions = castStringList(radar.get("dimensions"));
+        List<Integer> scores = castIntList(radar.get("scores"));
+        List<Map<String, Object>> summary = new ArrayList<>();
+        for (int i = 0; i < dimensions.size(); i++) {
+            int score = i < scores.size() ? scores.get(i) : 0;
+            String dim = dimensions.get(i);
+            Map<String, Object> row = new HashMap<>();
+            row.put("dimension", dim);
+            row.put("tendency", capabilityTendency(score));
+            row.put("evidenceHint", capabilityHint(dim, score));
+            summary.add(row);
+        }
+        return summary;
+    }
+
+    private Map<String, Object> buildSceneSignal(SceneEvidence ev, Map<String, Object> sceneScript, int index) {
+        String context = stringVal(sceneScript.get("context"));
+        String question = stringVal(sceneScript.get("question"));
+        String title = stringVal(sceneScript.get("title"));
+        String userWords = ev.getRawAnswer() == null ? "" : ev.getRawAnswer().trim();
+        Map<String, Object> cap = extractCapabilityAnalysis(ev);
+
+        String sceneClip = clip(context.isBlank() ? title : context, 36);
+        String observation = "情境：" + sceneClip + "。你的回应：" + clip(userWords, 40) + "。";
+        String insight = buildSceneInsight(cap, userWords, ev.getObservedBehavior());
+        String tendency = stringVal(cap.get("tendency"));
+        if (tendency.isBlank()) {
+            tendency = inferSceneTendency(cap);
+        }
+
+        Map<String, Object> signal = new HashMap<>();
+        signal.put("step", 200 + index);
+        signal.put("dimension", "情景：" + (title.isBlank() ? "自定义回应" : title));
+        signal.put("source", "scene");
+        signal.put("subjective", true);
+        signal.put("emotional", isEmotionalLabel(userWords));
+        signal.put("optionId", "CUSTOM");
+        signal.put("abilityTendency", tendency.isBlank() ? "mixed" : tendency);
+        signal.put("lead", "你先按自己的方式回应了这个情境。");
+        signal.put("observation", observation);
+        signal.put("insight", insight);
+        if ("gap".equals(tendency) || "mixed".equals(tendency) || "stress".equals(tendency)) {
+            signal.put("gapNote", clip(stringVal(cap.get("scene_link")), 48));
+        }
+        signal.put("score", 60);
+        signal.put("rawScore", 3);
+        return signal;
+    }
+
+    @SuppressWarnings("unchecked")
+    private Map<String, Object> extractCapabilityAnalysis(SceneEvidence ev) {
+        Map<String, Object> cap = new HashMap<>();
+        if (ev.getWorkstyleEvidence() != null && ev.getWorkstyleEvidence().get("capability_analysis") instanceof Map<?, ?> m) {
+            cap.putAll((Map<String, Object>) m);
+        }
+        if (cap.isEmpty() && ev.getEvidenceSummary() != null && !ev.getEvidenceSummary().isBlank()) {
+            cap.put("scene_link", ev.getEvidenceSummary());
+        }
+        return cap;
+    }
+
+    private String buildSceneInsight(Map<String, Object> cap, String userWords, String observed) {
+        String link = stringVal(cap.get("scene_link"));
+        if (!link.isBlank()) {
+            return clip(link, 80);
+        }
+        @SuppressWarnings("unchecked")
+        List<String> strengths = cap.get("strengths") instanceof List<?> list
+                ? (List<String>) list
+                : List.of();
+        @SuppressWarnings("unchecked")
+        List<String> gaps = cap.get("gaps") instanceof List<?> list
+                ? (List<String>) list
+                : List.of();
+        if (!strengths.isEmpty() && !gaps.isEmpty()) {
+            return clip("擅长：" + strengths.get(0) + "；还可加强：" + gaps.get(0), 80);
+        }
+        if (!strengths.isEmpty()) {
+            return clip("擅长：" + strengths.get(0), 80);
+        }
+        if (!gaps.isEmpty()) {
+            return clip("还可加强：" + gaps.get(0), 80);
+        }
+        if (observed != null && !observed.isBlank()) {
+            return clip(observed, 80);
+        }
+        return "回应与情境直接相关，可继续观察取舍与推进方式。";
+    }
+
+    private String inferSceneTendency(Map<String, Object> cap) {
+        @SuppressWarnings("unchecked")
+        List<String> strengths = cap.get("strengths") instanceof List<?> list
+                ? (List<String>) list
+                : List.of();
+        @SuppressWarnings("unchecked")
+        List<String> gaps = cap.get("gaps") instanceof List<?> list
+                ? (List<String>) list
+                : List.of();
+        if (!strengths.isEmpty() && gaps.isEmpty()) {
+            return "strength";
+        }
+        if (strengths.isEmpty() && !gaps.isEmpty()) {
+            return "gap";
+        }
+        return "mixed";
+    }
+
+    private Map<String, Object> safeSceneScript(String sceneId) {
+        try {
+            return sceneCatalogService.getScene(sceneId);
+        } catch (Exception ex) {
+            return Map.of();
+        }
+    }
+
+    private String capabilityTendency(int radarScore) {
+        if (radarScore >= 80) {
+            return "strength";
+        }
+        if (radarScore >= 60) {
+            return "mixed";
+        }
+        return "gap";
+    }
+
+    private String capabilityHint(String dimension, int radarScore) {
+        if (radarScore >= 80) {
+            return "【" + dimension + "】本轮判断较顺，是相对擅长的方向。";
+        }
+        if (radarScore >= 60) {
+            return "【" + dimension + "】本轮有显现，还可进一步深化。";
+        }
+        return "【" + dimension + "】本轮信号偏弱，值得关注加强。";
+    }
+
+    private String clip(String text, int max) {
+        if (text == null || text.isBlank()) {
+            return "";
+        }
+        String t = text.trim();
+        return t.length() <= max ? t : t.substring(0, max - 1) + "…";
+    }
+
+    @SuppressWarnings("unchecked")
+    private List<String> castStringList(Object v) {
+        if (v instanceof List<?> list) {
+            List<String> out = new ArrayList<>();
+            for (Object item : list) {
+                if (item != null) {
+                    out.add(String.valueOf(item));
+                }
+            }
+            return out;
+        }
+        return List.of();
+    }
+
+    private List<Integer> castIntList(Object v) {
+        if (v instanceof List<?> list) {
+            List<Integer> out = new ArrayList<>();
+            for (Object item : list) {
+                if (item instanceof Number n) {
+                    out.add(n.intValue());
+                }
+            }
+            return out;
+        }
+        return List.of();
     }
 
     /**
@@ -242,6 +443,10 @@ public class ReportContextBuilder {
         m.put("evidenceSummary", ev.getEvidenceSummary());
         m.put("confidence", ev.getConfidence());
         m.put("rawAnswer", ev.getRawAnswer());
+        Map<String, Object> cap = extractCapabilityAnalysis(ev);
+        if (!cap.isEmpty()) {
+            m.put("capability_analysis", cap);
+        }
         return m;
     }
 
@@ -276,6 +481,9 @@ public class ReportContextBuilder {
             row.put("sceneId", ev.getSceneId());
             row.put("userWords", words);
             row.put("evidenceSummary", ev.getEvidenceSummary());
+            Map<String, Object> sceneScript = safeSceneScript(ev.getSceneId());
+            row.put("sceneContext", clip(stringVal(sceneScript.get("context")), 120));
+            row.put("sceneQuestion", stringVal(sceneScript.get("question")));
             row.put("answerNature", "subjective");
             row.put("priority", "high");
             highlights.add(row);

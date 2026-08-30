@@ -68,6 +68,7 @@ public class AiOrchestrator {
         String prompt = promptLoader.load("07-judgment-basis");
         Map<String, Object> payload = new HashMap<>();
         payload.put("microtask_choice_signals", context.getOrDefault("microtask_choice_signals", List.of()));
+        payload.put("microtask_capability_summary", context.getOrDefault("microtask_capability_summary", List.of()));
         payload.put("scene_evidences", context.getOrDefault("scene_evidences", List.of()));
         payload.put("user_subjective_highlights", context.getOrDefault("user_subjective_highlights", List.of()));
         payload.put("selected_target_job", context.getOrDefault("selected_target_job", ""));

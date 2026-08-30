@@ -115,8 +115,16 @@ public class SceneEvidenceService {
         record.setConfidence(numberVal(extracted.get("confidence"), extracted.get("overall_confidence")));
 
         Object workstyle = extracted.get("workstyleEvidence");
+        Map<String, Object> workstyleMap = new HashMap<>();
         if (workstyle instanceof Map<?, ?> map) {
-            record.setWorkstyleEvidence(objectMapper.convertValue(map, new TypeReference<>() {}));
+            workstyleMap.putAll(objectMapper.convertValue(map, new TypeReference<>() {}));
+        }
+        Object capability = extracted.get("capability_analysis");
+        if (capability instanceof Map<?, ?> capMap) {
+            workstyleMap.put("capability_analysis", objectMapper.convertValue(capMap, new TypeReference<>() {}));
+        }
+        if (!workstyleMap.isEmpty()) {
+            record.setWorkstyleEvidence(workstyleMap);
         }
         Object tags = extracted.get("roleTags");
         if (tags instanceof List<?> list) {

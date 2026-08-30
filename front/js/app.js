@@ -724,24 +724,24 @@
     if (dims.length < 2) return;
     const cards = document.querySelectorAll('.figma-advice-card h3');
     const texts = document.querySelectorAll('.figma-advice-card p');
-    const pick = (dim) =>
-      '在「' + dim.name + '」相关情境中，可多留意自己通常先确认哪类信息、再采取什么行动。';
     const sorted = dims.slice().sort((a, b) => b.score - a.score);
     const strengths = sorted.slice(0, 2);
-    const others = sorted.slice(-2).reverse();
-    if (cards[0] && strengths[0]) cards[0].textContent = strengths[0].name + '相关情境';
-    if (texts[0] && strengths[0]) texts[0].textContent = pick(strengths[0]);
+    const gaps = sorted.slice(-2).reverse();
+    if (cards[0] && strengths[0]) {
+      cards[0].textContent = strengths[0].name + ' · 相对擅长';
+      if (texts[0]) texts[0].textContent = '本轮在「' + strengths[0].name + '」上判断较顺，可继续沿用这条路径。';
+    }
     if (cards[1] && strengths[1]) {
-      cards[1].textContent = strengths[1].name + '相关取舍';
-      if (texts[1]) texts[1].textContent = pick(strengths[1]);
+      cards[1].textContent = strengths[1].name + ' · 表现不错';
+      if (texts[1]) texts[1].textContent = '「' + strengths[1].name + '」相关取舍有显现，还可多练复杂情境。';
     }
-    if (cards[2] && others[0]) {
-      cards[2].textContent = others[0].name + '可继续观察';
-      if (texts[2]) texts[2].textContent = '遇到类似问题时，可尝试换一种信息收集或对齐方式，再对比结果。';
+    if (cards[2] && gaps[0]) {
+      cards[2].textContent = gaps[0].name + ' · 可加强';
+      if (texts[2]) texts[2].textContent = '「' + gaps[0].name + '」本轮偏弱，下次可多补一条验证信息。';
     }
-    if (cards[3] && others[1]) {
-      cards[3].textContent = others[1].name + '值得多练';
-      if (texts[3]) texts[3].textContent = '用一个小案例复盘：当时还缺哪条事实，若补上会如何选择。';
+    if (cards[3] && gaps[1]) {
+      cards[3].textContent = gaps[1].name + ' · 待深化';
+      if (texts[3]) texts[3].textContent = '「' + gaps[1].name + '」因果链条还可拉长，适合用小案例复盘。';
     }
   }
 
@@ -810,6 +810,16 @@
       isEmotionalOrAvoidantLabel(selectedRawLabel);
   }
 
+  function buildCapabilityInsight(dimension, rawScore, emotional) {
+    if (emotional) {
+      return '【' + dimension + '】压力反应优先，需分辨是节奏还是协作卡点。';
+    }
+    if (rawScore >= 5) return '【' + dimension + '】判断较顺，是你本轮相对擅长的方向。';
+    if (rawScore >= 4) return '【' + dimension + '】表现不错，还有深化空间。';
+    if (rawScore >= 3) return '【' + dimension + '】有所涉及，因果还可拉长。';
+    return '【' + dimension + '】信号偏弱，值得关注加强。';
+  }
+
   function buildSubjectiveLead(emotional) {
     if (emotional) return '你先回应了当下的压力。';
     return '你先说了真实想法。';
@@ -824,8 +834,8 @@
   }
 
   function buildSubjectiveInsight(dimension, emotional) {
-    if (emotional) return '压力先占满判断空间，需追问哪个环节不可持续。';
-    return '自身体验先于标准解题路径。';
+    if (emotional) return buildCapabilityInsight(dimension, 2, true);
+    return '自身体验先于标准路径，可对照【' + dimension + '】看是擅长还是卡点。';
   }
 
   function buildSubjectiveGapNote(emotional) {
@@ -847,11 +857,7 @@
   }
 
   function buildSignalInsight(dimension, rawScore, emotional) {
-    if (emotional) return '压力先占满判断空间，需追问不可持续的环节。';
-    if (rawScore >= 5) return '判断路径清晰，能往动机与价值推进。';
-    if (rawScore >= 4) return '开始从现象追问原因。';
-    if (rawScore >= 3) return '更关注局部信号，因果还可再展开。';
-    return '判断尚初步，分析层次还可加深。';
+    return buildCapabilityInsight(dimension, rawScore, emotional);
   }
 
   function buildSignalGapNote(rawScore, emotional) {
@@ -903,23 +909,38 @@
       const text = saved?.draft?.customText?.trim();
       if (!text) return;
       const step = SCENE_STEPS[Number(stepIdx)];
+      const sceneId = saved.sceneId || (step?.sceneIdForJob ? step.sceneIdForJob(state.currentJobId) : null);
+      const script = sceneId && state.sceneScripts ? state.sceneScripts[sceneId] : null;
+      const context = saved.sceneContext || script?.context || step?.badge || '情景模拟';
+      const title = script?.title || step?.badge || '情景回应';
       const emotional = isEmotionalOrAvoidantLabel(text);
-      const scenario = step?.badge || '情景模拟';
+      const sceneClip = clipText(context, 36);
       out.push({
-        step: 100 + Number(stepIdx),
-        dimension: '主观回应',
+        step: 200 + Number(stepIdx),
+        dimension: '情景：' + title,
+        source: 'scene',
         optionId: 'CUSTOM',
         subjective: true,
         emotional,
-        lead: buildSubjectiveLead(emotional),
-        observation: buildSubjectiveObservation(scenario, text, emotional),
-        insight: buildSubjectiveInsight('主观回应', emotional),
-        gapNote: emotional ? buildSubjectiveGapNote(emotional) : '',
+        abilityTendency: emotional ? 'stress' : 'mixed',
+        lead: '你先按自己的方式回应了这个情境。',
+        observation: '情境：' + sceneClip + '。你的回应：' + clipText(text, 40) + '。',
+        insight: inferSceneAbilityInsight(text, emotional),
+        gapNote: emotional ? buildSubjectiveGapNote(true) : '',
         score: emotional ? 40 : 60,
         rawScore: emotional ? 2 : 3,
       });
     });
     return out;
+  }
+
+  function inferSceneAbilityInsight(text, emotional) {
+    if (emotional) return '回应与情境压力直接相关，优先关注体验张力来源。';
+    if (/数据|验证|指标|留存/.test(text)) return '你倾向用数据验证推进，分析取向较清晰。';
+    if (/沟通|对齐|协调|会议/.test(text)) return '你关注多方对齐，协作推进是主要线索。';
+    if (/范围|收窄|取舍|延期|优先级/.test(text)) return '你在回应取舍与边界，取舍意识较明显。';
+    if (/用户|体验|反馈/.test(text)) return '你把用户感受放进判断，用户导向较突出。';
+    return '回应紧扣情境冲突，可继续观察擅长与待加强环节。';
   }
 
   function pickTopSignals(signals) {
@@ -946,6 +967,7 @@
     if (subjectiveSignals.length) {
       const primary =
         subjectiveSignals.find((s) => s.emotional) ||
+        subjectiveSignals.find((s) => s.source === 'scene') ||
         subjectiveSignals.find((s) => s.optionId === 'C') ||
         subjectiveSignals.find((s) => s.optionId === 'CUSTOM') ||
         subjectiveSignals[0];
@@ -1134,6 +1156,22 @@
     }).filter(Boolean);
   }
 
+  function buildMicrotaskCapabilitySummary() {
+    const radar = state.microtaskRadar;
+    if (!radar?.dimensions?.length) return [];
+    return radar.dimensions.map((dim, i) => {
+      const score = radar.scores?.[i] || 0;
+      let tendency = 'gap';
+      if (score >= 80) tendency = 'strength';
+      else if (score >= 60) tendency = 'mixed';
+      return {
+        dimension: dim.name || dim,
+        tendency,
+        evidenceHint: buildCapabilityInsight(dim.name || dim, score >= 80 ? 5 : score >= 60 ? 4 : 2, false),
+      };
+    });
+  }
+
   function buildSubjectiveHighlightsForReport() {
     const highlights = [];
     getMicrotaskAnswerRows().forEach((row) => {
@@ -1155,9 +1193,12 @@
     Object.keys(state.sceneStepStates).forEach((stepIdx) => {
       const text = state.sceneStepStates[stepIdx]?.draft?.customText?.trim();
       if (!text) return;
+      const saved = state.sceneStepStates[stepIdx];
       highlights.push({
         source: 'scene',
         userWords: text,
+        sceneContext: saved.sceneContext || '',
+        sceneQuestion: saved.sceneTitle || '',
         answerNature: 'subjective',
         priority: 'high',
       });
@@ -1622,6 +1663,7 @@
 
   function saveSceneStepState() {
     syncSceneDraftFromDom();
+    const script = getCurrentSceneScript();
     state.sceneStepStates[state.sceneStep] = {
       draft: {
         selectedOptionId: state.sceneDraft.selectedOptionId,
@@ -1629,6 +1671,9 @@
       },
       panelPhase: state.scenePanelPhase,
       maxPhase: state.scenePanelMaxPhase,
+      sceneId: script?.sceneId || null,
+      sceneContext: script?.context || '',
+      sceneTitle: script?.title || '',
     };
   }
 
@@ -1924,11 +1969,13 @@
         const q = '?jobId=' + encodeURIComponent(state.currentJobId);
         const signals = await buildMicrotaskChoiceSignalsForReport();
         const subjectiveHighlights = buildSubjectiveHighlightsForReport();
+        const capabilitySummary = buildMicrotaskCapabilitySummary();
         const payload =
           signals.length || subjectiveHighlights.length
             ? {
                 microtaskChoiceSignals: signals,
                 userSubjectiveHighlights: subjectiveHighlights,
+                microtaskCapabilitySummary: capabilitySummary,
                 setId: state.microtaskSetId,
               }
             : null;
