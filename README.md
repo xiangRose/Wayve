@@ -1,499 +1,293 @@
-# 试途 Wayve
+# 试途 WAYVE
 
 <p align="center">
-  <strong>仕途之前，先「试途」。</strong>
+  <strong>仕途之前，先「试途」。</strong><br />
+  <strong>Preview before Commit.</strong><br /><br />
+  用几分钟体验一段真实工作，再决定这条职业方向值不值得继续验证。<br />
+  面向学生、初入职场用户，以及正在转岗或转行的人。
 </p>
 
 <p align="center">
-  <strong>用几分钟试一段工作，再判断这条路值不值得继续走。</strong>
+  <img src="docs/images/wayve-home.png" alt="试途 WAYVE 首页" width="100%" />
 </p>
 
-<p align="center">
-  Preview before commit.
-</p>
+WAYVE 是一个证据型职业探索原型：用户先进入 AI 岗位的微任务和工作情景，系统再基于本次可观察行为提供有边界的反馈。它提供的是下一步判断的依据，不是替用户作出的职业判决。
 
-<p align="center">
-  <img src="./docs/images/wayve-home.png" alt="Wayve Home" width="100%" />
-</p>
+## 评审 30 秒速览
 
----
+| 主办方评分维度 | 评委能在当前仓库验证什么 |
+| --- | --- |
+| **问题洞察与价值 · 20%** | WAYVE 把“我适合什么”改写为“我体验了什么、产生了什么证据、下一步还要验证什么”，降低职业探索第一次试错的成本。 |
+| **创新性 · 20%** | 推荐只负责导航；Microtask 与 Scene 负责观察；报告保留证据边界。确定性题目、状态和 authored scoring 不交给模型随意决定。 |
+| **后续发展潜力 · 20%** | 当前 Scenario-based MVP 已拆出 session、task、scene、evidence、report 与 AI 边界，可继续演进为 Work Sample、Replay 和跨体验成长系统。 |
+| **Demo 完成度 · 15%** | Spring Boot 在 3000 同时提供前端与 API；五岗均有交互入口、微任务、三幕情景、行为证据与报告页面，可沿产品页面端到端演示。 |
+| **技术实现能力 · 15%** | Java 17、Spring Boot 3.4.1、H2/JPA、OpenAPI、结构化 Prompt、输出校验、OpenAI-compatible Chat Completions 与 JSON fallback 均有实现。 |
+| **展示表达与团队协作 · 10%** | 五张真实产品截图、3 分钟演示路径、架构图、Code Evidence Index 与 Current/Future 表让产品、设计和工程事实可快速核验。 |
 
-## 🌊 What is Wayve?
+## Why WAYVE｜从“看 / 测 / 聊”到“试”
 
-**试途 Wayve 是一个体验式职业探索平台。**
+知道一份 JD，**不等于体验过这份工作**。
 
-通过短时职业试错与行为反馈，帮助用户更有依据地探索职业方向。
+职业探索并不只缺信息，更缺一次低成本、可逆、接近真实工作的验证机会：招聘网站告诉人“岗位需要什么”，问卷依赖“我如何描述自己”，AI 对话则主要根据已有信息作推断。WAYVE 增加第四种动作——先做一小段，再观察自己实际如何判断。
 
-我们不想再给用户一个抽象的职业答案。
-
-我们更想让用户：
-
-> **先真正做一次，再决定这条路值不值得继续走。**
-
----
-
-## 💡 Why Wayve?
-
-职业探索并不缺少信息。
-
-我们可以看招聘网站、读 JD、做职业测试，也可以直接和 AI 聊职业规划。
-
-但仍然有几个问题很难被解决：
-
-### 01 · 看了很多岗位，还是不知道区别
-
-> “AI Product、Solutions、Research 都看过，
-> 还是不知道每天到底在做什么。”
-
-### 02 · 想转方向，却不知道从哪开始
-
-> “已经工作几年，进入 AI 时却像重新从零开始。”
-
-### 03 · 测评说适合，自己还是没底
-
-> “结果说我适合 AI Product，
-> 但我真的做起来会怎么样？”
-
-### 我们的洞察
-
-> **用户不是缺少信息，而是缺少一次真实、主动、有依据的尝试。**
-
-知道岗位介绍，不等于真正理解岗位。
-
----
-
-## ✨ From “看、测、聊” to “试”
-
-### 👀 招聘网站 · 看
-
-**“这个岗位需要什么？”**
-
-知道 JD，不一定知道自己做起来是什么感觉。
-
-### 📋 职业问卷 · 测
-
-**“我是什么样的人？”**
-
-更多依赖自我描述，缺少真实行为。
-
-### 💬 AI 对话 · 聊
-
-**“根据我的经历，我可能适合什么？”**
-
-建议可以个性化，但仍主要来自推断。
-
-### 🌊 试途 Wayve · 试
-
-**“让我先做一次，再判断值不值得继续。”**
-
-**短时工作体验 → 行为证据 → 真实感受 → 下一步方向**
+| 看 | 测 | 聊 | **试** |
+| --- | --- | --- | --- |
+| 阅读岗位要求 | 回答自我描述 | 获取个性化建议 | 进入任务与情景 |
+| 知道“它是什么” | 推测“我是什么样” | 推测“可能适合什么” | 获得“我刚才怎么做”的证据 |
 
 > **不是多给一个答案，而是多给一次判断的依据。**
 
----
+## How It Works
 
-## 🧭 How It Works
-
-Wayve 希望把一次职业探索变成一条完整的体验路径：
-
-```text
-经历输入
-我的来路
-  ↓
-岗位推荐
-值得一试
-  ↓
-自主选岗
-主动入局
-  ↓
-硬能力
-基础试做
-  ↓
-场景模拟
-进入现场
-  ↓
-行为反馈
-看见自己怎么做
-  ↓
-持续探索
-我的试途
+```mermaid
+flowchart LR
+    A[进入探索] --> B[可选 Profile]
+    B --> C[五岗浏览与推荐导航]
+    C --> D[6 道混合 Microtask]
+    D --> E[三幕岗位 Scene]
+    E --> F[结构化 Evidence]
+    F --> G[有边界的 Report]
+    G --> H[下一次验证]
 ```
 
-## 🖥 Product Experience
+这张图只表达当前可运行的 MVP 主链路。完整 Work Sample、Collaboration Sprint、Evidence Replay 与长期 Growth Track 属于 Future / Post-MVP。
+
+## Product Experience
 
 ### 01 · 真实任务｜先做一次
 
-用户不是回答：
-
-> “你觉得自己适合做产品经理吗？”
-
-而是直接进入具体的工作问题。
-
-在时间、资源、需求和业务目标之间做出自己的判断。
+用户不先回答“你觉得自己适合这个岗位吗”，而是进入具体工作问题，在需求、证据、约束与目标之间作出选择。系统观察本轮选择，并按 authored dimension 汇总任务雷达。
 
 <p align="center">
-  <img src="./docs/images/wayve-task.png" alt="Wayve Task" width="100%" />
+  <img src="docs/images/wayve-task.png" alt="WAYVE 岗位微任务" width="100%" />
 </p>
-
-Wayve 希望通过短时任务，让用户首先体验：
-
-**这份工作真正要求我思考什么？**
-
----
 
 ### 02 · 场景模拟｜进入现场
 
-真实工作并不是一道孤立的选择题。
-
-用户还会面对：
-
-- 团队成员
-- 客户或外部合作方
-- 需求变化
-- 信息不完整
-- 不同角色的目标
-- 现实中的取舍
+用户依次面对会议、客户或用户、发布或交付三类情景。固定选项产生预先编写的 evidence；自由回答进入受限的结构化提取。这一步把抽象自评变成有上下文的行为观察。
 
 <p align="center">
-  <img src="./docs/images/wayve-scenario.png" alt="Wayve Scenario Simulation" width="100%" />
+  <img src="docs/images/wayve-scenario.png" alt="WAYVE 工作场景模拟" width="100%" />
 </p>
-
-在部分场景中，用户不仅可以选择处理方式，也可以用自己的方式主动回答。
-
-让职业探索从：
-
-**“我认为自己会怎么做”**
-
-进一步变成：
-
-**“面对这个问题时，我实际上会怎么做”。**
-
----
 
 ### 03 · 行为反馈｜看见自己怎么做
 
-完成体验之后，Wayve 不只告诉用户一个分数。
-
-系统会结合任务过程，形成可解释的观察与学习建议。
+报告汇总任务、场景、兴趣和用户主观信号，呈现观察依据、学习建议与结论边界。一次体验可以暴露值得继续验证的方向，但不会生成永久能力或职业 fit。
 
 <p align="center">
-  <img src="./docs/images/wayve-feedback.png" alt="Wayve Feedback" width="100%" />
+  <img src="docs/images/wayve-feedback.png" alt="WAYVE 行为反馈" width="100%" />
 </p>
 
-用户可以进一步看到：
+### 04 · 下一步｜把答案变成新实验
 
-- 哪些工作方式已经表现出优势
-- 哪些判断方式值得继续观察
-- 哪些能力还需要进一步验证
-- 下一次可以尝试什么
-
-### Evidence, not Verdicts.
-
-Wayve 希望提供的是：
-
-**职业判断的证据，而不是替用户做职业判决。**
-
----
-
-### 04 · 我的试途｜让探索留下轨迹
-
-一次任务不是最终答案。
-
-一次职业探索，也不应该定义一个人。
+当前页面把本轮结果收束为下一次探索方向。长期、跨体验的轨迹系统仍是 Future；截图表达的是产品愿景入口，不代表纵向证据系统已经完整运行。
 
 <p align="center">
-  <img src="./docs/images/wayve-journey.png" alt="My Way Career Journey" width="100%" />
+  <img src="docs/images/wayve-journey.png" alt="WAYVE 我的试途页面" width="100%" />
 </p>
 
-Wayve 希望长期记录：
+## Core Innovations
 
-```text
-我试过什么
-   ↓
-我做了什么
-   ↓
-我看见了什么
-   ↓
-我调整了什么
-   ↓
-我下一步想验证什么
-```
+### Preview before Commit
 
-让职业选择从一次性的：
+在投入长期学习、求职或转行之前，先完成一段短而具体的岗位体验。
 
-**“我适合什么？”**
+### Recommendation ≠ Assessment
 
-逐渐变成：
+背景资料和岗位推荐只用于导航，不改变任务结果，也不作为能力证据。
 
-**不断尝试 → 获得新证据 → 调整方向 → 再验证**
+### Evidence over Labels
 
----
+系统描述“在什么情景下做了什么、这能支持什么、仍缺什么”，不把一次体验压缩成人格或适配度标签。
 
-## 💼 Current AI Roles
+### Deterministic Core + LLM
 
-当前 Wayve 首先聚焦 5 个 AI 职业方向，通过不同任务和场景帮助用户体验不同工作的核心工作方式。
+题库、选项、状态推进、分值换算、preset evidence 与持久化由应用层控制。LLM 负责有限的自由文本提取和报告叙事；输出不合法或模型不可用时进入已版本化 fallback。
 
-包括：
+## Current Implementation
 
-- AI 产品经理
-- AI 产品设计（UI/UX）
-- AI 解决方案顾问
-- AI 产品运营
-- AI 用户研究
+| Capability | Current runtime evidence | Boundary |
+| --- | --- | --- |
+| **Five roles** | 五个 canonical 产品方向均有 interactive 入口；前后端保留兼容 ID 映射 | runtime 历史命名不重新定义 Product SOT |
+| **Microtask** | 每岗 4 组、共 24 题；一次 session 混合抽取 6 题，逐步保存答案并生成维度雷达 | 当前是 Scenario-based assessment，不是可编辑 Work Sample |
+| **Scene** | 五岗各 3 幕，共 15 个脚本；支持按 ID/岗位读取及提交回答 | 三幕岗位情景不等于完整 Collaboration Sprint |
+| **Scene Evidence** | preset 读取 authored evidence；custom 经 AI/fallback 提取 observation、summary、tags、confidence，并按 session 写入 H2 | 单幕证据不能推出稳定能力或岗位适配 |
+| **Report** | 生成/读取报告、选择目标岗位；汇总 task radar、scene evidence、interest、主观信号、判断依据和 boundary notice | 不是完整 Evidence Replay 或 Working Portrait |
+| **LLM** | `RestClient` 调用 OpenAI-compatible `POST /chat/completions`，支持 JSON mode | 模型不拥有业务状态、题库与评分真值 |
+| **Fallback** | AI 关闭、无 Key、调用失败、空响应或输出校验失败时读取仓库 JSON fallback | fallback 是确定性演示/降级数据，不是用户数据 |
+| **Persistence** | H2 file database + Spring Data JPA 保存 session、task、interest、scene evidence 与 report | 尚非跨体验的长期证据系统 |
 
-不同岗位并不是同一套职业测试换一个名字。
+产品层 canonical role IDs 为：`ai_product`、`ai_ui_design`、`ai_ops`、`ai_data_eval`、`ai_app_dev`。当前 runtime 为兼容既有 seed，分别映射到 `ai_pm`、`ai_ux`、`ai_operator`、`ai_researcher`、`ai_consultant`；评委界面上的显示名称来自当前岗位 seed。
 
-我们希望每个岗位都体现不同的：
-
-**工作对象 × 思考方式 × 专业限制 × 决策逻辑**
-
----
-
-## ⚙️ Technical Implementation
-
-Wayve 当前仓库实现了职业探索会话、岗位展示与推荐、六步微任务、兴趣反馈与报告的 Demo 后端流程。
-
-### Frontend
-
-```text
-HTML
-CSS
-JavaScript
-```
-
-### Backend
-
-```text
-Java 17
-Spring Boot 3.4.1
-Spring MVC
-Spring Data JPA
-H2 Database
-OpenAPI / Swagger
-```
-
-### Core Modules
-
-```text
-Session
-   ↓
-Career / Job
-   ↓
-Scenario
-   ↓
-Task
-   ↓
-Behavior Evidence
-   ↓
-AI / LLM
-   ↓
-Report / Feedback
-```
-
-项目中也包含独立的 AI / LLM 模块，用于 Prompt、模型调用、结构化输出以及报告生成相关实验。
-
----
-
-## 📁 Project Structure
-
-```text
-jobsearch/
-├── front/                        # Frontend Demo
-│   ├── assets/
-│   ├── css/
-│   ├── js/
-│   └── index.html
-│
-├── AI/
-│   └── prompts/
-├── data_templates/
-├── docs/
-│   ├── images/
-│   └── product/
-├── scripts/
-├── src/
-│   ├── main/
-│   │   ├── java/com/Grassroot/JobSearch/
-│   │   │   ├── ai/
-│   │   │   ├── common/
-│   │   │   ├── config/
-│   │   │   ├── job/
-│   │   │   ├── llm/
-│   │   │   ├── report/
-│   │   │   ├── scene/
-│   │   │   ├── session/
-│   │   │   └── task/
-│   │   └── resources/
-│   └── test/
-│
-├── WAYVE-Product-PRD.md
-├── RUN.md
-├── LOCAL_WORKFLOW.md
-├── mvnw
-├── mvnw.cmd
-└── pom.xml
-```
-
----
-
-## 🚀 Run Locally
+## Quick Start
 
 ### Requirements
 
-```text
-JDK 17
-Git
-```
+- Git
+- JDK 17
+- 首次使用 Maven Wrapper 时可访问其 Maven distribution 地址
 
-The repository includes Maven Wrapper, so Maven does not need to be installed separately.
-
-### Clone
+### Clone and run
 
 ```bash
-git clone https://github.com/xiangRose/jobsearch.git
-cd jobsearch
+git clone https://github.com/xiangRose/Wayve.git
+cd Wayve
 ```
 
-### Start Backend
-
-Windows:
+Windows：
 
 ```powershell
 .\mvnw.cmd spring-boot:run
 ```
 
-macOS / Linux:
+macOS / Linux：
 
 ```bash
-sh ./mvnw spring-boot:run
+./mvnw spring-boot:run
 ```
 
-The backend runs at `http://localhost:3000`; Swagger is available at `http://localhost:3000/swagger-ui.html`.
+打开：
 
-For more information:
+- 产品页面：<http://localhost:3000/>
+- 健康检查：<http://localhost:3000/api/v1/health>
+- Swagger UI：<http://localhost:3000/swagger-ui.html>
 
-[RUN.md](./RUN.md) · [OpenAPI specification](./docs/openapi.yaml)
+Spring Boot 从仓库根目录直接提供 `front/`。页面由 3000 打开时，API 使用当前 origin 的 `/api/v1`；若前端在 3001 或 5173 单独开发，则请求 `http://localhost:3000/api/v1`，对应来源已列入 CORS。
 
----
+Maven Wrapper 配置使用 Maven 3.9.16 的 only-script distribution 模式，因此无需在仓库提交 wrapper JAR。首次运行会按 `.mvn/wrapper/maven-wrapper.properties` 下载 distribution。
 
-## 🌱 Future Roadmap
+## AI Configuration
 
-### 01 · 体验更真实
+AI 默认关闭，未配置 Key 也可以使用 fallback 完成演示。需要在线模型时复制示例配置：
 
-丰富 Career Work Sample。
+```powershell
+Copy-Item .env.example .env
+```
 
-从当前的硬能力任务和剧本式场景模拟，逐步增加：
+```dotenv
+AI_ENABLED=true
+AI_API_KEY=your_key_here
+AI_BASE_URL=https://api.openai.com/v1
+AI_MODEL_PRO=gpt-4o
+```
 
-- 更丰富的岗位情境
-- 更自然的角色扮演与对话
-- 更开放的用户主动选择
-- 更细致的行为证据记录
+| Variable | Purpose | Application default |
+| --- | --- | --- |
+| `AI_ENABLED` | 开启在线模型调用 | `false` |
+| `AI_API_KEY` | Bearer API Key | 空 |
+| `AI_BASE_URL` | OpenAI-compatible API 根地址 | `https://api.openai.com/v1` |
+| `AI_MODEL_PRO` | Chat Completions 模型名 | `gpt-4o` |
 
-让「试岗」进一步接近真实工作。
+当 `AI_ENABLED=true` 且 Key 非空时，服务请求 `${AI_BASE_URL}/chat/completions`。请勿提交 `.env` 或真实密钥。
 
----
+## 3-Minute Judge Demo
 
-### 02 · 岗位更丰富
+1. **0:00–0:30｜问题与选岗**：从首页进入五岗探索，说明“先体验，再承诺”和 Recommendation ≠ Assessment。
+2. **0:30–1:15｜Microtask**：选择一个岗位，完成几道混合微任务，展示真实工作判断而非抽象自评。
+3. **1:15–2:00｜Scene**：进入三幕情景，展示 preset 选择与一次自由回答如何形成不同证据路径。
+4. **2:00–2:35｜Evidence / Report**：完成体验并打开报告，展示任务雷达、行为依据、建议和 boundary notice。
+5. **2:35–3:00｜边界与未来**：说明一次体验提供 evidence 而非 verdict，并展示从 Scenario MVP 演进到 Work Sample / Replay 的路径。
 
-从当前 5 个 AI 岗位逐渐扩展到更多 AI 职业方向，并探索：
+Swagger 是工程核验补充，主 Demo 路径全部在产品页面中完成。
 
-- 产品
-- 咨询
-- 金融
-- 设计
-- 运营
-- 更多行业
+## Tech Architecture
 
-持续完善不同岗位的核心任务、工作方式和评价维度。
+```mermaid
+flowchart TB
+    UI[HTML · CSS · Vanilla JS] -->|same-origin /api/v1| API[Spring MVC API]
+    API --> CORE[Session · Task · Scene · Report]
+    CORE --> DB[(H2 + Spring Data JPA)]
+    CORE --> SEED[Jobs · Microtasks · Scene Seeds]
+    CORE --> ORCH[AI Orchestrator]
+    ORCH --> PROMPTS[Versioned Prompts]
+    ORCH --> VALIDATOR[Output Validator]
+    ORCH --> LLM[OpenAI-compatible LLM]
+    ORCH --> FALLBACK[JSON Fallbacks]
+```
 
----
+模型处理语言任务；业务事实、状态推进、authored scoring、preset evidence 与 persistence 不由模型随意决定。`OutputValidator` 检查结构和禁用结论，失败后由 orchestrator 降级。
 
-### 03 · 引入体验反馈机制
+### Tech Stack
 
-未来在任务结束后加入轻量自评：
+- Java 17 · Spring Boot 3.4.1 · Spring MVC
+- Spring Data JPA · H2 file database
+- Springdoc OpenAPI 2.7.0 · Swagger UI
+- Spring `RestClient` · OpenAI-compatible Chat Completions
+- HTML · CSS · Vanilla JavaScript
+- JSON seed · Markdown prompts · JSON fallbacks
 
-**兴趣感**<br>
-我喜欢这个过程吗？
+## Code Evidence Index
 
-**自然度**<br>
-这种思考方式对我来说自然吗？
+| Claim | Repository evidence |
+| --- | --- |
+| 端口、H2 与 AI 配置 | [`application.yml`](src/main/resources/application.yml) · [`.env.example`](.env.example) |
+| 前端由 Spring Boot 提供 | [`WebConfig.java`](src/main/java/com/Grassroot/JobSearch/config/WebConfig.java) |
+| 同源/开发端口 API base | [`app.js`](front/js/app.js) |
+| 五岗定义与 interactive 状态 | [`jobs.json`](src/main/resources/seed/jobs.json) |
+| canonical/runtime ID 映射 | [`app.js`](front/js/app.js) · [`JobIdMapper.java`](src/main/java/com/Grassroot/JobSearch/common/JobIdMapper.java) |
+| Microtask 题库、抽样与雷达 | [`microtask-bank.json`](src/main/resources/seed/microtask-bank.json) · [`MicrotaskBankService.java`](src/main/java/com/Grassroot/JobSearch/task/MicrotaskBankService.java) · [`TaskService.java`](src/main/java/com/Grassroot/JobSearch/task/TaskService.java) |
+| 15 个 Scene scripts 与 API | [`scene-scripts/`](src/main/resources/seed/scene-scripts/) · [`SceneController.java`](src/main/java/com/Grassroot/JobSearch/scene/SceneController.java) |
+| Scene Evidence 持久化 | [`SceneEvidenceService.java`](src/main/java/com/Grassroot/JobSearch/scene/SceneEvidenceService.java) · [`SceneEvidence.java`](src/main/java/com/Grassroot/JobSearch/scene/SceneEvidence.java) |
+| Report runtime | [`ReportController.java`](src/main/java/com/Grassroot/JobSearch/report/ReportController.java) · [`ReportService.java`](src/main/java/com/Grassroot/JobSearch/report/ReportService.java) |
+| 模型调用与 AI 编排 | [`LlmClient.java`](src/main/java/com/Grassroot/JobSearch/llm/LlmClient.java) · [`AiOrchestrator.java`](src/main/java/com/Grassroot/JobSearch/ai/AiOrchestrator.java) |
+| 输出约束与 fallback | [`OutputValidator.java`](src/main/java/com/Grassroot/JobSearch/ai/OutputValidator.java) · [`AI/fallbacks/`](src/main/resources/AI/fallbacks/) |
+| API 契约 | [`openapi.yaml`](docs/openapi.yaml) · [`backend-p0-selftest.md`](docs/backend-p0-selftest.md) |
+| Product SOT 与范围边界 | [`WAYVE-Product-PRD.md`](WAYVE-Product-PRD.md) · [`docs/product/README.md`](docs/product/README.md) · [`product-overview.md`](docs/product/product-overview.md) · [`behavior-and-evidence.md`](docs/product/behavior-and-evidence.md) |
 
-**持续意愿**<br>
-如果这是日常工作的一部分，我愿意继续吗？
+## Current vs Future
 
-进一步将：
+| Current runtime | Future / Post-MVP / Migration Target |
+| --- | --- |
+| 五岗浏览、推荐导航与 interactive 入口 | 扩展更多岗位与经过验证的岗位研究数据 |
+| 每岗 24 道 Microtask 题库、每轮混合 6 题 | Persistent Work Sample 与可编辑 work object |
+| 五岗 × 三幕 Scene、preset/custom evidence | Collaboration Sprint 与独立 Collaboration Evidence |
+| session/task/scene/report 的 H2 持久化 | canonical Behavior Event 全链路与跨体验持久化 |
+| 单次任务雷达、行为依据、学习建议与边界声明 | 完整 Evidence Replay 与 Work Sample-based Hard Skill Judge |
+| 下一步探索内容与成长页面 | 可修订 Working Portrait、long-term Growth Track |
 
-**行为表现 × 主观体验**
+仓库中的产品设计文档描述了目标契约；只有已经进入当前代码运行路径的能力才列为 Current。
 
-结合成更加完整的职业共振分析。
+## Future Potential
 
-不仅理解：
+未来不是简单增加更多问卷，而是逐步提高证据质量：
 
-> “我能不能做？”
+- **从 Scenario 到 Work Sample：** 复用现有 task/session 边界，引入可编辑 work object、consequence、revision 与 deliverable。
+- **从 Evidence 摘要到 Replay：** 让重要 claim 回到 source event、user action、result、interpretation、confidence 与 limits。
+- **从单人情景到 Collaboration Evidence：** 在共享状态中观察信息交换、分歧处理与最终承诺，同时与岗位专业证据分开保存。
+- **从单次报告到成长系统：** 将用户确认过的反思、未知项和 Next Mission 连接成 Working Portrait 与 Growth Track，但不把历史压缩成永久标签。
 
-还理解：
+这些方向与当前模块边界相容，但都不是今天 Demo 完成度的一部分。
 
-> **“我愿不愿意长期这样做？”**
-
----
-
-### 04 · 探索更长期
-
-建立 **My Way 成长轨迹**。
-
-长期记录每一次：
+## Repository Structure
 
 ```text
-职业体验
-   ↓
-新证据
-   ↓
-能力变化
-   ↓
-用户反馈
-   ↓
-方向调整
+.
+├── docs/images/                     # README 产品截图
+├── docs/product/                    # Product SOT 与 Current/Future 边界
+├── front/                           # 页面、样式、脚本与产品素材
+├── AI/prompts/                      # 版本化 Prompt
+├── src/main/java/.../               # API、业务服务、LLM 与 persistence
+├── src/main/resources/
+│   ├── seed/                        # 岗位、Microtask、Scene 与 demo seed
+│   ├── AI/fallbacks/                # 结构化降级输出
+│   └── application.yml
+├── .mvn/wrapper/                    # Maven Wrapper distribution 配置
+└── pom.xml
 ```
 
-并逐步探索与真实项目、实习和岗位机会连接。
+## Product Boundary
 
-让一次「试岗」逐渐变成：
+WAYVE does **not** output：
 
-> **持续的职业探索与验证。**
+- permanent ability（永久能力结论）
+- personality judgment（人格判断）
+- hidden career fit（隐藏职业适配分）
+- potential prediction（潜力预测）
+- recruiting decision（招聘决定）
 
----
-
-## 🚧 Project Status
-
-**Prototype / MVP · Active Development**
-
-Wayve 当前处于产品验证与 Demo 阶段。
-
-项目主要用于：
-
-- Hackathon Demo
-- 产品概念验证
-- 体验式职业探索实验
-- AI 辅助职业探索研究
-
-当前版本暂不代表 Production-ready 产品。
-
----
-
-## 📖 Product Documentation
-
-完整的产品逻辑与设计说明：
-
-[WAYVE Product PRD](./WAYVE-Product-PRD.md)
-
-运行和本地协作说明：
-
-[RUN.md](./RUN.md) · [LOCAL_WORKFLOW.md](./LOCAL_WORKFLOW.md)
+一次体验提供 **evidence, not verdict**。用户拥有最终职业决定权。
 
 <p align="center">
-  <strong>仕途之前，先「试途」。</strong>
-</p>
-
-<p align="center">
-  <strong>Preview before commit.</strong>
+  <strong>仕途之前，先「试途」。</strong><br />
+  <strong>Preview before Commit.</strong>
 </p>
