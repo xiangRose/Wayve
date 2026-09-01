@@ -11,18 +11,15 @@
   <img src="docs/images/wayve-home.png" alt="试途 WAYVE 首页" width="100%" />
 </p>
 
-WAYVE 是一个证据型职业探索原型：用户先进入 AI 岗位的微任务和工作情景，系统再基于本次可观察行为提供有边界的反馈。它提供的是下一步判断的依据，不是替用户作出的职业判决。
+WAYVE 是一个体验式职业探索产品。它不先问“你适合什么”，而是先让你做一小段接近真实的工作；体验结束后，再根据本轮行为与感受，帮助你决定下一步值得继续探索什么。
 
-## 评审 30 秒速览
+> **Evidence, not Verdicts.** 一次体验提供证据，不替任何人作出职业判决。
 
-| 主办方评分维度 | 评委能在当前仓库验证什么 |
-| --- | --- |
-| **问题洞察与价值 · 20%** | WAYVE 把“我适合什么”改写为“我体验了什么、产生了什么证据、下一步还要验证什么”，降低职业探索第一次试错的成本。 |
-| **创新性 · 20%** | 推荐只负责导航；Microtask 与 Scene 负责观察；报告保留证据边界。确定性题目、状态和 authored scoring 不交给模型随意决定。 |
-| **后续发展潜力 · 20%** | 当前 Scenario-based MVP 已拆出 session、task、scene、evidence、report 与 AI 边界，可继续演进为 Work Sample、Replay 和跨体验成长系统。 |
-| **Demo 完成度 · 15%** | Spring Boot 在 3000 同时提供前端与 API；五岗均有交互入口、微任务、三幕情景、行为证据与报告页面，可沿产品页面端到端演示。 |
-| **技术实现能力 · 15%** | Java 17、Spring Boot 3.4.1、H2/JPA、OpenAPI、结构化 Prompt、输出校验、OpenAI-compatible Chat Completions 与 JSON fallback 均有实现。 |
-| **展示表达与团队协作 · 10%** | 五张真实产品截图、3 分钟演示路径、架构图、Code Evidence Index 与 Current/Future 表让产品、设计和工程事实可快速核验。 |
+## What is WAYVE?
+
+WAYVE 让职业方向从一段描述，变成一次可以亲自进入的体验：先选一个方向，完成短任务和工作情景，再回看自己如何理解问题、使用证据和作出取舍。
+
+它不是心理测评、简历匹配、招聘筛选或职业 fit 判定。背景与推荐只帮助用户找到探索入口；真正的反馈来自本轮任务中可观察的行为，并始终保留结论边界。
 
 ## Why WAYVE｜从“看 / 测 / 聊”到“试”
 
@@ -36,21 +33,6 @@ WAYVE 是一个证据型职业探索原型：用户先进入 AI 岗位的微任�
 | 知道“它是什么” | 推测“我是什么样” | 推测“可能适合什么” | 获得“我刚才怎么做”的证据 |
 
 > **不是多给一个答案，而是多给一次判断的依据。**
-
-## How It Works
-
-```mermaid
-flowchart LR
-    A[进入探索] --> B[可选 Profile]
-    B --> C[五岗浏览与推荐导航]
-    C --> D[6 道混合 Microtask]
-    D --> E[三幕岗位 Scene]
-    E --> F[结构化 Evidence]
-    F --> G[有边界的 Report]
-    G --> H[下一次验证]
-```
-
-这张图只表达当前可运行的 MVP 主链路。完整 Work Sample、Collaboration Sprint、Evidence Replay 与长期 Growth Track 属于 Future / Post-MVP。
 
 ## Product Experience
 
@@ -86,7 +68,22 @@ flowchart LR
   <img src="docs/images/wayve-journey.png" alt="WAYVE 我的试途页面" width="100%" />
 </p>
 
-## Core Innovations
+## How It Works
+
+```mermaid
+flowchart LR
+    A[进入探索] --> B[可选 Profile]
+    B --> C[五岗浏览与推荐导航]
+    C --> D[6 道混合 Microtask]
+    D --> E[三幕岗位 Scene]
+    E --> F[结构化 Evidence]
+    F --> G[有边界的 Report]
+    G --> H[下一次验证]
+```
+
+这是当前可运行的 MVP 主路径。完整 Work Sample、Collaboration Sprint、Evidence Replay 与长期 Growth Track 属于 Future / Post-MVP。
+
+## What Makes WAYVE Different
 
 ### Preview before Commit
 
@@ -104,7 +101,7 @@ flowchart LR
 
 题库、选项、状态推进、分值换算、preset evidence 与持久化由应用层控制。LLM 负责有限的自由文本提取和报告叙事；输出不合法或模型不可用时进入已版本化 fallback。
 
-## Current Implementation
+## What Works Today
 
 | Capability | Current runtime evidence | Boundary |
 | --- | --- | --- |
@@ -117,7 +114,20 @@ flowchart LR
 | **Fallback** | AI 关闭、无 Key、调用失败、空响应或输出校验失败时读取仓库 JSON fallback | fallback 是确定性演示/降级数据，不是用户数据 |
 | **Persistence** | H2 file database + Spring Data JPA 保存 session、task、interest、scene evidence 与 report | 尚非跨体验的长期证据系统 |
 
-产品层 canonical role IDs 为：`ai_product`、`ai_ui_design`、`ai_ops`、`ai_data_eval`、`ai_app_dev`。当前 runtime 为兼容既有 seed，分别映射到 `ai_pm`、`ai_ux`、`ai_operator`、`ai_researcher`、`ai_consultant`；评委界面上的显示名称来自当前岗位 seed。
+产品层 canonical role IDs 为：`ai_product`、`ai_ui_design`、`ai_ops`、`ai_data_eval`、`ai_app_dev`。当前 runtime 为兼容既有 seed，分别映射到 `ai_pm`、`ai_ux`、`ai_operator`、`ai_researcher`、`ai_consultant`；产品界面上的显示名称来自当前岗位 seed。
+
+## Hackathon Snapshot
+
+WAYVE 当前以 Hackathon MVP 的形式验证核心产品闭环。以下把现有产品与工程证据对应到比赛关注的六个维度。
+
+| Dimension | WAYVE today |
+| --- | --- |
+| **问题洞察与价值 · 20%** | 把“我适合什么”改写为“我体验了什么、产生了什么证据、下一步还要验证什么”，降低职业探索第一次试错的成本。 |
+| **创新性 · 20%** | 推荐只负责导航；Microtask 与 Scene 负责观察；报告保留证据边界。确定性题目、状态和 authored scoring 不交给模型随意决定。 |
+| **后续发展潜力 · 20%** | Scenario-based MVP 已拆出 session、task、scene、evidence、report 与 AI 边界，可继续演进为 Work Sample、Replay 和跨体验成长系统。 |
+| **Demo 完成度 · 15%** | Spring Boot 在 3000 同时提供前端与 API；五岗均有交互入口、微任务、三幕情景、行为证据与报告页面，可沿产品页面端到端演示。 |
+| **技术实现能力 · 15%** | Java 17、Spring Boot 3.4.1、H2/JPA、REST、OpenAPI、结构化 Prompt、输出校验、Chat Completions 与 JSON fallback 均有实现。 |
+| **展示表达与团队协作 · 10%** | 五张真实产品截图、3 分钟演示路径、架构图、Code Evidence Index 与 Current/Future 表让产品、设计和工程事实可以快速定位。 |
 
 ## Quick Start
 
@@ -180,7 +190,7 @@ AI_MODEL_PRO=gpt-4o
 
 当 `AI_ENABLED=true` 且 Key 非空时，服务请求 `${AI_BASE_URL}/chat/completions`。请勿提交 `.env` 或真实密钥。
 
-## 3-Minute Judge Demo
+## 3-Minute Demo
 
 1. **0:00–0:30｜问题与选岗**：从首页进入五岗探索，说明“先体验，再承诺”和 Recommendation ≠ Assessment。
 2. **0:30–1:15｜Microtask**：选择一个岗位，完成几道混合微任务，展示真实工作判断而非抽象自评。
@@ -188,7 +198,7 @@ AI_MODEL_PRO=gpt-4o
 4. **2:00–2:35｜Evidence / Report**：完成体验并打开报告，展示任务雷达、行为依据、建议和 boundary notice。
 5. **2:35–3:00｜边界与未来**：说明一次体验提供 evidence 而非 verdict，并展示从 Scenario MVP 演进到 Work Sample / Replay 的路径。
 
-Swagger 是工程核验补充，主 Demo 路径全部在产品页面中完成。
+主 Demo 路径全部在产品页面中完成，Swagger 仅作为 technical verification。这也是推荐的 Hackathon 演示路径。
 
 ## Tech Architecture
 
@@ -242,7 +252,7 @@ flowchart TB
 | 每岗 24 道 Microtask 题库、每轮混合 6 题 | Persistent Work Sample 与可编辑 work object |
 | 五岗 × 三幕 Scene、preset/custom evidence | Collaboration Sprint 与独立 Collaboration Evidence |
 | session/task/scene/report 的 H2 持久化 | canonical Behavior Event 全链路与跨体验持久化 |
-| 单次任务雷达、行为依据、学习建议与边界声明 | 完整 Evidence Replay 与 Work Sample-based Hard Skill Judge |
+| 单次任务雷达、行为依据、学习建议与边界声明 | 完整 Evidence Replay 与 Work Sample-based Hard Skill Assessment |
 | 下一步探索内容与成长页面 | 可修订 Working Portrait、long-term Growth Track |
 
 仓库中的产品设计文档描述了目标契约；只有已经进入当前代码运行路径的能力才列为 Current。
