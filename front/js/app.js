@@ -2,7 +2,7 @@
   'use strict';
 
   const API_BASE =
-    window.location.port === '3001' ? window.location.origin + '/api/v1' : 'http://localhost:3001/api/v1';
+    window.location.port === '3000' ? window.location.origin + '/api/v1' : 'http://localhost:3000/api/v1';
 
   const REC_LABELS = ['优先推荐', '值得体验', '探索方向'];
 
